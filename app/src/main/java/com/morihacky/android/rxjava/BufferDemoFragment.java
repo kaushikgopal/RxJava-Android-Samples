@@ -24,6 +24,7 @@ import butterknife.OnClick;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -34,89 +35,65 @@ public class BufferDemoFragment
 
     private LogAdapter _adapter;
     private List<String> _logs;
-    private final Handler _mainThreadHandler = new Handler(Looper.getMainLooper());
+    private int _tapCount = 0;
 
-    private int _counter = 0;
+    private Observable<List<Integer>> _bufferedObservable;
+    private Observer<List<Integer>> _observer;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         _setupLogAdapter();
 
-        // Create the subscription
-        //        AndroidObservable.bindFragment(this, _getObservable())      // Observable
-        //            .observeOn(Schedulers.io())
-        //            .subscribe(_getObserver());                             // Observer
+        _bufferedObservable = _getBufferedObservable();
+        _observer = _getObserver();
     }
 
 
     @OnClick(R.id.btn_start_operation)
     public void onButtonTapped() {
-        // BehaviorSubject takes in Observable inputs.
-        // So send 1 tap as an observable
-        _counter += 1;
-        _getObservable().observeOn(Schedulers.io()).subscribe(_getObserver());
+        _bufferedObservable.subscribeOn(Schedulers.io())
+                         .observeOn(AndroidSchedulers.mainThread())
+                         .subscribe(_observer);
     }
 
     // -----------------------------------------------------------------------------------
     // Main Rx entities
 
-    /**
-     * Gets the Observable as emitted from BehaviorSubject
-     *
-     * It begins by emitting the item most recently emitted by source Observable
-     * (or seed/default if none has yet been emitted - which is the case here)
-     *
-     * https://github.com/Netflix/RxJava/wiki/Subject#behaviorsubject
-     */
-    private Observable<List<Integer>> _getObservable() {
+    private Observable<List<Integer>> _getBufferedObservable() {
         return Observable.create(new Observable.OnSubscribe<Integer>() {
 
 
             @Override
-            public void call(Subscriber<? super Integer> observer) {
-                observer.onNext(1);
+            public void call(Subscriber<? super Integer> subscriber) {
+                subscriber.onNext(1);
+                // send one tap
             }
+
         }).buffer(2, TimeUnit.SECONDS);
     }
 
-    /**
-     * Observer that handles the result List<Integer> from Observable
-     * through the 3 important actions:
-     *
-     * 1. onCompleted
-     * 2. onError
-     * 3. onNext
-     */
     private Observer<List<Integer>> _getObserver() {
         return new Observer<List<Integer>>() {
 
 
             @Override
             public void onCompleted() {
-                _mainThreadHandler.post(new Runnable() {
-
-
-                    @Override
-                    public void run() {
-                        _addLogToAdapter(String.format("%d taps", _counter));
-                        _counter = 0;
-                    }
-                });
+                _log(String.format("%d taps", _tapCount));
+                _tapCount = 0;
             }
 
             @Override
             public void onError(Throwable e) {
                 Timber.e(e, "--------- Woops on error!");
+                _log(String.format("Dang error. check your logs"));
             }
 
             @Override
             public void onNext(List<Integer> integers) {
                 for (int i : integers) {
-                    _counter += i;
+                    _tapCount += i;
                 }
-
-                Timber.d("--------- on next with a count of %d", _counter);
                 onCompleted();
             }
         };
@@ -140,11 +117,33 @@ public class BufferDemoFragment
         _logsList.setAdapter(_adapter);
     }
 
-    private void _addLogToAdapter(String logMsg) {
-        _logs.add(0, logMsg);
-        _adapter.clear();
-        _adapter.addAll(_logs);
+    private void _log(String logMsg) {
+
+        if (_isCurrentlyOnMainThread()) {
+            _logs.add(0, logMsg + " (main thread) ");
+            _adapter.clear();
+            _adapter.addAll(_logs);
+
+        } else {
+            _logs.add(0, logMsg + " (NOT main thread) ");
+
+            // You can only do below stuff on main thread.
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+
+
+                @Override
+                public void run() {
+                    _adapter.clear();
+                    _adapter.addAll(_logs);
+                }
+            });
+        }
     }
+
+    private boolean _isCurrentlyOnMainThread() {
+        return Looper.myLooper() == Looper.getMainLooper();
+    }
+
 
     private class LogAdapter
         extends ArrayAdapter<String> {
