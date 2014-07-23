@@ -24,11 +24,11 @@
             android:layout_width="wrap_content"
             android:layout_marginLeft="20dp"
             android:textSize="16sp"
-            android:text="Start long running operation"/>
+            android:text="Start long operation"/>
 
         <ProgressBar
             android:id="@+id/progress_operation_running"
-            android:visibility="gone"
+            android:visibility="invisible"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_marginLeft="20dp"/>
