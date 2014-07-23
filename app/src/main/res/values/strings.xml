@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Android-RxJava</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="demo_type_long_bg">long operation in bg (schedulers)</string>
+    <string name="demo_type_accumulate">accumulate events (instant search)</string>
+
+</resources>
