@@ -43,7 +43,7 @@ public class BufferDemoFragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        _setupLogAdapter();
+        _setupLogger();
 
         _bufferedObservable = _getBufferedObservable();
         _observer = _getObserver();
@@ -52,6 +52,9 @@ public class BufferDemoFragment
 
     @OnClick(R.id.btn_start_operation)
     public void onButtonTapped() {
+        Timber.d("--------- GOT A TAP");
+        _tapCount += 1;
+        _log("GOT A TAP");
         _bufferedObservable.subscribeOn(Schedulers.io())
                          .observeOn(AndroidSchedulers.mainThread())
                          .subscribe(_observer);
@@ -67,7 +70,6 @@ public class BufferDemoFragment
             @Override
             public void call(Subscriber<? super Integer> subscriber) {
                 subscriber.onNext(1);
-                // send one tap
             }
 
         }).buffer(2, TimeUnit.SECONDS);
@@ -91,10 +93,16 @@ public class BufferDemoFragment
 
             @Override
             public void onNext(List<Integer> integers) {
-                for (int i : integers) {
-                    _tapCount += i;
+                Timber.d("--------- onNext");
+
+                if (integers.size() > 0) {
+                    for (int i : integers) {
+                        _tapCount += i;
+                    }
+                    onCompleted();
+                } else {
+                    Timber.d("--------- No taps received ");
                 }
-                onCompleted();
             }
         };
     }
@@ -111,7 +119,7 @@ public class BufferDemoFragment
         return layout;
     }
 
-    private void _setupLogAdapter() {
+    private void _setupLogger() {
         _logs = new ArrayList<String>();
         _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
         _logsList.setAdapter(_adapter);
