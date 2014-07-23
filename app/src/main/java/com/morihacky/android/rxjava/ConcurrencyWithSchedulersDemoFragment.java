@@ -157,7 +157,7 @@ public class ConcurrencyWithSchedulersDemoFragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        _setupLogAdapter();
+        _setupLogger();
     }
 
     @Override
@@ -169,7 +169,7 @@ public class ConcurrencyWithSchedulersDemoFragment
         return layout;
     }
 
-    private void _setupLogAdapter() {
+    private void _setupLogger() {
         _logs = new ArrayList<String>();
         _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
         _logsList.setAdapter(_adapter);
