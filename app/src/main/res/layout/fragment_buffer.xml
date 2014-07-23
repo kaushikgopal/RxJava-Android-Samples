@@ -11,10 +11,10 @@
         android:layout_width="match_parent"
         android:padding="10dp"
         android:gravity="center"
-        android:text="@string/demo_accumulate_msg"/>
+        android:text="@string/msg_demo_buffer"/>
 
     <Button
-        android:id="@+id/accumulated_event_btn"
+        android:id="@+id/btn_start_operation"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_marginLeft="90dp"
@@ -23,7 +23,7 @@
         android:text="tap me"/>
 
     <ListView
-        android:id="@+id/accumulated_event_list"
+        android:id="@+id/list_threading_log"
         android:layout_height="match_parent"
         android:layout_width="match_parent"/>
 

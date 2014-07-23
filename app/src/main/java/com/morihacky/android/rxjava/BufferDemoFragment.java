@@ -27,10 +27,10 @@ import rx.Subscriber;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class DemoAccumulateEventFragment
+public class BufferDemoFragment
     extends Fragment {
 
-    @InjectView(R.id.accumulated_event_list) ListView _logsListView;
+    @InjectView(R.id.list_threading_log) ListView _logsList;
 
     private LogAdapter _adapter;
     private List<String> _logs;
@@ -50,7 +50,7 @@ public class DemoAccumulateEventFragment
     }
 
 
-    @OnClick(R.id.accumulated_event_btn)
+    @OnClick(R.id.btn_start_operation)
     public void onButtonTapped() {
         // BehaviorSubject takes in Observable inputs.
         // So send 1 tap as an observable
@@ -129,7 +129,7 @@ public class DemoAccumulateEventFragment
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_accumulate, container, false);
+        View layout = inflater.inflate(R.layout.fragment_buffer, container, false);
         ButterKnife.inject(this, layout);
         return layout;
     }
@@ -137,7 +137,7 @@ public class DemoAccumulateEventFragment
     private void _setupLogAdapter() {
         _logs = new ArrayList<String>();
         _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
-        _logsListView.setAdapter(_adapter);
+        _logsList.setAdapter(_adapter);
     }
 
     private void _addLogToAdapter(String logMsg) {

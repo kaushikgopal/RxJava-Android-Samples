@@ -11,15 +11,21 @@
     tools:context=".DemoActivity">
 
     <Button
-        android:id="@+id/demo_long_bg"
+        android:id="@+id/btn_demo_schedulers"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="@string/demo_type_long_bg"/>
+        android:text="@string/btn_demo_schedulers"/>
 
     <Button
-        android:id="@+id/demo_accumulate_event"
+        android:id="@+id/btn_demo_buffer"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="@string/demo_type_accumulate"/>
+        android:text="@string/btn_demo_buffer"/>
+
+    <Button
+        android:id="@+id/btn_demo_throttle"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/btn_demo_throttle"/>
 
 </LinearLayout>

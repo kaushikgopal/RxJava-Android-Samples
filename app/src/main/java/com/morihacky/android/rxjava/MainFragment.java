@@ -12,25 +12,37 @@ import com.morihacky.android.rxjava.app.R;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DemoFragment
+public class MainFragment
     extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_demo, container, false);
+        View layout = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.inject(this, layout);
         return layout;
     }
 
-    @OnClick(R.id.demo_accumulate_event)
-    public void demoAccumulationOfEvents() {
+    @OnClick(R.id.btn_demo_schedulers)
+    public void demoConcurrencyWithSchedulers() {
         getActivity().getSupportFragmentManager()
                      .beginTransaction()
                      .addToBackStack(this.toString())
-                     .replace(R.id.activity_container,
-                              new DemoAccumulateEventFragment(),
+                     .replace(R.id.activity_main,
+                              new ConcurrencyWithSchedulersDemoFragment(),
+                              this.toString())
+                     .commit();
+    }
+
+
+    @OnClick(R.id.btn_demo_buffer)
+    public void demoBuffer() {
+        getActivity().getSupportFragmentManager()
+                     .beginTransaction()
+                     .addToBackStack(this.toString())
+                     .replace(R.id.activity_main,
+                              new BufferDemoFragment(),
                               this.toString())
                      .commit();
     }

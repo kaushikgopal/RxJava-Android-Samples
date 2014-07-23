@@ -7,19 +7,19 @@ import com.morihacky.android.rxjava.app.R;
 
 import timber.log.Timber;
 
-public class DemoActivity
+public class MainActivity
     extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demo);
+        setContentView(R.layout.activity_main);
 
         Timber.plant(new Timber.DebugTree());
 
         getSupportFragmentManager().beginTransaction()
                                    .addToBackStack(this.toString())
-                                   .replace(R.id.activity_container, new DemoFragment(), this.toString())
+                                   .replace(R.id.activity_main, new MainFragment(), this.toString())
                                    .commit();
     }
 }
