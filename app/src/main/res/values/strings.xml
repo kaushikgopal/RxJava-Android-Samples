@@ -6,5 +6,6 @@
     <string name="action_settings">Settings</string>
     <string name="demo_type_long_bg">long operation in bg (schedulers)</string>
     <string name="demo_type_accumulate">accumulate events (instant search)</string>
+    <string name="demo_accumulate_msg">This is a demonstration of how events are accumulated. Tap the button below repetitively and you will notice in the logs that button taps are collected over a span of 2s and printed below.</string>
 
 </resources>
