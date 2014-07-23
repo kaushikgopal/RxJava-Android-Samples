@@ -16,20 +16,19 @@ import com.morihacky.android.rxjava.app.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.Observer;
-import rx.android.observables.AndroidObservable;
+import rx.Subscriber;
 import rx.schedulers.Schedulers;
-import rx.subjects.BehaviorSubject;
 import timber.log.Timber;
 
 public class DemoAccumulateEventFragment
-    extends Fragment
-    implements Observer<Integer> {
+    extends Fragment {
 
     @InjectView(R.id.accumulated_event_list) ListView _logsListView;
 
@@ -37,7 +36,6 @@ public class DemoAccumulateEventFragment
     private List<String> _logs;
     private final Handler _mainThreadHandler = new Handler(Looper.getMainLooper());
 
-    private BehaviorSubject<Observable<Integer>> _loggerSubject;            // Special Rx entity that modifies Observable behavior for aggregation
     private int _counter = 0;
 
     @Override
@@ -46,9 +44,9 @@ public class DemoAccumulateEventFragment
         _setupLogAdapter();
 
         // Create the subscription
-        AndroidObservable.bindFragment(this, _getObservable_ForTaps())     // Observable
-            .observeOn(Schedulers.io())
-            .subscribe(_getSubscriber_ForTaps());                          // Subscriber
+        //        AndroidObservable.bindFragment(this, _getObservable())      // Observable
+        //            .observeOn(Schedulers.io())
+        //            .subscribe(_getObserver());                             // Observer
     }
 
 
@@ -57,7 +55,7 @@ public class DemoAccumulateEventFragment
         // BehaviorSubject takes in Observable inputs.
         // So send 1 tap as an observable
         _counter += 1;
-        _loggerSubject.onNext(Observable.from(_counter));
+        _getObservable().observeOn(Schedulers.io()).subscribe(_getObserver());
     }
 
     // -----------------------------------------------------------------------------------
@@ -71,57 +69,57 @@ public class DemoAccumulateEventFragment
      *
      * https://github.com/Netflix/RxJava/wiki/Subject#behaviorsubject
      */
-    private Observable<Integer> _getObservable_ForTaps() {
-        if (_loggerSubject == null) {
-            _loggerSubject = BehaviorSubject.create(Observable.from(0));
-        }
-
-        return Observable.switchOnNext(_loggerSubject);
-    }
-
-    /**
-     * Subscriber that has the 3 important actions
-     * 1. onNext
-     * 2. onError
-     * 3. onCompleted
-     */
-    private Observer<? super Integer> _getSubscriber_ForTaps() {
-        return this;
-    }
-
-    @Override
-    public void onCompleted() {
-        Timber.d("--------- completed ");
-
-        _mainThreadHandler.post(new Runnable() {
+    private Observable<List<Integer>> _getObservable() {
+        return Observable.create(new Observable.OnSubscribe<Integer>() {
 
 
             @Override
-            public void run() {
-                _addLogToAdapter(String.format("%d taps", _counter));
-                _counter = 0;
+            public void call(Subscriber<? super Integer> observer) {
+                observer.onNext(1);
             }
-        });
+        }).buffer(2, TimeUnit.SECONDS);
     }
 
-    @Override
-    public void onNext(Integer integer) {
-        Timber.d("--------- on next %d", integer);
-        _simulateLongOperation();
-        onCompleted();
-    }
+    /**
+     * Observer that handles the result List<Integer> from Observable
+     * through the 3 important actions:
+     *
+     * 1. onCompleted
+     * 2. onError
+     * 3. onNext
+     */
+    private Observer<List<Integer>> _getObserver() {
+        return new Observer<List<Integer>>() {
 
-    @Override
-    public void onError(Throwable e) {
-        Timber.e(e, "--------- Woops on error!");
-    }
 
-    private void _simulateLongOperation() {
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void onCompleted() {
+                _mainThreadHandler.post(new Runnable() {
+
+
+                    @Override
+                    public void run() {
+                        _addLogToAdapter(String.format("%d taps", _counter));
+                        _counter = 0;
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Timber.e(e, "--------- Woops on error!");
+            }
+
+            @Override
+            public void onNext(List<Integer> integers) {
+                for (int i : integers) {
+                    _counter += i;
+                }
+
+                Timber.d("--------- on next with a count of %d", _counter);
+                onCompleted();
+            }
+        };
     }
 
     // -----------------------------------------------------------------------------------
