@@ -1,25 +1,5 @@
-<LinearLayout
-    android:orientation="vertical"
+<FrameLayout
+    android:id="@+id/activity_container"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".DemoActivity">
-
-    <Button
-        android:id="@+id/demo_long_bg"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/demo_type_long_bg"/>
-
-    <Button
-        android:id="@+id/demo_accumulate_event"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/demo_type_accumulate"/>
-
-</LinearLayout>
+    xmlns:android="http://schemas.android.com/apk/res/android" />
