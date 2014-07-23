@@ -4,5 +4,6 @@
     android:id="@+id/item_log"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:textSize="12sp"
     android:text="Item Log goes here"
     xmlns:android="http://schemas.android.com/apk/res/android"/>

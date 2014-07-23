@@ -6,7 +6,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="msg_demo_buffer">This is a demo of how events can be accumulated using the "buffer" operation. Tap the button below repetitively and you will notice in the logs that button taps are collected over a span of 2s and printed below.</string>
-    <string name="msg_demo_concurrency_schedulers">This is a demo of how long running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava!</string>
+    <string name="msg_demo_concurrency_schedulers">This is a demo of how long running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava! \n\n To really see this shine. Hit the button multiple times and see how the button click which is a ui operation is never blocked because the long operation only runs in the background</string>
 
     <string name="btn_demo_schedulers">bg work (schedulers &amp; concurrency)</string>
     <string name="btn_demo_buffer">accumulate calls (buffer)</string>
