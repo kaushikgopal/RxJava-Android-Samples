@@ -23,9 +23,9 @@
         android:text="@string/btn_demo_buffer"/>
 
     <Button
-        android:id="@+id/btn_demo_subject"
+        android:id="@+id/btn_demo_subject_debounce"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="@string/btn_demo_subject"/>
+        android:text="@string/btn_demo_subject_debounce"/>
 
 </LinearLayout>

@@ -16,6 +16,7 @@ import com.morihacky.android.rxjava.app.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -43,12 +44,12 @@ import timber.log.Timber;
  * (unlike the way it's done in {@link com.morihacky.android.rxjava.ConcurrencyWithSchedulersDemoFragment#startLongOperation()})
  * where we create the subscription on every single event change (OnClick or OnTextchanged) which is
  *
- *      ? wasteful (not really since we anyway unsubscribe at the end).
- *      less-elegant (as a concept for sure, but not for simplicity vs. the 3 step basic subscription creation)
- *      ? doesn't allow us to debounce/throttle/sample
- *
+ * wasteful!                : not really since we anyway unsubscribe in OnDestroyView)
+ * less-elegant             : as a concept for sure
+ * simpler actually         : adds one more step in the 3 step subscription process, where we create emitter, and then send observables to that emitter)
+ * incapable of debounce    : this is the primary reason, since creating new observable everytime in subscription disregards debounce on subsequent calls
  */
-public class SubjectSearchEmitterFragment
+public class SubjectDebounceSearchEmitterFragment
     extends Fragment {
 
     @InjectView(R.id.list_threading_log) ListView _logsList;
@@ -65,34 +66,11 @@ public class SubjectSearchEmitterFragment
         _setupLogger();
 
         _searchTextEmitterSubject = PublishSubject.create();
-        _subscription = AndroidObservable.bindFragment(SubjectSearchEmitterFragment.this,
+        _subscription = AndroidObservable.bindFragment(SubjectDebounceSearchEmitterFragment.this,
                                                        Observable.switchOnNext(_searchTextEmitterSubject))
-                                         .subscribeOn(Schedulers.io())
+                                         .debounce(400, TimeUnit.MILLISECONDS, Schedulers.io())
                                          .observeOn(AndroidSchedulers.mainThread())
                                          .subscribe(_getSearchObserver());
-
-        // .debounce(400, TimeUnit.MILLISECONDS, Schedulers.io())
-    }
-
-    @OnTextChanged(R.id.input_txt_subject)
-    public void onTextEntered(CharSequence charsEntered) {
-        Timber.d("---------- text entered %s", charsEntered);
-        _searchTextEmitterSubject.onNext(_getASearchObservableFor(charsEntered.toString()));
-    }
-
-    // -----------------------------------------------------------------------------------
-    // Main Rx entities
-
-    private Observable<String> _getASearchObservableFor(final String searchText) {
-        return Observable.create(new Observable.OnSubscribe<String>() {
-
-
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
-                subscriber.onNext(searchText);
-                subscriber.onCompleted();
-            }
-        });
     }
 
     private Observer<String> _getSearchObserver() {
@@ -112,10 +90,37 @@ public class SubjectSearchEmitterFragment
 
             @Override
             public void onNext(String searchText) {
-                Timber.d("--------- onNext");
-                _log(String.format("You searched for %s", searchText));
+                _log(String.format("onNext You searched for %s", searchText));
             }
         };
+    }
+
+    @OnTextChanged(R.id.input_txt_subject_debounce)
+    public void onTextEntered(CharSequence charsEntered) {
+        Timber.d("---------- text entered %s", charsEntered);
+        _searchTextEmitterSubject.onNext(_getASearchObservableFor(charsEntered.toString()));
+    }
+
+    // -----------------------------------------------------------------------------------
+    // Main Rx entities
+
+    /**
+     * @param searchText search text entered onTextChange
+     *
+     * @return a new observable which searches for text searchText, explicitly say you want subscription to be done on a a non-UI thread, otherwise it'll default to the main thread.
+     */
+    private Observable<String> _getASearchObservableFor(final String searchText) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+
+
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+
+                Timber.d("----------- inside the search observable");
+                subscriber.onNext(searchText);
+                subscriber.onCompleted();
+            }
+        }).subscribeOn(Schedulers.io());
     }
 
     @Override
@@ -131,7 +136,7 @@ public class SubjectSearchEmitterFragment
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_subject, container, false);
+        View layout = inflater.inflate(R.layout.fragment_subject_debounce, container, false);
         ButterKnife.inject(this, layout);
         return layout;
     }

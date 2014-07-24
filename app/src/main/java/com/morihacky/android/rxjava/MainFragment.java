@@ -46,13 +46,13 @@ public class MainFragment
                      .commit();
     }
 
-    @OnClick(R.id.btn_demo_subject)
+    @OnClick(R.id.btn_demo_subject_debounce)
     public void demoThrottling() {
         getActivity().getSupportFragmentManager()
                      .beginTransaction()
                      .addToBackStack(this.toString())
                      .replace(R.id.activity_main,
-                              new SubjectSearchEmitterFragment(),
+                              new SubjectDebounceSearchEmitterFragment(),
                               this.toString())
                      .commit();
     }

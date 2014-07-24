@@ -14,7 +14,7 @@
         android:text="@string/msg_demo_subject"/>
 
     <EditText
-        android:id="@+id/input_txt_subject"
+        android:id="@+id/input_txt_subject_debounce"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:textSize="16sp"

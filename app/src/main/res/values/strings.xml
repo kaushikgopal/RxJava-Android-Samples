@@ -11,6 +11,6 @@
 
     <string name="btn_demo_schedulers">bg work (schedulers &amp; concurrency)</string>
     <string name="btn_demo_buffer">accumulate calls (buffer)</string>
-    <string name="btn_demo_subject">instant search (subject throttling?)</string>
+    <string name="btn_demo_subject_debounce">search text listener(subject debouncing)</string>
 
 </resources>
