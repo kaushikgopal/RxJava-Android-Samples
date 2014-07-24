@@ -35,7 +35,6 @@ public class MainFragment
                      .commit();
     }
 
-
     @OnClick(R.id.btn_demo_buffer)
     public void demoBuffer() {
         getActivity().getSupportFragmentManager()
@@ -43,6 +42,17 @@ public class MainFragment
                      .addToBackStack(this.toString())
                      .replace(R.id.activity_main,
                               new BufferDemoFragment(),
+                              this.toString())
+                     .commit();
+    }
+
+    @OnClick(R.id.btn_demo_subject)
+    public void demoThrottling() {
+        getActivity().getSupportFragmentManager()
+                     .beginTransaction()
+                     .addToBackStack(this.toString())
+                     .replace(R.id.activity_main,
+                              new BehaviorSubjectSearchEmitterFragment(),
                               this.toString())
                      .commit();
     }

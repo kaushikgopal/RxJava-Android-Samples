@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:gravity="center"
+        android:text="@string/msg_demo_subject"/>
+
+    <EditText
+        android:id="@+id/input_txt_subject"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textSize="16sp"
+        android:hint="Enter some search text"/>
+
+    <ListView
+        android:id="@+id/list_threading_log"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
+</LinearLayout>
