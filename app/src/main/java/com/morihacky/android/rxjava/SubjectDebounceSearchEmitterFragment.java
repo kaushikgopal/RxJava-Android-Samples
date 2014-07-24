@@ -91,6 +91,7 @@ public class SubjectDebounceSearchEmitterFragment
             @Override
             public void onNext(String searchText) {
                 _log(String.format("onNext You searched for %s", searchText));
+                onCompleted();
             }
         };
     }
@@ -118,7 +119,7 @@ public class SubjectDebounceSearchEmitterFragment
 
                 Timber.d("----------- inside the search observable");
                 subscriber.onNext(searchText);
-                subscriber.onCompleted();
+                // subscriber.onCompleted(); This seems to have no effect.
             }
         }).subscribeOn(Schedulers.io());
     }
