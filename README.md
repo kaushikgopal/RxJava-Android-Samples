@@ -1,4 +1,4 @@
-Android-RxJava : Learning RxJava for Android by example
+Learning RxJava for Android by example
 ==============
 
 I've read and watched a lot on Rx. Most examples either use the J8 lambda notations/Scala/Groovy or some other awesome language that us Android developers are constantly envious of.
