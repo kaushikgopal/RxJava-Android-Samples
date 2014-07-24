@@ -52,7 +52,7 @@ public class MainFragment
                      .beginTransaction()
                      .addToBackStack(this.toString())
                      .replace(R.id.activity_main,
-                              new BehaviorSubjectSearchEmitterFragment(),
+                              new SubjectSearchEmitterFragment(),
                               this.toString())
                      .commit();
     }

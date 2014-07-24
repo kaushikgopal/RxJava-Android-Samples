@@ -27,7 +27,7 @@ import rx.Subscription;
 import rx.android.observables.AndroidObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import rx.subjects.BehaviorSubject;
+import rx.subjects.PublishSubject;
 import timber.log.Timber;
 
 
@@ -37,16 +37,18 @@ import timber.log.Timber;
  * (if that Observable is "cold" — that is, if it waits for a subscription before it begins to emit items).
  * This can have the effect of making the resulting Subject a "hot" Observable variant of the original "cold" Observable.
  *
- * This allows us to create the subject and subscription one time onActivity creation. Subsequently
- * we send in Observables to the Subject's subscriber onTextChanged
+ * This allows us to create the subject and subscription one time onActivity creation
+ * Subsequently we send in Observables to the Subject's subscriber onTextChanged
  *
- * Otherwise we would have to create the subscription onTextChanged every single time, which is
- *  wasteful (not really since we anyway unsubscribe at the end).
- *  less-elegant (as a concept for sure, but not for simplicity vs. the 3 step basic subscription creation)
- *  doesn't allow us to debounce/throttle/sample ?
+ * (unlike the way it's done in {@link com.morihacky.android.rxjava.ConcurrencyWithSchedulersDemoFragment#startLongOperation()})
+ * where we create the subscription on every single event change (OnClick or OnTextchanged) which is
+ *
+ *      ? wasteful (not really since we anyway unsubscribe at the end).
+ *      less-elegant (as a concept for sure, but not for simplicity vs. the 3 step basic subscription creation)
+ *      ? doesn't allow us to debounce/throttle/sample
  *
  */
-public class BehaviorSubjectSearchEmitterFragment
+public class SubjectSearchEmitterFragment
     extends Fragment {
 
     @InjectView(R.id.list_threading_log) ListView _logsList;
@@ -55,16 +57,15 @@ public class BehaviorSubjectSearchEmitterFragment
     private List<String> _logs;
 
     private Subscription _subscription;
-    private BehaviorSubject<Observable<String>> _searchTextEmitterSubject;
+    private PublishSubject<Observable<String>> _searchTextEmitterSubject;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         _setupLogger();
 
-        _searchTextEmitterSubject = BehaviorSubject.create(Observable.<String>empty());
-
-        _subscription = AndroidObservable.bindFragment(BehaviorSubjectSearchEmitterFragment.this,
+        _searchTextEmitterSubject = PublishSubject.create();
+        _subscription = AndroidObservable.bindFragment(SubjectSearchEmitterFragment.this,
                                                        Observable.switchOnNext(_searchTextEmitterSubject))
                                          .subscribeOn(Schedulers.io())
                                          .observeOn(AndroidSchedulers.mainThread())

@@ -56,14 +56,6 @@ public class ConcurrencyWithSchedulersDemoFragment
     // -----------------------------------------------------------------------------------
     // Main Rx entities
 
-    /**
-     * Gets the Observable as emitted from BehaviorSubject
-     *
-     * It begins by emitting the item most recently emitted by source Observable
-     * (or seed/default if none has yet been emitted - which is the case here)
-     *
-     * https://github.com/Netflix/RxJava/wiki/Subject#behaviorsubject
-     */
     private Observable<Boolean> _getObservable() {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {
 
