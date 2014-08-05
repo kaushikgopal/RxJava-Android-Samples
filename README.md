@@ -30,6 +30,17 @@ This is a demo of how events can be swallowed in a way that only the last one is
 
 As you type in the input box, it will not shoot out log messages at every single input character change, but rather only pick the lastly emitted event (i.e. input) and log that. \n\nThis is the debounce/throttleWithTimeout method in RxJava.
 
-### 4. Replacing your event Bus (wip)
+### 4. Working examples of github from JakeWharton's Retrofit preso at Netflix (wip)
+
+https://www.youtube.com/watch?v=aEuNBk1b5OE#t=2480
+https://speakerdeck.com/jakewharton/2014-1
+
+
+### 5. Pagination (zip) (wip)
+
+a. Simple pagination
+b. Optimized pagination
+
+### 6. Replacing your event Bus (wip)
 
 http://stackoverflow.com/questions/19266834/rxjava-and-random-sporadic-events-on-android
