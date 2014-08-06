@@ -13,19 +13,19 @@
     <Button
         android:id="@+id/btn_demo_schedulers"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:text="@string/btn_demo_schedulers"/>
 
     <Button
         android:id="@+id/btn_demo_buffer"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:text="@string/btn_demo_buffer"/>
 
     <Button
         android:id="@+id/btn_demo_subject_debounce"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:text="@string/btn_demo_subject_debounce"/>
 
 </LinearLayout>
