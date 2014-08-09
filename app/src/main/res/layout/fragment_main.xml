@@ -1,31 +1,43 @@
-<LinearLayout
-    android:orientation="vertical"
+<ScrollView
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".DemoActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Button
-        android:id="@+id/btn_demo_schedulers"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:text="@string/btn_demo_schedulers"/>
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".DemoActivity">
 
-    <Button
-        android:id="@+id/btn_demo_buffer"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:text="@string/btn_demo_buffer"/>
+        <Button
+            android:id="@+id/btn_demo_schedulers"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/btn_demo_schedulers"/>
 
-    <Button
-        android:id="@+id/btn_demo_subject_debounce"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:text="@string/btn_demo_subject_debounce"/>
+        <Button
+            android:id="@+id/btn_demo_buffer"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/btn_demo_buffer"/>
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btn_demo_subject_debounce"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/btn_demo_subject_debounce"/>
+
+        <Button
+            android:id="@+id/btn_demo_subject_timeout"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/btn_demo_timeout"/>
+    </LinearLayout>
+
+</ScrollView>

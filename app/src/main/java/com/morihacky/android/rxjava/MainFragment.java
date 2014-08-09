@@ -57,4 +57,14 @@ public class MainFragment
                      .commit();
     }
 
+    @OnClick(R.id.btn_demo_subject_timeout)
+    public void demoTimeout() {
+        getActivity().getSupportFragmentManager()
+                     .beginTransaction()
+                     .addToBackStack(this.toString())
+                     .replace(R.id.activity_main,
+                              new DemoTimeoutFragment(),
+                              this.toString())
+                     .commit();
+    }
 }
