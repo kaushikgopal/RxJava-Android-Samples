@@ -9,7 +9,7 @@ Unfortunately i could never find real-world simple examples in Android, that cou
 
 ### 1. Concurrency using schedulers
 
-A common requirement is to offload lengthy heavy I/O intensive operations to a background thread (non-UI thread), and feed the results onc ompletion, back into the UI/main thread. This is a demo of how long running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava!
+A common requirement is to offload lengthy heavy I/O intensive operations to a background thread (non-UI thread), and feed the results on completion, back into the UI/main thread. This is a demo of how long running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava!
 
 The long operation is simulated by a blocking Thread.sleep call. But since it's in a background thread, our UI is never interrupted.
 
