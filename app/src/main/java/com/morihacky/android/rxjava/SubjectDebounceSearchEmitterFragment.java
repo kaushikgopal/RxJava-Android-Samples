@@ -56,21 +56,6 @@ public class SubjectDebounceSearchEmitterFragment
   private Subscription _subscription;
   private PublishSubject<Observable<String>> _searchTextEmitterSubject;
 
-  @Override
-  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    _setupLogger();
-
-    _searchTextEmitterSubject = PublishSubject.create();
-    _subscription = AndroidObservable.bindFragment(SubjectDebounceSearchEmitterFragment.this,
-                                                   Observable.switchOnNext(_searchTextEmitterSubject))
-        // .debounce(400, TimeUnit.MILLISECONDS, Schedulers.io())
-        .throttleFirst(400, TimeUnit.MILLISECONDS, Schedulers.io())
-        .timeout(400, TimeUnit.MILLISECONDS, Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(_getSearchObserver());
-  }
-
   @OnTextChanged(R.id.input_txt_subject_debounce)
   public void onTextEntered(CharSequence charsEntered) {
     Timber.d("---------- text entered %s", charsEntered);
@@ -92,6 +77,19 @@ public class SubjectDebounceSearchEmitterFragment
     View layout = inflater.inflate(R.layout.fragment_subject_debounce, container, false);
     ButterKnife.inject(this, layout);
     return layout;
+  }
+
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    _setupLogger();
+
+    _searchTextEmitterSubject = PublishSubject.create();
+    _subscription = AndroidObservable.bindFragment(SubjectDebounceSearchEmitterFragment.this,
+                                                   Observable.switchOnNext(_searchTextEmitterSubject))
+        .debounce(400, TimeUnit.MILLISECONDS, Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(_getSearchObserver());
   }
 
   // -----------------------------------------------------------------------------------
