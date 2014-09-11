@@ -68,7 +68,9 @@ public class SubjectDebounceSearchEmitterFragment
         _searchTextEmitterSubject = PublishSubject.create();
         _subscription = AndroidObservable.bindFragment(SubjectDebounceSearchEmitterFragment.this,
                                                        Observable.switchOnNext(_searchTextEmitterSubject))
-                                         .debounce(400, TimeUnit.MILLISECONDS, Schedulers.io())
+//                                         .debounce(400, TimeUnit.MILLISECONDS, Schedulers.io())
+                                         .throttleFirst(400, TimeUnit.MILLISECONDS, Schedulers.io())
+                                         .timeout(400, TimeUnit.MILLISECONDS, Schedulers.io())
                                          .observeOn(AndroidSchedulers.mainThread())
                                          .subscribe(_getSearchObserver());
     }
