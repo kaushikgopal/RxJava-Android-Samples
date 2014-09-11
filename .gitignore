@@ -1,5 +1,44 @@
-.gradle
-/local.properties
-/.idea/workspace.xml
+# built application files
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+lint.xml
+build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Eclipse project files
+.classpath
+.project
+.settings
+.checkstyle
+
+# Mac-specific stuff
 .DS_Store
-/build
+
+#Maven
+target
+release.properties
+pom.xml.*
+
+#Ant
+build.xml
+ant.properties
+local.properties
+
+# Gradle
+.gradle
+
+# Intellij project files
+.idea
+.idea/workspace.xml
+gen-external-apklibs/
