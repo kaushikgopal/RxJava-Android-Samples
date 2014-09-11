@@ -8,9 +8,10 @@ dependencies {
     compile 'com.jakewharton:butterknife:5.1.1'
     compile 'com.jakewharton.timber:timber:2.2.2'
     compile 'com.netflix.rxjava:rxjava-android:0.17.+'
-    compile 'com.squareup.okhttp:okhttp:1.6.+'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:1.6.+'
-    compile 'com.squareup.retrofit:retrofit:1.5.+'
+
+    compile 'com.squareup.retrofit:retrofit:1.6.+'
+    compile 'com.squareup.okhttp:okhttp:2.0.+'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.+'
 
 }
 
