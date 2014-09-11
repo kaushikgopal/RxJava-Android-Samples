@@ -107,7 +107,9 @@ public class ConcurrencyWithSchedulersDemoFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        _subscription.unsubscribe();
+        if (_subscription != null) {
+          _subscription.unsubscribe();
+        }
     }
 
     private void _log(String logMsg) {
@@ -142,7 +144,7 @@ public class ConcurrencyWithSchedulersDemoFragment
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+          Timber.d("Operation was interrupted");
         }
     }
 
