@@ -11,16 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import com.morihacky.android.rxjava.app.R;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnTextChanged;
+import com.morihacky.android.rxjava.app.R;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -30,7 +27,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 import timber.log.Timber;
-
 
 /**
  * The reason we use a Subject for tracking the search query is because it emits observables.
@@ -44,7 +40,7 @@ import timber.log.Timber;
  * (unlike the way it's done in {@link com.morihacky.android.rxjava.ConcurrencyWithSchedulersDemoFragment#startLongOperation()})
  * where we create the subscription on every single event change (OnClick or OnTextchanged) which is
  *
- * wasteful!                : not really since we anyway unsubscribe in OnDestroyView)
+ * wasteful!                : not really since we anyway unsubscribe in OnDestroyView
  * less-elegant             : as a concept for sure
  * simpler actually         : adds one more step in the 3 step subscription process, where we create emitter, and then send observables to that emitter)
  * incapable of debounce    : this is the primary reason, since creating new observable everytime in subscription disregards debounce on subsequent calls
@@ -52,136 +48,133 @@ import timber.log.Timber;
 public class SubjectDebounceSearchEmitterFragment
     extends Fragment {
 
-    @InjectView(R.id.list_threading_log) ListView _logsList;
+  @InjectView(R.id.list_threading_log) ListView _logsList;
 
-    private LogAdapter _adapter;
-    private List<String> _logs;
+  private LogAdapter _adapter;
+  private List<String> _logs;
 
-    private Subscription _subscription;
-    private PublishSubject<Observable<String>> _searchTextEmitterSubject;
+  private Subscription _subscription;
+  private PublishSubject<Observable<String>> _searchTextEmitterSubject;
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        _setupLogger();
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    _setupLogger();
 
-        _searchTextEmitterSubject = PublishSubject.create();
-        _subscription = AndroidObservable.bindFragment(SubjectDebounceSearchEmitterFragment.this,
-                                                       Observable.switchOnNext(_searchTextEmitterSubject))
-//                                         .debounce(400, TimeUnit.MILLISECONDS, Schedulers.io())
-                                         .throttleFirst(400, TimeUnit.MILLISECONDS, Schedulers.io())
-                                         .timeout(400, TimeUnit.MILLISECONDS, Schedulers.io())
-                                         .observeOn(AndroidSchedulers.mainThread())
-                                         .subscribe(_getSearchObserver());
+    _searchTextEmitterSubject = PublishSubject.create();
+    _subscription = AndroidObservable.bindFragment(SubjectDebounceSearchEmitterFragment.this,
+                                                   Observable.switchOnNext(_searchTextEmitterSubject))
+        // .debounce(400, TimeUnit.MILLISECONDS, Schedulers.io())
+        .throttleFirst(400, TimeUnit.MILLISECONDS, Schedulers.io())
+        .timeout(400, TimeUnit.MILLISECONDS, Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(_getSearchObserver());
+  }
+
+  @OnTextChanged(R.id.input_txt_subject_debounce)
+  public void onTextEntered(CharSequence charsEntered) {
+    Timber.d("---------- text entered %s", charsEntered);
+    _searchTextEmitterSubject.onNext(_getASearchObservableFor(charsEntered.toString()));
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    if (_subscription != null) {
+      _subscription.unsubscribe();
     }
+  }
 
-    private Observer<String> _getSearchObserver() {
-        return new Observer<String>() {
+  @Override
+  public View onCreateView(LayoutInflater inflater,
+                           @Nullable ViewGroup container,
+                           @Nullable Bundle savedInstanceState) {
+    View layout = inflater.inflate(R.layout.fragment_subject_debounce, container, false);
+    ButterKnife.inject(this, layout);
+    return layout;
+  }
 
+  // -----------------------------------------------------------------------------------
+  // Main Rx entities
 
-            @Override
-            public void onCompleted() {
-                Timber.d("--------- onComplete");
-            }
+  private Observer<String> _getSearchObserver() {
+    return new Observer<String>() {
 
-            @Override
-            public void onError(Throwable e) {
-                Timber.e(e, "--------- Woops on error!");
-                _log(String.format("Dang error. check your logs"));
-            }
+      @Override
+      public void onCompleted() {
+        Timber.d("--------- onComplete");
+      }
 
-            @Override
-            public void onNext(String searchText) {
-                _log(String.format("onNext You searched for %s", searchText));
-                onCompleted();
-            }
-        };
-    }
+      @Override
+      public void onError(Throwable e) {
+        Timber.e(e, "--------- Woops on error!");
+        _log(String.format("Dang error. check your logs"));
+      }
 
-    @OnTextChanged(R.id.input_txt_subject_debounce)
-    public void onTextEntered(CharSequence charsEntered) {
-        Timber.d("---------- text entered %s", charsEntered);
-        _searchTextEmitterSubject.onNext(_getASearchObservableFor(charsEntered.toString()));
-    }
+      @Override
+      public void onNext(String searchText) {
+        _log(String.format("onNext You searched for %s", searchText));
+        onCompleted();
+      }
+    };
+  }
 
-    // -----------------------------------------------------------------------------------
-    // Main Rx entities
+  /**
+   * @param searchText search text entered onTextChange
+   * @return a new observable which searches for text searchText, explicitly say you want subscription to be done on a a non-UI thread, otherwise it'll default to the main thread.
+   */
+  private Observable<String> _getASearchObservableFor(final String searchText) {
+    return Observable.create(new Observable.OnSubscribe<String>() {
 
-    /**
-     * @param searchText search text entered onTextChange
-     *
-     * @return a new observable which searches for text searchText, explicitly say you want subscription to be done on a a non-UI thread, otherwise it'll default to the main thread.
-     */
-    private Observable<String> _getASearchObservableFor(final String searchText) {
-        return Observable.create(new Observable.OnSubscribe<String>() {
+      @Override
+      public void call(Subscriber<? super String> subscriber) {
 
+        Timber.d("----------- inside the search observable");
+        subscriber.onNext(searchText);
+        // subscriber.onCompleted(); This seems to have no effect.
+      }
+    }).subscribeOn(Schedulers.io());
+  }
 
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
+  // -----------------------------------------------------------------------------------
+  // Method that help wiring up the example (irrelevant to RxJava)
 
-                Timber.d("----------- inside the search observable");
-                subscriber.onNext(searchText);
-                // subscriber.onCompleted(); This seems to have no effect.
-            }
-        }).subscribeOn(Schedulers.io());
-    }
+  private void _setupLogger() {
+    _logs = new ArrayList<String>();
+    _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
+    _logsList.setAdapter(_adapter);
+  }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        _subscription.unsubscribe();
-    }
+  private void _log(String logMsg) {
 
-    // -----------------------------------------------------------------------------------
-    // Method that help wiring up the example (irrelevant to RxJava)
+    if (_isCurrentlyOnMainThread()) {
+      _logs.add(0, logMsg + " (main thread) ");
+      _adapter.clear();
+      _adapter.addAll(_logs);
+    } else {
+      _logs.add(0, logMsg + " (NOT main thread) ");
 
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_subject_debounce, container, false);
-        ButterKnife.inject(this, layout);
-        return layout;
-    }
+      // You can only do below stuff on main thread.
+      new Handler(Looper.getMainLooper()).post(new Runnable() {
 
-    private void _setupLogger() {
-        _logs = new ArrayList<String>();
-        _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
-        _logsList.setAdapter(_adapter);
-    }
-
-    private void _log(String logMsg) {
-
-        if (_isCurrentlyOnMainThread()) {
-            _logs.add(0, logMsg + " (main thread) ");
-            _adapter.clear();
-            _adapter.addAll(_logs);
-
-        } else {
-            _logs.add(0, logMsg + " (NOT main thread) ");
-
-            // You can only do below stuff on main thread.
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-
-
-                @Override
-                public void run() {
-                    _adapter.clear();
-                    _adapter.addAll(_logs);
-                }
-            });
+        @Override
+        public void run() {
+          _adapter.clear();
+          _adapter.addAll(_logs);
         }
+      });
     }
+  }
 
-    private boolean _isCurrentlyOnMainThread() {
-        return Looper.myLooper() == Looper.getMainLooper();
+  private boolean _isCurrentlyOnMainThread() {
+    return Looper.myLooper() == Looper.getMainLooper();
+  }
+
+  private class LogAdapter
+      extends ArrayAdapter<String> {
+
+    public LogAdapter(Context context, List<String> logs) {
+      super(context, R.layout.item_log, R.id.item_log, logs);
     }
-
-    private class LogAdapter
-        extends ArrayAdapter<String> {
-
-        public LogAdapter(Context context, List<String> logs) {
-            super(context, R.layout.item_log, R.id.item_log, logs);
-        }
-    }
+  }
 }
