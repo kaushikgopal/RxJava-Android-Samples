@@ -34,10 +34,9 @@
             android:text="@string/btn_demo_subject_debounce"/>
 
         <Button
-            android:id="@+id/btn_demo_subject_timeout"
+            android:id="@+id/btn_demo_retrofit"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="@string/btn_demo_timeout"/>
+            android:text="@string/btn_demo_retrofit"/>
     </LinearLayout>
-
 </ScrollView>

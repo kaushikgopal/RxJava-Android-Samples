@@ -40,9 +40,10 @@ Two implementations:
 
 ### Retrofit and RxJava (zip, flatmap) (wip)
 
-Working examples of github from JakeWharton's Retrofit preso at Netflix
-https://www.youtube.com/watch?v=aEuNBk1b5OE#t=2480
-https://speakerdeck.com/jakewharton/2014-1
+[Retrofit from Square](http://square.github.io/retrofit/) is an another amazing library that helps with easy networking (even if you haven't made the jump to RxJava just yet, you really should check it out). It works even better with RxJava and these are examples taken straight up from the android demigod developer Jake Wharton's talk at Netflix. You can [watch the talk](https://www.youtube.com/watch?v=aEuNBk1b5OE#t=2480) at this link. Incidentally, my motiviation to use RxJava was from attending this talk at Netflix.
+
+Since it was a presentation, Jake only put up the most important code snippets in [his slides](https://speakerdeck.com/jakewharton/2014-1). Also he uses Java 8 in them, so I flushed those examples out in ~~good~~ old Java 6.
+
 
 ### First retrieve from cached data, then make a network call if you can't find your data (concat) (wip)
 

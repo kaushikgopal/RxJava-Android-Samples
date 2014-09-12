@@ -49,7 +49,16 @@ public class MainFragment
         .commit();
   }
 
-  @OnClick(R.id.btn_demo_subject_timeout)
+  @OnClick(R.id.btn_demo_retrofit)
+  public void demoRetrofitCalls() {
+    getActivity().getSupportFragmentManager()
+        .beginTransaction()
+        .addToBackStack(this.toString())
+        .replace(R.id.activity_main, new RetrofitFragment(), this.toString())
+        .commit();
+  }
+
+  //@OnClick(R.id.btn_demo_subject_timeout)
   public void demoTimeout() {
     getActivity().getSupportFragmentManager()
         .beginTransaction()
