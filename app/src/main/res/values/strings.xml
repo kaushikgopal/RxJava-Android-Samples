@@ -16,4 +16,6 @@
     <string name="btn_demo_subject_debounce">search text listener(subject debouncing)</string>
     <string name="btn_demo_timeout">delayed jobs (timeout)</string>
     <string name="btn_demo_retrofit">Retrofit + RxJava</string>
+    <string name="btn_demo_double_binding_textview">Double binding (PublishSubject)</string>
+    <string name="msg_demo_doublebinding">The "technique" used here is more useful than the wonderful calculation achieved below. Using this mechanism you can achieve something simliar to AngularJs or the ViewModel pattern pretty easily.</string>
 </resources>

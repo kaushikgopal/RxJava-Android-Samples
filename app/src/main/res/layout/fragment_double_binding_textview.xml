@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:gravity="center"
+        android:text="@string/msg_demo_doublebinding"/>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/double_binding_num1"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:text="100"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:text="+"/>
+
+        <EditText
+            android:id="@+id/double_binding_num2"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:inputType="numberDecimal"
+            android:gravity="center"
+            android:text="8"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/double_binding_result"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textSize="45sp"
+        android:text="0"/>
+
+</LinearLayout>

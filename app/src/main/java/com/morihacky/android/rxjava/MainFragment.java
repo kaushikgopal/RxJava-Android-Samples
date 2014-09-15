@@ -58,6 +58,15 @@ public class MainFragment
         .commit();
   }
 
+  @OnClick(R.id.btn_demo_double_binding_textview)
+  public void demoDoubleBindingWithPublishSubject() {
+    getActivity().getSupportFragmentManager()
+        .beginTransaction()
+        .addToBackStack(this.toString())
+        .replace(R.id.activity_main, new DoubleBindingTextViewFragment(), this.toString())
+        .commit();
+  }
+
   //@OnClick(R.id.btn_demo_subject_timeout)
   public void demoTimeout() {
     getActivity().getSupportFragmentManager()
