@@ -1,9 +1,7 @@
 Learning RxJava for Android by example
 ==============
 
-I've read and watched a lot on Rx. Most examples either use the J8 lambda notations/Scala/Groovy or some other awesome language that us Android developers are constantly envious of.
-
-Unfortunately i could never find real-world simple examples in Android, that could show me how to use RxJava in Android. This repo is a solution to that problem.
+This is a repository with real-world useful examples of using RxJava with Android. It usually will be in a constant state of "Work in Progress" (WIP).
 
 ## Examples:
 
@@ -44,7 +42,7 @@ Since it was a presentation, Jake only put up the most important code snippets i
 
 ### Orchestrating Observables. Make parallel network calls, then combine the result into a single data point  (flatmap + zip)
 
-The below ascii diagram expresses the intention of our next example with panache. f1,f2,3,f4,f5 are essentially network calls that when made, give back a result that' needed for a future calculation.
+The below ascii diagram expresses the intention of our next example with panache. f1,f2,3,f4,f5 are essentially network calls that when made, give back a result that's needed for a future calculation.
 
 
              (flatmap)
@@ -54,14 +52,17 @@ The below ascii diagram expresses the intention of our next example with panache
             \                        |
              \____________ f5 _______|
 
-The code for this example has already been written by one Mr.skehlet in the interwebs. Head over to [the gist](https://gist.github.com/skehlet/9418379) for the code. It's written in pure Java (6) so it's pretty comprehensible if you've understood the previous examples. I'll flush it out here again when time permits, and I find a lack of other compelling examples.
+The code for this example has already been written by one Mr.skehlet in the interwebs. Head over to [the gist](https://gist.github.com/skehlet/9418379) for the code. It's written in pure Java (6) so it's pretty comprehensible if you've understood the previous examples. I'll flush it out here again when time permits or I've run out of other compelling examples.
 
-### Double binding with TextViews ()
+### Double binding with TextViews
 
+Auto-updating views are a pretty cool thing. If you've dealt with Angular JS before, they have a pretty nifty concept called "two way data binding", where when an HTML element is bound to a model/entity object, it constantly "listens" to changes on that entity and auto-updates its state based on the model. Using the technique in this example, you could potentially use a pattern like the [Presentation View Model pattern](http://martinfowler.com/eaaDev/PresentationModel.html) with great ease.
 
-
+While the example here is pretty rudimentary, the technique used to achieve the double binding using a `Publish Subject` is much more interesting.
 
 ## Work in Progress:
+
+Examples that I would like to have here, but haven't found the time yet to flush out.
 
 ### First retrieve from cached data, if no cache found make a network call if you can't find your data (concat) (wip)
 [Courtesy: gist](https://gist.github.com/adelnizamutdinov/7483969)
@@ -74,3 +75,25 @@ b. Optimized pagination
 ### Event Bus with RxJAva (wip)
 
 http://stackoverflow.com/questions/19266834/rxjava-and-random-sporadic-events-on-android
+
+
+## Contributing:
+
+I try to ensure the examples are not overly contrived but reflect a real-world usecase. If you have similar useful examples demonstrating the use of RxJava, feel free to send in a pull request.
+
+I'm wrapping my head around RxJava too so if you feel there's a better way of doing one of the examples mentioned above, open up an issue explaining how. Even better, send a pull request.
+
+## License
+
+Licensed under the Apache License, Version 2.0 (the "License").
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+You agree that all contributions to this repository, in the form of fixes, pull-requests, new examples etc. follow the above mentioned license.

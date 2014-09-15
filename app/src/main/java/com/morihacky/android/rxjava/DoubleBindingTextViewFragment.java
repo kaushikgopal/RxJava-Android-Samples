@@ -46,7 +46,7 @@ public class DoubleBindingTextViewFragment
 
     onNumberChanged();
     _number2.requestFocus();
-    
+
     return layout;
   }
 
