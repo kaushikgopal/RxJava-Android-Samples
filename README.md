@@ -1,7 +1,7 @@
 Learning RxJava for Android by example
 ==============
 
-This is a repository with real-world useful examples of using RxJava with Android. It usually will be in a constant state of "Work in Progress" (WIP).
+This is a repository with real-world useful examples of using RxJava with Android. [It usually will be in a constant state of "Work in Progress" (WIP)](http://nerds.weddingpartyapp.com/tech/2014/09/15/learning-rxjava-with-android-by-example/).
 
 ## Examples:
 
