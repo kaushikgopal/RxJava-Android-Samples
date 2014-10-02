@@ -83,7 +83,6 @@
     <orderEntry type="library" exported="" name="timber-2.2.2" level="project" />
     <orderEntry type="library" exported="" name="okhttp-urlconnection-2.0.0" level="project" />
     <orderEntry type="library" exported="" name="support-v13-20.0.0" level="project" />
-    <orderEntry type="library" exported="" name="rxjava-core-0.17.6" level="project" />
     <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
     <orderEntry type="library" exported="" name="okio-1.0.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project" />
@@ -91,8 +90,9 @@
     <orderEntry type="library" exported="" name="guava-17.0" level="project" />
     <orderEntry type="library" exported="" name="butterknife-5.1.1" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
+    <orderEntry type="library" exported="" name="rxjava-core-0.20.4" level="project" />
     <orderEntry type="library" exported="" name="okhttp-2.0.0" level="project" />
-    <orderEntry type="library" exported="" name="rxjava-android-0.17.6" level="project" />
+    <orderEntry type="library" exported="" name="rxjava-android-0.20.4" level="project" />
   </component>
 </module>
 
