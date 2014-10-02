@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -18,18 +17,26 @@ import butterknife.OnClick;
 import com.morihacky.android.rxjava.app.R;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 public class PollingFragment
     extends Fragment {
 
+  public static final int INITIAL_DELAY = 0;
+  public static final int POLLING_INTERVAL = 1000;
   @InjectView(R.id.list_threading_log) ListView _logsList;
-  @InjectView(R.id.btn_start_simple_polling) Button _btnSimplePolling;
 
   private LogAdapter _adapter;
   private List<String> _logs;
   private CompositeSubscription _subscriptions;
+  private int _counter = 0;
 
   @Override
   public void onDestroy() {
@@ -40,6 +47,7 @@ public class PollingFragment
   @Override
   public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
+    _subscriptions = new CompositeSubscription();
     _setupLogger();
   }
 
@@ -54,21 +62,39 @@ public class PollingFragment
 
   @OnClick(R.id.btn_start_simple_polling)
   public void onStartSimplePollingClicked() {
-    
-  }
+    _subscriptions.add(Observable.create(new Observable.OnSubscribe<String>() {
+      @Override
+      public void call(final Subscriber<? super String> observer) {
 
+        Schedulers.newThread().createWorker() //
+            .schedulePeriodically(new Action0() {
+              @Override
+              public void call() {
+                observer.onNext(_doNetworkCallAndGetStringResult());
+              }
+            }, INITIAL_DELAY, POLLING_INTERVAL, TimeUnit.MILLISECONDS);
+      }
+    }).take(10).subscribe(new Action1<String>() {
+      @Override
+      public void call(String s) {
+        _log(String.format("String polling - %s", s));
+      }
+    }));
+  }
 
   // -----------------------------------------------------------------------------------
   // Method that help wiring up the example (irrelevant to RxJava)
 
-  private void _doSomeLongOperation_thatBlocksCurrentThread() {
-    _log("performing long operation");
+  private String _doNetworkCallAndGetStringResult() {
 
     try {
       Thread.sleep(3000);
     } catch (InterruptedException e) {
       Timber.d("Operation was interrupted");
     }
+    _counter++;
+
+    return String.valueOf(_counter);
   }
 
   private void _log(String logMsg) {

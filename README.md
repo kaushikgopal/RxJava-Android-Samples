@@ -60,6 +60,11 @@ Auto-updating views are a pretty cool thing. If you've dealt with Angular JS bef
 
 While the example here is pretty rudimentary, the technique used to achieve the double binding using a `Publish Subject` is much more interesting.
 
+### Polling with Schedulers
+
+This is an example of polling using RxJava Schedulers. This is useful in cases, where you want to constantly poll a server and possibly get new data. The network call is "simulated" so it forces a delay before return a resultant string.
+
+
 ## Work in Progress:
 
 Examples that I would like to have here, but haven't found the time yet to flush out.

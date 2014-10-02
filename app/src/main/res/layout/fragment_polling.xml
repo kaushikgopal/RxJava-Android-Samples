@@ -25,6 +25,14 @@
             android:layout_marginLeft="20dp"
             android:textSize="16sp"
             android:text="Start simple polling"/>
+
+        <Button
+            android:id="@+id/btn_start_increasingly_delayed_polling"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textSize="16sp"
+            android:text="Start increasingly delayed polling"/>
     </LinearLayout>
 
     <ListView
