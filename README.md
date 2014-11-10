@@ -5,7 +5,7 @@ This is a repository with real-world useful examples of using RxJava with Androi
 
 ## Examples:
 
-### Concurrency using schedulers
+### [Concurrency using schedulers](https://github.com/kaushikgopal/Android-RxJava/blob/master/app/src/main/java/com/morihacky/android/rxjava/ConcurrencyWithSchedulersDemoFragment.java)
 
 A common requirement is to offload lengthy heavy I/O intensive operations to a background thread (non-UI thread), and feed the results back to the UI/main thread, on completion. This is a demo of how long running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava! Think of this as a replacement to AsyncTasks.
 
@@ -13,7 +13,7 @@ The long operation is simulated by a blocking Thread.sleep call (since this is d
 
 To really see this example shine. Hit the button multiple times and see how the button click (which is a ui operation) is never blocked because the long operation only runs in the background.
 
-### Accumulate calls (buffer)
+### [Accumulate calls (buffer)](https://github.com/kaushikgopal/Android-RxJava/blob/master/app/src/main/java/com/morihacky/android/rxjava/BufferDemoFragment.java)
 
 This is a demo of how events can be accumulated using the "buffer" operation.
 
@@ -26,7 +26,7 @@ Two possible implementations:
 2a. Using a traditional observable - but encompassing the OnClick within the observable (as demoed here)
 2b. Using PublishSubject and sending single clicks to the Observable, which in-turn then sends it to the Observer
 
-### Instant/Auto searching (subject + debounce)
+### [Instant/Auto searching (subject + debounce)](https://github.com/kaushikgopal/Android-RxJava/blob/master/app/src/main/java/com/morihacky/android/rxjava/SubjectDebounceSearchEmitterFragment.java)
 
 This is a demo of how events can be swallowed in a way that only the last one is respected. A typical example of this is instant search result boxes. As you type the word "Bruce Lee", you don't want to execute searches for B, Br, Bru, Bruce, Bruce , Bruce L ... etc. But rather intelligently wait for a couple of moments, make sure the user has finished typing the whole word, and then shoot out a single call for "Bruce Lee".
 
@@ -34,7 +34,7 @@ As you type in the input box, it will not shoot out log messages at every single
 
 This is the debounce/throttleWithTimeout method in RxJava.
 
-### Retrofit and RxJava (zip, flatmap)
+### [Retrofit and RxJava (zip, flatmap)](https://github.com/kaushikgopal/Android-RxJava/blob/master/app/src/main/java/com/morihacky/android/rxjava/RetrofitFragment.java)
 
 [Retrofit from Square](http://square.github.io/retrofit/) is an amazing library that helps with easy networking (even if you haven't made the jump to RxJava just yet, you really should check it out). It works even better with RxJava and these are examples hitting the github api, taken straight up from the android demigod-developer Jake Wharton's talk at Netflix. You can [watch the talk](https://www.youtube.com/watch?v=aEuNBk1b5OE#t=2480) at this link. Incidentally, my motiviation to use RxJava was from attending this talk at Netflix.
 
@@ -54,13 +54,13 @@ The below ascii diagram expresses the intention of our next example with panache
 
 The code for this example has already been written by one Mr.skehlet in the interwebs. Head over to [the gist](https://gist.github.com/skehlet/9418379) for the code. It's written in pure Java (6) so it's pretty comprehensible if you've understood the previous examples. I'll flush it out here again when time permits or I've run out of other compelling examples.
 
-### Double binding with TextViews
+### [Double binding with TextViews](https://github.com/kaushikgopal/Android-RxJava/blob/master/app/src/main/java/com/morihacky/android/rxjava/DoubleBindingTextViewFragment.java)
 
 Auto-updating views are a pretty cool thing. If you've dealt with Angular JS before, they have a pretty nifty concept called "two way data binding", where when an HTML element is bound to a model/entity object, it constantly "listens" to changes on that entity and auto-updates its state based on the model. Using the technique in this example, you could potentially use a pattern like the [Presentation View Model pattern](http://martinfowler.com/eaaDev/PresentationModel.html) with great ease.
 
 While the example here is pretty rudimentary, the technique used to achieve the double binding using a `Publish Subject` is much more interesting.
 
-### Polling with Schedulers
+### [Polling with Schedulers](https://github.com/kaushikgopal/Android-RxJava/blob/master/app/src/main/java/com/morihacky/android/rxjava/PollingFragment.java)
 
 This is an example of polling using RxJava Schedulers. This is useful in cases, where you want to constantly poll a server and possibly get new data. The network call is "simulated" so it forces a delay before return a resultant string.
 
