@@ -13,6 +13,7 @@
         android:text="@string/msg_demo_rxbus_1"/>
 
     <Button
+        android:id="@+id/btn_demo_rxbus_tap"
         android:background="@drawable/btn_round"
         android:layout_height="90dp"
         android:layout_width="90dp"

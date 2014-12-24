@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.app.R;
 
@@ -29,4 +30,11 @@ public class RxBusFrag1
     super.onActivityCreated(savedInstanceState);
     _rxBus = ((MainActivity) getActivity()).getRxBusSingleton();
   }
+
+  @OnClick(R.id.btn_demo_rxbus_tap)
+  public void onTapButtonClicked() {
+    _rxBus.send(new TapEvent());
+  }
+
+  public static class TapEvent {}
 }
