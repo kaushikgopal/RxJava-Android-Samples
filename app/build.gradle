@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-    compile 'com.android.support:support-v13:20.0.+'
+    compile  'com.android.support:support-v13:21.0.2'
 
     compile 'com.google.guava:guava:17.+'
 
     compile 'com.jakewharton:butterknife:5.1.1'
-    compile 'com.jakewharton.timber:timber:2.2.2'
-    compile 'com.netflix.rxjava:rxjava-android:0.20.4'
+    compile 'com.jakewharton.timber:timber:2.4.2'
+    compile 'io.reactivex:rxandroid:0.22.0'
+    //compile 'io.reactivex:rxjava-math:0.21.0'
 
     compile 'com.squareup.retrofit:retrofit:1.6.1'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
@@ -16,19 +17,19 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion '19.1.0'
+    compileSdkVersion 21
+    buildToolsVersion '21.1.2'
 
     defaultConfig {
         applicationId "com.morihacky.android.rxjava"
         minSdkVersion 14
-        targetSdkVersion 19
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
