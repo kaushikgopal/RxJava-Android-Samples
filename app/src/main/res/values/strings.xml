@@ -20,4 +20,5 @@
     <string name="btn_demo_retrofit">Retrofit + RxJava</string>
     <string name="btn_demo_double_binding_textview">Double binding (PublishSubject)</string>
     <string name="btn_demo_polling">Polling with RxJava</string>
+    <string name="btn_demo_rxbus">Event Bus with RxJava</string>
 </resources>

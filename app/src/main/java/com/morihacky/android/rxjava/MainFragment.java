@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.morihacky.android.rxjava.app.R;
+import com.morihacky.android.rxjava.rxbus.RxBusDemoFragment;
 
 public class MainFragment
     extends Fragment {
@@ -73,6 +74,15 @@ public class MainFragment
         .beginTransaction()
         .addToBackStack(this.toString())
         .replace(R.id.activity_main, new PollingFragment(), this.toString())
+        .commit();
+  }
+
+  @OnClick(R.id.btn_demo_rxbus)
+  public void demoRxBus() {
+    getActivity().getSupportFragmentManager()
+        .beginTransaction()
+        .addToBackStack(this.toString())
+        .replace(R.id.activity_main, new RxBusDemoFragment(), this.toString())
         .commit();
   }
 
