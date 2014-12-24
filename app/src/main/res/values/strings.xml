@@ -5,14 +5,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-    <string name="msg_demo_concurrency_schedulers">This is a demo of how long running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava! \n\n To really see this shine. Hit the button multiple times and see how the button click which is a ui operation is never blocked because the long operation only runs in the background</string>
-    <string name="msg_demo_buffer">This is a demo of how events can be accumulated using the "buffer" operation. Tap the button below repetitively and you will notice in the logs that button taps are collected over a span of 2s and printed below.</string>
-    <string name="msg_demo_subject">As you type in the input box, it will not shoot out log messages at every single input character change, but rather only pick the lastly emitted event (i.e. input) and log that. \n\nThis is the debounce/throttleWithTimeout method in RxJava.</string>
-    <string name="msg_demo_timeout">This is a demo of terminating events, that take too long to process. Events in this demo should timeout in 3 seconds. Button 1 is an event that takes 2s to process, and Button 2 is a n event that takes 5s to process. Hit Button 2, and see in the logs that it\'s been cancelled, while this is not the case for Button 1.</string>
-    <string name="msg_demo_retrofit">Retrofit from Square is a super easy networking helper library. It works really well with RxJava and these are examples taken from Jake Wharton\'s talk at Netflix (see README). Really the only interesting bits here are in the code and logs.</string>
-    <string name="msg_demo_doublebinding">Watch how the result gloriously auto-updates based on your changing inputs. Using a technique like this, you could achieve the two-way binding in Angular Js, or more efficiently use a pattern like the Presentation View Model.</string>
-    <string name="msg_demo_polling">This is demo of polling or making a call repeatedly with RxJava. \n\nSimple polling: Notice in the logs how a network call (simulated) is repeatedly made in the background.</string>
-
     <string name="btn_demo_schedulers">bg work (schedulers &amp; concurrency)</string>
     <string name="btn_demo_buffer">accumulate calls (buffer)</string>
     <string name="btn_demo_subject_debounce">search text listener(subject debouncing)</string>
@@ -21,4 +13,15 @@
     <string name="btn_demo_double_binding_textview">Double binding (PublishSubject)</string>
     <string name="btn_demo_polling">Polling with RxJava</string>
     <string name="btn_demo_rxbus">Event Bus with RxJava</string>
+
+    <string name="msg_demo_concurrency_schedulers">This is a demo of how long running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava! \n\n To really see this shine. Hit the button multiple times and see how the button click which is a ui operation is never blocked because the long operation only runs in the background</string>
+    <string name="msg_demo_buffer">This is a demo of how events can be accumulated using the "buffer" operation. Tap the button below repetitively and you will notice in the logs that button taps are collected over a span of 2s and printed below.</string>
+    <string name="msg_demo_subject">As you type in the input box, it will not shoot out log messages at every single input character change, but rather only pick the lastly emitted event (i.e. input) and log that. \n\nThis is the debounce/throttleWithTimeout method in RxJava.</string>
+    <string name="msg_demo_timeout">This is a demo of terminating events, that take too long to process. Events in this demo should timeout in 3 seconds. Button 1 is an event that takes 2s to process, and Button 2 is a n event that takes 5s to process. Hit Button 2, and see in the logs that it\'s been cancelled, while this is not the case for Button 1.</string>
+    <string name="msg_demo_retrofit">Retrofit from Square is a super easy networking helper library. It works really well with RxJava and these are examples taken from Jake Wharton\'s talk at Netflix (see README). Really the only interesting bits here are in the code and logs.</string>
+    <string name="msg_demo_doublebinding">Watch how the result gloriously auto-updates based on your changing inputs. Using a technique like this, you could achieve the two-way binding in Angular Js, or more efficiently use a pattern like the Presentation View Model.</string>
+    <string name="msg_demo_polling">This is demo of polling or making a call repeatedly with RxJava. \n\nSimple polling: Notice in the logs how a network call (simulated) is repeatedly made in the background.</string>
+
+    <string name="msg_demo_rxbus_1">Tap on the below button and RxBus will listen to the events</string>
+    <string name="msg_demo_rxbus_2">Tap anywhere outside for \'dead events\'</string>
 </resources>

@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
-    android:background="@color/blue"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:background="@color/blue"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <TextView
+        android:id="@+id/demo_rxbus_tap_count"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/text_xxlarge"
+        android:textColor="@android:color/white"
+        android:text="1"/>
 </FrameLayout>

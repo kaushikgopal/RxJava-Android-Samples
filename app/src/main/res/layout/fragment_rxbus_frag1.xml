@@ -5,7 +5,26 @@
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <TextView
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:text="@string/msg_demo_rxbus_1"/>
 
+    <Button
+        android:background="@drawable/btn_round"
+        android:layout_height="90dp"
+        android:layout_width="90dp"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center"
+        android:textSize="@dimen/text_xlarge"
+        android:text="Tap"/>
 
+    <TextView
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+            android:text="@string/msg_demo_rxbus_2"/>
 
 </FrameLayout>
