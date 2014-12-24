@@ -7,10 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
+import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.app.R;
 
 public class RxBusFrag3
     extends Fragment {
+
+  private RxBus _rxBus;
 
   @Override
   public View onCreateView(LayoutInflater inflater,
@@ -19,5 +22,11 @@ public class RxBusFrag3
     View layout = inflater.inflate(R.layout.fragment_rxbus_frag3, container, false);
     ButterKnife.inject(this, layout);
     return layout;
+  }
+
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    _rxBus = ((MainActivity) getActivity()).getRxBusSingleton();
   }
 }
