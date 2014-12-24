@@ -56,20 +56,8 @@ public class RxBusFrag2
 
   private void _showTapText() {
     _tapEventTxtShow.setVisibility(View.VISIBLE);
-    _tapEventTxtShow.setScaleX(1f);
-    _tapEventTxtShow.setScaleY(1f);
-
-    ViewCompat.animate(_tapEventTxtShow)
-        .scaleX(0f)
-        .scaleY(0f)
-        .setDuration(400)
-        /*.withEndAction(new Runnable() {
-          @Override
-          public void run() {
-            _tapEventTxtShow.setVisibility(View.INVISIBLE);
-            _tapEventTxtShow.setAlpha(1f);
-          }
-        })*/;
+    _tapEventTxtShow.setAlpha(1f);
+    ViewCompat.animate(_tapEventTxtShow).alphaBy(-1f).setDuration(400);
   }
 
   @Override
