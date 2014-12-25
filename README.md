@@ -64,7 +64,7 @@ While the example here is pretty rudimentary, the technique used to achieve the 
 
 This is an example of polling using RxJava Schedulers. This is useful in cases, where you want to constantly poll a server and possibly get new data. The network call is "simulated" so it forces a delay before return a resultant string.
 
-### RxBus - An event bus using RxJAva
+### RxBus - An event bus using RxJava + DebouncedBuffer
 
 Have a look at the accompanying blog posts for details on this demo:
 
