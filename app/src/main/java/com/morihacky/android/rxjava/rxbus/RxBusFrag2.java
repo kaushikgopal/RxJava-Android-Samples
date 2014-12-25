@@ -12,9 +12,11 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.app.R;
+import java.util.concurrent.TimeUnit;
 import rx.Subscription;
 import rx.android.observables.AndroidObservable;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 import static com.morihacky.android.rxjava.rxbus.RxBusFrag1.TapEvent;
 
@@ -22,7 +24,7 @@ public class RxBusFrag2
     extends Fragment {
 
   private RxBus _rxBus;
-  private Subscription _subscription;
+  private Subscription _subscription1_tapListen;
 
   @InjectView(R.id.demo_rxbus_tap_txt) TextView _tapEventTxtShow;
 
@@ -44,14 +46,19 @@ public class RxBusFrag2
   @Override
   public void onStart() {
     super.onStart();
-    AndroidObservable.bindFragment(this, _rxBus.toObserverable()).subscribe(new Action1<Object>() {
-      @Override
-      public void call(Object event) {
-        if (event instanceof TapEvent) {
-          _showTapText();
-        }
-      }
-    });
+
+    _subscription1_tapListen = AndroidObservable.bindFragment(this, _rxBus.toObserverable())
+        .subscribe(new Action1<Object>() {
+          @Override
+          public void call(Object event) {
+            if (event instanceof TapEvent) {
+              _showTapText();
+            }
+          }
+        });
+
+    _rxBus.toObserverable().debounce(400, TimeUnit.MILLISECONDS, Schedulers.io()).subscribe();
+
   }
 
   private void _showTapText() {
@@ -63,6 +70,6 @@ public class RxBusFrag2
   @Override
   public void onStop() {
     super.onStop();
-    _subscription.unsubscribe();
+    _subscription1_tapListen.unsubscribe();
   }
 }
