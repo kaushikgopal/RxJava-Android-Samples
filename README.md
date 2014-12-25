@@ -64,6 +64,14 @@ While the example here is pretty rudimentary, the technique used to achieve the 
 
 This is an example of polling using RxJava Schedulers. This is useful in cases, where you want to constantly poll a server and possibly get new data. The network call is "simulated" so it forces a delay before return a resultant string.
 
+### RxBus - An event bus using RxJAva
+
+Have a look at the accompanying blog posts for details on this demo:
+
+1. [Implementing an event bus with RxJava](http://nerds.weddingpartyapp.com/tech/2014/12/24/implementing-an-event-bus-with-rxjava-rxbus/)
+2. [DebouncedBuffer used for the fancier variant of the demo](http://nerds.weddingpartyapp.com/tech/2014/12/24/secret-bonus-part-debouncedbuffer-used-in-rxbus-example/)
+3. [share/publish/refcount](http://nerds.weddingpartyapp.com/tech/2014/12/24/rxjava-share-publish-refcount-and-all-that-jazz/)
+
 
 ## Work in Progress:
 
@@ -76,10 +84,6 @@ Examples that I would like to have here, but haven't found the time yet to flush
 
 a. Simple pagination
 b. Optimized pagination
-
-### Event Bus with RxJAva (wip)
-
-http://stackoverflow.com/questions/19266834/rxjava-and-random-sporadic-events-on-android
 
 
 ## Contributing:
