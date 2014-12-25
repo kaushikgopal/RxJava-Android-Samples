@@ -21,7 +21,5 @@
     <string name="msg_demo_retrofit">Retrofit from Square is a super easy networking helper library. It works really well with RxJava and these are examples taken from Jake Wharton\'s talk at Netflix (see README). Really the only interesting bits here are in the code and logs.</string>
     <string name="msg_demo_doublebinding">Watch how the result gloriously auto-updates based on your changing inputs. Using a technique like this, you could achieve the two-way binding in Angular Js, or more efficiently use a pattern like the Presentation View Model.</string>
     <string name="msg_demo_polling">This is demo of polling or making a call repeatedly with RxJava. \n\nSimple polling: Notice in the logs how a network call (simulated) is repeatedly made in the background.</string>
-
     <string name="msg_demo_rxbus_1">Tap on the below button and RxBus will listen to the events</string>
-    <string name="msg_demo_rxbus_2">Tap anywhere outside for \'dead events\'</string>
 </resources>

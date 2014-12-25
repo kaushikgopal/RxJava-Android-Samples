@@ -15,17 +15,11 @@
     <Button
         android:id="@+id/btn_demo_rxbus_tap"
         android:background="@drawable/btn_round"
+        android:layout_gravity="center"
         android:layout_height="90dp"
         android:layout_width="90dp"
-        android:textColor="@android:color/white"
-        android:layout_gravity="center"
         android:textSize="@dimen/text_xlarge"
+        android:textColor="@android:color/white"
         android:text="Tap"/>
-
-    <TextView
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-            android:text="@string/msg_demo_rxbus_2"/>
 
 </FrameLayout>
