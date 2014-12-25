@@ -7,6 +7,7 @@
 
     <TextView
         android:id="@+id/demo_rxbus_tap_count"
+        android:visibility="invisible"
         android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"

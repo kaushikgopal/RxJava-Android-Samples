@@ -34,6 +34,7 @@ public class RxBusFrag1
   @OnClick(R.id.btn_demo_rxbus_tap)
   public void onTapButtonClicked() {
     _rxBus.send(new TapEvent());
+
   }
 
   public static class TapEvent {}
