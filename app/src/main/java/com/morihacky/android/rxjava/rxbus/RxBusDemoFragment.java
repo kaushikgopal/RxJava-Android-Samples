@@ -27,10 +27,11 @@ public class RxBusDemoFragment
 
     getActivity().getSupportFragmentManager()
         .beginTransaction()
-        .replace(R.id.demo_rxbus_frag_1, new RxBusFrag1())
-        .replace(R.id.demo_rxbus_frag_2, new RxBusFrag2())
-        .replace(R.id.demo_rxbus_frag_3, new RxBusFrag3())
+        .replace(R.id.demo_rxbus_frag_1, new RxBusDemo_TopFragment())
+        //.replace(R.id.demo_rxbus_frag_2, new RxBusDemo_BottomFragment())
+        .replace(R.id.demo_rxbus_frag_2, new RxBusDemo_BottomFANCYFragment())
         .commit();
   }
 
+  public static class TapEvent {}
 }

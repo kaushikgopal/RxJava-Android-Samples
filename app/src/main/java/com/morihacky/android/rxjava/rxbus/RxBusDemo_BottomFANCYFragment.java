@@ -15,19 +15,17 @@ import com.morihacky.android.rxjava.app.R;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import rx.Observable;
-import rx.Subscription;
-import rx.android.observables.AndroidObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
 
-import static com.morihacky.android.rxjava.rxbus.RxBusFrag1.TapEvent;
+import static rx.android.observables.AndroidObservable.bindFragment;
 
-public class RxBusFrag2
+public class RxBusDemo_BottomFANCYFragment
     extends Fragment {
 
   private RxBus _rxBus;
-  private Subscription _subscription1_tapListen;
-  private Subscription _subscription2_tapCollector;
+  private CompositeSubscription _subscriptions;
 
   @InjectView(R.id.demo_rxbus_tap_txt) TextView _tapEventTxtShow;
   @InjectView(R.id.demo_rxbus_tap_count) TextView _tapEventCountShow;
@@ -36,7 +34,7 @@ public class RxBusFrag2
   public View onCreateView(LayoutInflater inflater,
                            @Nullable ViewGroup container,
                            @Nullable Bundle savedInstanceState) {
-    View layout = inflater.inflate(R.layout.fragment_rxbus_frag2, container, false);
+    View layout = inflater.inflate(R.layout.fragment_rxbus_bottom, container, false);
     ButterKnife.inject(this, layout);
     return layout;
   }
@@ -50,30 +48,42 @@ public class RxBusFrag2
   @Override
   public void onStart() {
     super.onStart();
+    _subscriptions = new CompositeSubscription();
 
-    // .share = publish + refcount
     Observable<Object> tapEventEmitter = _rxBus.toObserverable().share();
+    Observable<Object> debouncedEmitter = tapEventEmitter.debounce(1, TimeUnit.SECONDS);
+    Observable<List<Object>> debouncedBufferEmitter = tapEventEmitter.buffer(debouncedEmitter);
 
-    _subscription1_tapListen = AndroidObservable.bindFragment(this, tapEventEmitter)
-             .subscribe(new Action1<Object>() {
-               @Override
-               public void call(Object event) {
-                 if (event instanceof TapEvent) {
-                   _showTapText();
-                 }
-               }
-             });
+    _subscriptions//
+        .add(bindFragment(this, tapEventEmitter)//
+                 .subscribe(new Action1<Object>() {
+                   @Override
+                   public void call(Object event) {
+                     if (event instanceof RxBusDemoFragment.TapEvent) {
+                       _showTapText();
+                     }
+                   }
+                 }));
 
-    Observable<Object> debouncedEventEmitter = tapEventEmitter.debounce(1, TimeUnit.SECONDS);
-    tapEventEmitter.buffer(debouncedEventEmitter)
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<List<Object>>() {
-          @Override
-          public void call(List<Object> taps) {
-            _showTapCount(taps.size());
-          }
-        });
+    _subscriptions//
+        .add(debouncedBufferEmitter//
+                 .observeOn(AndroidSchedulers.mainThread())//
+                 .subscribe(new Action1<List<Object>>() {
+                   @Override
+                   public void call(List<Object> taps) {
+                     _showTapCount(taps.size());
+                   }
+                 }));
   }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    _subscriptions.unsubscribe();
+  }
+
+  // -----------------------------------------------------------------------------------
+  // Helper to show the text via an animation
 
   private void _showTapText() {
     _tapEventTxtShow.setVisibility(View.VISIBLE);
@@ -89,13 +99,7 @@ public class RxBusFrag2
     ViewCompat.animate(_tapEventCountShow)
         .scaleXBy(-1f)
         .scaleYBy(-1f)
-        .setDuration(400)
+        .setDuration(800)
         .setStartDelay(100);
-  }
-
-  @Override
-  public void onStop() {
-    super.onStop();
-    _subscription1_tapListen.unsubscribe();
   }
 }
