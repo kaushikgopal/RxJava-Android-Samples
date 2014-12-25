@@ -14,11 +14,11 @@ import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.app.R;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import rx.Observable;
 import rx.Subscription;
 import rx.android.observables.AndroidObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
 
 import static com.morihacky.android.rxjava.rxbus.RxBusFrag1.TapEvent;
 
@@ -51,27 +51,28 @@ public class RxBusFrag2
   public void onStart() {
     super.onStart();
 
-    _subscription1_tapListen = AndroidObservable.bindFragment(this, _rxBus.toObserverable())
-        .subscribe(new Action1<Object>() {
+    // .share = publish + refcount
+    Observable<Object> tapEventEmitter = _rxBus.toObserverable().share();
+
+    _subscription1_tapListen = AndroidObservable.bindFragment(this, tapEventEmitter)
+             .subscribe(new Action1<Object>() {
+               @Override
+               public void call(Object event) {
+                 if (event instanceof TapEvent) {
+                   _showTapText();
+                 }
+               }
+             });
+
+    Observable<Object> debouncedEventEmitter = tapEventEmitter.debounce(1, TimeUnit.SECONDS);
+    tapEventEmitter.buffer(debouncedEventEmitter)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Action1<List<Object>>() {
           @Override
-          public void call(Object event) {
-            if (event instanceof TapEvent) {
-              _showTapText();
-            }
+          public void call(List<Object> taps) {
+            _showTapCount(taps.size());
           }
         });
-
-    _rxBus.toObserverable().buffer(1, TimeUnit.SECONDS).filter(new Func1<List<Object>, Boolean>() {
-      @Override
-      public Boolean call(List<Object> objects) {
-        return objects != null && objects.size() > 0;
-      }
-    }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<List<Object>>() {
-      @Override
-      public void call(List<Object> taps) {
-        _showTapCount(taps.size());
-      }
-    });
   }
 
   private void _showTapText() {
