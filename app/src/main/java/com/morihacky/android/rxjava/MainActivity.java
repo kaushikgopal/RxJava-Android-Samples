@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import com.morihacky.android.rxjava.app.R;
 import com.morihacky.android.rxjava.rxbus.RxBus;
-import com.morihacky.android.rxjava.rxbus.RxBusDemoFragment;
 import timber.log.Timber;
 
 public class MainActivity
@@ -19,9 +18,10 @@ public class MainActivity
 
     Timber.plant(new Timber.DebugTree());
 
-    getSupportFragmentManager().beginTransaction().addToBackStack(this.toString())
-        //.replace(R.id.activity_main, new MainFragment(), this.toString())
-        .replace(R.id.activity_main, new RxBusDemoFragment(), this.toString()).commit();
+    getSupportFragmentManager().beginTransaction()
+        .addToBackStack(this.toString())
+        .replace(R.id.activity_main, new MainFragment(), this.toString())
+        .commit();
   }
 
   // This is better done with a DI Library like Dagger
