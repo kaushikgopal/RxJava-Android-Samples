@@ -23,5 +23,8 @@ public class RxBus {
   public Observable<Object> toObserverable() {
     return _bus;
   }
-}
 
+  public boolean hasObservers() {
+    return _bus.hasObservers();
+  }
+}
