@@ -17,7 +17,7 @@ import rx.subscriptions.CompositeSubscription;
 
 import static rx.android.observables.AndroidObservable.bindFragment;
 
-public class RxBusDemo_BottomFragment
+public class RxBusDemo_Bottom1Fragment
     extends Fragment {
 
   private RxBus _rxBus;

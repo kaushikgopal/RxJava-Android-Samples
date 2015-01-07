@@ -28,8 +28,9 @@ public class RxBusDemoFragment
     getActivity().getSupportFragmentManager()
         .beginTransaction()
         .replace(R.id.demo_rxbus_frag_1, new RxBusDemo_TopFragment())
-        .replace(R.id.demo_rxbus_frag_2, new RxBusDemo_BottomFragment())
-        //.replace(R.id.demo_rxbus_frag_2, new RxBusDemo_BottomFANCYFragment())
+        .replace(R.id.demo_rxbus_frag_2, new RxBusDemo_Bottom3Fragment())
+        //.replace(R.id.demo_rxbus_frag_2, new RxBusDemo_Bottom2Fragment())
+        //.replace(R.id.demo_rxbus_frag_2, new RxBusDemo_Bottom1Fragment())
         .commit();
   }
 

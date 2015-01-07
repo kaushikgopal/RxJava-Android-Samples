@@ -21,7 +21,7 @@ import rx.subscriptions.CompositeSubscription;
 
 import static rx.android.observables.AndroidObservable.bindFragment;
 
-public class RxBusDemo_BottomFANCYFragment
+public class RxBusDemo_Bottom2Fragment
     extends Fragment {
 
   private RxBus _rxBus;
@@ -51,8 +51,6 @@ public class RxBusDemo_BottomFANCYFragment
     _subscriptions = new CompositeSubscription();
 
     Observable<Object> tapEventEmitter = _rxBus.toObserverable().share();
-    Observable<Object> debouncedEmitter = tapEventEmitter.debounce(1, TimeUnit.SECONDS);
-    Observable<List<Object>> debouncedBufferEmitter = tapEventEmitter.buffer(debouncedEmitter);
 
     _subscriptions//
         .add(bindFragment(this, tapEventEmitter)//
@@ -64,6 +62,9 @@ public class RxBusDemo_BottomFANCYFragment
                      }
                    }
                  }));
+
+    Observable<Object> debouncedEmitter = tapEventEmitter.debounce(1, TimeUnit.SECONDS);
+    Observable<List<Object>> debouncedBufferEmitter = tapEventEmitter.buffer(debouncedEmitter);
 
     _subscriptions//
         .add(debouncedBufferEmitter//
