@@ -15,7 +15,7 @@ import com.morihacky.android.rxjava.app.R;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
-import static rx.android.observables.AndroidObservable.bindFragment;
+import static rx.android.app.AppObservable.bindFragment;
 
 public class RxBusDemo_Bottom1Fragment
     extends Fragment {

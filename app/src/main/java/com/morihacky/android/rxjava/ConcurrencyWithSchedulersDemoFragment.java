@@ -22,7 +22,7 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.android.observables.AndroidObservable;
+import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
@@ -66,7 +66,7 @@ public class ConcurrencyWithSchedulersDemoFragment
     _progress.setVisibility(View.VISIBLE);
     _log("Button Clicked");
 
-    _subscription = AndroidObservable.bindFragment(this, _getObservable())      // Observable
+    _subscription = AppObservable.bindFragment(this, _getObservable())      // Observable
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(_getObserver());                             // Observer

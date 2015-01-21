@@ -21,6 +21,7 @@ public class MainActivity
     getSupportFragmentManager().beginTransaction()
         .addToBackStack(this.toString())
         .replace(R.id.activity_main, new MainFragment(), this.toString())
+        //.replace(R.id.activity_main, new TimingDemoFragment(), this.toString())
         .commit();
   }
 

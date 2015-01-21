@@ -22,7 +22,7 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.android.observables.AndroidObservable;
+import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
@@ -85,8 +85,8 @@ public class SubjectDebounceSearchEmitterFragment
     _setupLogger();
 
     _searchTextEmitterSubject = PublishSubject.create();
-    _subscription = AndroidObservable.bindFragment(SubjectDebounceSearchEmitterFragment.this,
-                                                   Observable.switchOnNext(_searchTextEmitterSubject))
+    _subscription = AppObservable.bindFragment(SubjectDebounceSearchEmitterFragment.this,
+                                               Observable.switchOnNext(_searchTextEmitterSubject))
         .debounce(400, TimeUnit.MILLISECONDS, Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(_getSearchObserver());
