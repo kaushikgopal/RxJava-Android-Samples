@@ -72,6 +72,16 @@ Have a look at the accompanying blog posts for details on this demo:
 2. [DebouncedBuffer used for the fancier variant of the demo](http://nerds.weddingpartyapp.com/tech/2014/12/24/secret-bonus-part-debouncedbuffer-used-in-rxbus-example/)
 3. [share/publish/refcount](http://nerds.weddingpartyapp.com/tech/2014/12/24/rxjava-share-publish-refcount-and-all-that-jazz/)
 
+### Form validation using combineLatest
+
+courtesy Dan Lew for this idea that he gave me on the [fragmented podcast episode #5](http://fragmentedpodcast.com/episodes/4/) (around the 4:30 mark).
+
+`.combineLatest` allows you to monitor the state of multiple observables at once compactly at a single location. The example demonstrated shows how you can use `.combineLatest` to validate a basic form. There are 3 primary inputs for this form to be considered "valid" (an email, a password and a number). The form will turn valid (the text below turns blue :P) once all the inputs are valid. If they are not, an error is shown against the invalid inputs.
+
+We have 3 independent observables that track the text/input changes for each of the form fields (RxAndroid's `WidgetObservable` comes in handy to monitor the text changes). After an event change is noticed from all 3 inputs, the result is "combined" and the form is evaluated for validity.
+
+The value of this technique becomes more apparent when you have more number of input fields in a form. Handling it otherwise with a bunch of booleans makes the code cluttered and kind of difficult to follow. But using `.combineLatest` all that logic is concentrated in a nice compact block of code (I still use booleans but that was to make the example more readable).
+
 
 ## Work in Progress:
 
