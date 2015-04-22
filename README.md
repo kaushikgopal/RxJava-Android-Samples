@@ -74,7 +74,7 @@ Have a look at the accompanying blog posts for details on this demo:
 
 ### Form validation using combineLatest
 
-courtesy Dan Lew for this idea that he gave me on the [fragmented podcast episode #5](http://fragmentedpodcast.com/episodes/4/) (around the 4:30 mark).
+Thanks to Dan Lew for giving me this idea in the [fragmented podcast - episode #5](http://fragmentedpodcast.com/episodes/4/) (around the 4:30 mark).
 
 `.combineLatest` allows you to monitor the state of multiple observables at once compactly at a single location. The example demonstrated shows how you can use `.combineLatest` to validate a basic form. There are 3 primary inputs for this form to be considered "valid" (an email, a password and a number). The form will turn valid (the text below turns blue :P) once all the inputs are valid. If they are not, an error is shown against the invalid inputs.
 
