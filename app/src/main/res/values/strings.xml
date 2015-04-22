@@ -13,6 +13,7 @@
     <string name="btn_demo_double_binding_textview">Double binding (PublishSubject)</string>
     <string name="btn_demo_polling">Polling with RxJava</string>
     <string name="btn_demo_rxbus">Event Bus with RxJava</string>
+    <string name="btn_demo_form_validation_combinel">Form Validation with CombineLatest</string>
 
     <string name="msg_demo_concurrency_schedulers">This is a demo of how long running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava! \n\n To really see this shine. Hit the button multiple times and see how the button click which is a ui operation is never blocked because the long operation only runs in the background</string>
     <string name="msg_demo_buffer">This is a demo of how events can be accumulated using the "buffer" operation. Tap the button below repetitively and you will notice in the logs that button taps are collected over a span of 2s and printed below.</string>
@@ -22,4 +23,6 @@
     <string name="msg_demo_doublebinding">Watch how the result gloriously auto-updates based on your changing inputs. Using a technique like this, you could achieve the two-way binding in Angular Js, or more efficiently use a pattern like the Presentation View Model.</string>
     <string name="msg_demo_polling">This is demo of polling or making a call repeatedly with RxJava. \n\nSimple polling: Notice in the logs how a network call (simulated) is repeatedly made in the background.</string>
     <string name="msg_demo_rxbus_1">Tap on the below button and RxBus will listen to the events</string>
+    <string name="msg_demo_form_comb_latest">Monitor the state of multiple observables with the combineLatest operator. The submit button uses combineLatest to monitor validity of each of the 3 inputs. Only after the 3 inputs contain valid inputs will the submit button be enabled</string>
+
 </resources>

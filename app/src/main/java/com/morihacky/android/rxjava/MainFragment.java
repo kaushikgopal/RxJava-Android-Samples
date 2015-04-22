@@ -94,4 +94,13 @@ public class MainFragment
         .replace(R.id.activity_main, new DemoTimeoutFragment(), this.toString())
         .commit();
   }
+
+  @OnClick(R.id.btn_demo_form_validation_combinel)
+  public void formValidation() {
+    getActivity().getSupportFragmentManager()
+        .beginTransaction()
+        .addToBackStack(this.toString())
+        .replace(R.id.activity_main, new FormValidationCombineLatestFragment(), this.toString())
+        .commit();
+  }
 }

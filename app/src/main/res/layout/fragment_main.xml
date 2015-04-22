@@ -56,5 +56,11 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:text="@string/btn_demo_rxbus"/>
+
+        <Button
+            android:id="@+id/btn_demo_form_validation_combinel"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/btn_demo_form_validation_combinel"/>
     </LinearLayout>
 </ScrollView>
