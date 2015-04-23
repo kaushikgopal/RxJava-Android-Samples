@@ -85,16 +85,15 @@ Note that the `Func3` function that checks for validity, kicks in only after ALL
 The value of this technique becomes more apparent when you have more number of input fields in a form. Handling it otherwise with a bunch of booleans makes the code cluttered and kind of difficult to follow. But using `.combineLatest` all that logic is concentrated in a nice compact block of code (I still use booleans but that was to make the example more readable).
 
 
+## Work in Progress:
+
+Examples that I would like to have here, but haven't found the time yet to flush out.
+
 ### Retrieve data first from a (pseudo) cache, then a network call - using [`.concat`](http://reactivex.io/documentation/operators/concat.html)
 
 Using concat, you can retrieve information from an observable first (presumably this one is fast like retrieveing from a disk cache) and show preliminary data to a user. Subsequently, when the longer running 2nd observable is complete (say a network call), you can update the results on the interface using the latest information.
 
 For the purposes of illustration i use an in-memory `List` (not an actual disk cache), but shoot out a real network call to the github api so it gives you a feel of how this can really be applied in production apps.
-
-
-## Work in Progress:
-
-Examples that I would like to have here, but haven't found the time yet to flush out.
 
 
 ### Pagination (wip)
