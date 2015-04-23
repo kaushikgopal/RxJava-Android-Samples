@@ -3,27 +3,22 @@ package com.morihacky.android.rxjava;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
-import android.util.Base64;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-
-import com.google.common.base.Strings;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import com.morihacky.android.rxjava.app.R;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.User;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import rx.Observable;
@@ -34,54 +29,39 @@ import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class RetrofitFragment extends Fragment {
+import static com.google.common.base.Strings.isNullOrEmpty;
+import static java.lang.String.format;
 
-  private ArrayAdapter<String> _adapter;
+public class RetrofitFragment
+    extends Fragment {
 
-  GithubApi api;
-
-  @InjectView(R.id.log_list) ListView _resultsListView;
   @InjectView(R.id.demo_retrofit_contributors_username) EditText _username;
   @InjectView(R.id.demo_retrofit_contributors_repository) EditText _repo;
+  @InjectView(R.id.log_list) ListView _resultList;
+
+  private GithubApi _api;
+  private ArrayAdapter<String> _adapter;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-    final String githubUsernamePassword = getActivity().getString(R.string.github_username_password);
-
-    RestAdapter.Builder builder = new RestAdapter.Builder()
-        .setEndpoint("https://api.github.com/")
-        .setLogLevel(RestAdapter.LogLevel.FULL);
-
-    if (!TextUtils.isEmpty(githubUsernamePassword)) {
-      builder.setRequestInterceptor(new RequestInterceptor() {
-        @Override
-        public void intercept(RequestFacade request) {
-          String string = "Basic " + Base64.encodeToString(githubUsernamePassword.getBytes(), Base64.NO_WRAP);
-          request.addHeader("Accept", "application/json");
-          request.addHeader("Authorization", string);
-        }
-      });
-    }
-
-    RestAdapter restAdapter = builder.build();
-
-    api = restAdapter.create(GithubApi.class);
+    _api = _createGithubApi();
   }
 
   @Override
   public View onCreateView(LayoutInflater inflater,
                            @Nullable ViewGroup container,
                            @Nullable Bundle savedInstanceState) {
+
     View layout = inflater.inflate(R.layout.fragment_retrofit, container, false);
     ButterKnife.inject(this, layout);
 
-
-
-    _adapter = new ArrayAdapter<>(getActivity(), R.layout.item_log, R.id.item_log, new ArrayList<String>());
-    _adapter.setNotifyOnChange(true);
-    _resultsListView.setAdapter(_adapter);
+    _adapter = new ArrayAdapter<>(getActivity(),
+        R.layout.item_log,
+        R.id.item_log,
+        new ArrayList<String>());
+    //_adapter.setNotifyOnChange(true);
+    _resultList.setAdapter(_adapter);
 
     return layout;
   }
@@ -89,7 +69,8 @@ public class RetrofitFragment extends Fragment {
   @OnClick(R.id.btn_demo_retrofit_contributors)
   public void onListContributorsClicked() {
     _adapter.clear();
-    api.contributors(_username.getText().toString(), _repo.getText().toString())
+
+    _api.contributors(_username.getText().toString(), _repo.getText().toString())
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Observer<List<Contributor>>() {
@@ -106,10 +87,11 @@ public class RetrofitFragment extends Fragment {
           @Override
           public void onNext(List<Contributor> contributors) {
             for (Contributor c : contributors) {
-              _adapter.add(String.format("%s has made %d contributions to %s",
+              _adapter.add(format("%s has made %d contributions to %s",
                   c.login,
                   c.contributions,
                   _repo.getText().toString()));
+
               Timber.d("%s has made %d contributions to %s",
                   c.login,
                   c.contributions,
@@ -122,47 +104,38 @@ public class RetrofitFragment extends Fragment {
   @OnClick(R.id.btn_demo_retrofit_contributors_with_user_info)
   public void onListContributorsWithFullUserInfoClicked() {
     _adapter.clear();
-    api.contributors(_username.getText().toString(), _repo.getText().toString())
+
+    _api.contributors(_username.getText().toString(), _repo.getText().toString())
         .flatMap(new Func1<List<Contributor>, Observable<Contributor>>() {
           @Override
           public Observable<Contributor> call(List<Contributor> contributors) {
             return Observable.from(contributors);
           }
         })
-        .flatMap(new Func1<Contributor, Observable<?>>() {
+        .flatMap(new Func1<Contributor, Observable<Pair<User, Contributor>>>() {
           @Override
-          public Observable<?> call(Contributor contributor) {
-            Observable.zip(Observable.just(contributor),
-                api.user(contributor.login).filter(new Func1<User, Boolean>() {
+          public Observable<Pair<User, Contributor>> call(Contributor contributor) {
+            Observable<User> _userObservable = _api.user(contributor.login)
+                .filter(new Func1<User, Boolean>() {
                   @Override
                   public Boolean call(User user) {
-                    return !Strings.isNullOrEmpty(user.name) && !Strings.isNullOrEmpty(user.email);
+                    return !isNullOrEmpty(user.name) && !isNullOrEmpty(user.email);
                   }
-                }),
-                new Func2<Contributor, User, Object>() {
-                  @Override
-                  public Object call(Contributor contributor, User user) {
-                    _adapter.add(String.format("%s(%s) has made %d contributions to %s",
-                        user.name,
-                        user.email,
-                        contributor.contributions,
-                        _repo.getText().toString()));
-                    _adapter.notifyDataSetChanged();
-                    Timber.d("%s(%s) has made %d contributions to %s",
-                        user.name,
-                        user.email,
-                        contributor.contributions,
-                        _repo.getText().toString());
+                });
 
-                    return Observable.empty();
+            return Observable.zip(_userObservable,
+                Observable.just(contributor),
+                new Func2<User, Contributor, Pair<User, Contributor>>() {
+                  @Override
+                  public Pair<User, Contributor> call(User user, Contributor contributor) {
+                    return new Pair<>(user, contributor);
                   }
-                }).subscribe();
-            return Observable.empty();
+                });
           }
         })
         .subscribeOn(Schedulers.newThread())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Observer<Object>() {
+        .subscribe(new Observer<Pair<User, Contributor>>() {
           @Override
           public void onCompleted() {
             Timber.d("Retrofit call 2 completed ");
@@ -170,14 +143,52 @@ public class RetrofitFragment extends Fragment {
 
           @Override
           public void onError(Throwable e) {
-            Timber.e(e,
-                "woops we got an error while getting the list of contributors along with full names");
+            Timber.e(e, "error while getting the list of contributors along with full names");
           }
 
           @Override
-          public void onNext(Object o) {
-            Timber.d("hi! onNext");
+          public void onNext(Pair<User, Contributor> pair) {
+            if (pair == null) {
+              return;
+            }
+
+            User user = pair.first;
+            Contributor contributor = pair.second;
+
+            _adapter.add(format("%s(%s) has made %d contributions to %s",
+                user.name,
+                user.email,
+                contributor.contributions,
+                _repo.getText().toString()));
+
+            _adapter.notifyDataSetChanged();
+
+            Timber.d("%s(%s) has made %d contributions to %s",
+                user.name,
+                user.email,
+                contributor.contributions,
+                _repo.getText().toString());
           }
         });
+  }
+
+  // -----------------------------------------------------------------------------------
+
+  private GithubApi _createGithubApi() {
+
+    RestAdapter.Builder builder = new RestAdapter.Builder().setEndpoint("https://api.github.com/");
+    //.setLogLevel(RestAdapter.LogLevel.FULL);
+
+    final String githubToken = getResources().getString(R.string.github_oauth_token);
+    if (!isNullOrEmpty(githubToken)) {
+      builder.setRequestInterceptor(new RequestInterceptor() {
+        @Override
+        public void intercept(RequestFacade request) {
+          request.addHeader("Authorization", format("token %s", githubToken));
+        }
+      });
+    }
+
+    return builder.build().create(GithubApi.class);
   }
 }

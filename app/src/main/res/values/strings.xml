@@ -4,6 +4,7 @@
     <string name="app_name">Android-RxJava</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="github_oauth_token"><!-- InsertYouroAuthTokenHere --></string>
 
     <string name="btn_demo_schedulers">bg work (schedulers &amp; concurrency)</string>
     <string name="btn_demo_buffer">accumulate calls (buffer)</string>
@@ -24,9 +25,4 @@
     <string name="msg_demo_polling">This is demo of polling or making a call repeatedly with RxJava. \n\nSimple polling: Notice in the logs how a network call (simulated) is repeatedly made in the background.</string>
     <string name="msg_demo_rxbus_1">Tap on the below button and RxBus will listen to the events</string>
     <string name="msg_demo_form_comb_latest">Monitor the state of multiple observables with the combineLatest operator. The submit button uses combineLatest to monitor validity of each of the 3 inputs. Only after the 3 inputs contain valid inputs will the submit button be enabled</string>
-
-
-    <!-- format username:password -->
-    <!--suppress CheckTagEmptyBody -->
-    <string name="github_username_password"></string>
 </resources>
