@@ -148,10 +148,6 @@ public class RetrofitFragment
 
           @Override
           public void onNext(Pair<User, Contributor> pair) {
-            if (pair == null) {
-              return;
-            }
-
             User user = pair.first;
             Contributor contributor = pair.second;
 
