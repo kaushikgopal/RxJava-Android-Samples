@@ -1,7 +1,24 @@
 <LinearLayout
+    android:baselineAligned="false"
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
+
+    <Button
+        android:id="@+id/btn_start_pseudo_cache"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Start disk > network call"
+        android:layout_margin="30dp"
+        />
+
+    <ListView
+        android:id="@+id/log_list"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+
 </LinearLayout>

@@ -103,4 +103,13 @@ public class MainFragment
         .replace(R.id.activity_main, new FormValidationCombineLatestFragment(), this.toString())
         .commit();
   }
+
+  @OnClick(R.id.btn_demo_pseudo_cache)
+  public void pseudoCacheDemo() {
+    getActivity().getSupportFragmentManager()
+        .beginTransaction()
+        .addToBackStack(this.toString())
+        .replace(R.id.activity_main, new PseudoCacheConcatFragment(), this.toString())
+        .commit();
+  }
 }
