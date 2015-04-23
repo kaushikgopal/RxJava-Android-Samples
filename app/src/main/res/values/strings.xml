@@ -25,4 +25,8 @@
     <string name="msg_demo_rxbus_1">Tap on the below button and RxBus will listen to the events</string>
     <string name="msg_demo_form_comb_latest">Monitor the state of multiple observables with the combineLatest operator. The submit button uses combineLatest to monitor validity of each of the 3 inputs. Only after the 3 inputs contain valid inputs will the submit button be enabled</string>
 
+
+    <!-- format username:password -->
+    <!--suppress CheckTagEmptyBody -->
+    <string name="github_username_password"></string>
 </resources>
