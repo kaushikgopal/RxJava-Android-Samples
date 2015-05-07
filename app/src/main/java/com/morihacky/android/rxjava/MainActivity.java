@@ -17,11 +17,13 @@ public class MainActivity
     setContentView(R.layout.activity_main);
 
     Timber.plant(new Timber.DebugTree());
-
-    getSupportFragmentManager().beginTransaction()
-        .addToBackStack(this.toString())
-        .replace(R.id.activity_main, new MainFragment(), this.toString())
-        .commit();
+      
+    if(savedInstanceState == null){
+      getSupportFragmentManager().beginTransaction()
+          .addToBackStack(this.toString())
+          .replace(R.id.activity_main, new MainFragment(), this.toString())
+          .commit();
+    }
   }
 
   // This is better done with a DI Library like Dagger
