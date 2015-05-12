@@ -90,6 +90,16 @@ Using concat, you can retrieve information from an observable first (presumably 
 
 For the purposes of illustration i use an in-memory `List` (not an actual disk cache), then shoot out a real network call to the github api so it gives you a feel of how this can really be applied in production apps.
 
+### Simple Timing demos using timer/interval/delay
+
+This is a super simple and straightforward example which shows you how to use RxJava's `timer`, `interval` and `delay` operators to handle a bunch of cases where you want to run a task at specific intervals. Basically say NO to Android `TimerTask`s.
+
+Cases demonstrated here:
+
+1. run a single task after a delay of 2s, then complete
+2. run a task constantly every 1s (there's a delay of 1s before the first task fires off)
+3. run a task constantly every 1s (same as above but there's no delay before the first task fires off)
+4. run a task constantly every 3s, but after running it 5 times, terminate automatically
 
 ## Work in Progress:
 
