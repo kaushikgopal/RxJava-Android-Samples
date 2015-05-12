@@ -17,20 +17,15 @@
             android:layout_width="match_parent"
             >
 
-            <Button
-                android:id="@+id/btn_demo_timing_1"
-                android:layout_weight="1"
+            <TextView
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="C1: run once after a delay"
-                />
+                android:layout_width="match_parent"
+                android:gravity="left"
+                android:layout_weight="1"
+                android:layout_span="2"
+                android:padding="@dimen/text_micro"
+                android:text="@string/msg_demo_timing"
 
-            <Button
-                android:id="@+id/btn_demo_timing_3"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="C3: run at intervals (start with delay)"
                 />
         </TableRow>
 
@@ -40,11 +35,33 @@
             >
 
             <Button
+                android:id="@+id/btn_demo_timing_1"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="BTN 1"
+                />
+
+            <Button
                 android:id="@+id/btn_demo_timing_2"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="C2: run 5 times at specific intervals"
+                android:text="BTN 2"
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            >
+
+            <Button
+                android:id="@+id/btn_demo_timing_3"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="BTN 3"
                 />
 
             <Button
@@ -52,7 +69,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="C4: intervals (but start immediately)"
+                android:text="BTN 4"
                 />
         </TableRow>
     </TableLayout>

@@ -49,13 +49,13 @@ public class TimingDemoFragment
     // -----------------------------------------------------------------------------------
 
     @OnClick(R.id.btn_demo_timing_1)
-    public void onRunOnceWithDelay() {
-        _log(String.format("C1 [%s] --- BTN click", _getCurrentTimestamp()));
+    public void Btn1_RunSingleTaskAfter2s() {
+        _log(String.format("B1 [%s] --- BTN click", _getCurrentTimestamp()));
 
-        Observable.just(1).delay(1, TimeUnit.SECONDS).subscribe(new Observer<Integer>() {
+        Observable.just(1).delay(2, TimeUnit.SECONDS).subscribe(new Observer<Integer>() {
             @Override
             public void onCompleted() {
-                _log(String.format("C1 [%s] XX COMPLETE", _getCurrentTimestamp()));
+                _log(String.format("B1 [%s] XX COMPLETE", _getCurrentTimestamp()));
             }
 
             @Override
@@ -65,7 +65,29 @@ public class TimingDemoFragment
 
             @Override
             public void onNext(Integer integer) {
-                _log(String.format("C1 [%s]     NEXT", _getCurrentTimestamp()));
+                _log(String.format("B1 [%s]     NEXT", _getCurrentTimestamp()));
+            }
+        });
+    }
+
+    @OnClick(R.id.btn_demo_timing_4)
+    public void Btn4_RunTask5Times_IntervalOf3s() {
+        _log(String.format("C2 [%s] --- BTN click", _getCurrentTimestamp()));
+
+        Observable.interval(3, TimeUnit.SECONDS).take(5).subscribe(new Observer<Long>() {
+            @Override
+            public void onCompleted() {
+                _log(String.format("C2 [%s] XX COMPLETE", _getCurrentTimestamp()));
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Timber.e(e, "something went wrong in TimingDemoFragment example");
+            }
+
+            @Override
+            public void onNext(Long number) {
+                _log(String.format("C2 [%s]     NEXT", _getCurrentTimestamp()));
             }
         });
     }
