@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,133 +45,133 @@ import timber.log.Timber;
  * incapable of debounce    : this is the primary reason, since creating new observable everytime in subscription disregards debounce on subsequent calls
  */
 public class SubjectDebounceSearchEmitterFragment
-    extends BaseFragment {
+      extends BaseFragment {
 
-  @InjectView(R.id.list_threading_log) ListView _logsList;
+    @InjectView(R.id.list_threading_log) ListView _logsList;
 
-  private LogAdapter _adapter;
-  private List<String> _logs;
+    private LogAdapter _adapter;
+    private List<String> _logs;
 
-  private Subscription _subscription;
-  private PublishSubject<Observable<String>> _searchTextEmitterSubject;
+    private Subscription _subscription;
+    private PublishSubject<Observable<String>> _searchTextEmitterSubject;
 
-  @OnTextChanged(R.id.input_txt_subject_debounce)
-  public void onTextEntered(CharSequence charsEntered) {
-    Timber.d("---------- text entered %s", charsEntered);
-    _searchTextEmitterSubject.onNext(_getASearchObservableFor(charsEntered.toString()));
-  }
-
-  @Override
-  public void onDestroy() {
-    super.onDestroy();
-    if (_subscription != null) {
-      _subscription.unsubscribe();
+    @OnTextChanged(R.id.input_txt_subject_debounce)
+    public void onTextEntered(CharSequence charsEntered) {
+        Timber.d("---------- text entered %s", charsEntered);
+        _searchTextEmitterSubject.onNext(_getASearchObservableFor(charsEntered.toString()));
     }
-  }
 
-  @Override
-  public View onCreateView(LayoutInflater inflater,
-                           @Nullable ViewGroup container,
-                           @Nullable Bundle savedInstanceState) {
-    View layout = inflater.inflate(R.layout.fragment_subject_debounce, container, false);
-    ButterKnife.inject(this, layout);
-    return layout;
-  }
-
-  @Override
-  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    _setupLogger();
-
-    _searchTextEmitterSubject = PublishSubject.create();
-    _subscription = AppObservable.bindFragment(SubjectDebounceSearchEmitterFragment.this,
-                                               Observable.switchOnNext(_searchTextEmitterSubject))
-        .debounce(400, TimeUnit.MILLISECONDS, Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(_getSearchObserver());
-  }
-
-  // -----------------------------------------------------------------------------------
-  // Main Rx entities
-
-  private Observer<String> _getSearchObserver() {
-    return new Observer<String>() {
-
-      @Override
-      public void onCompleted() {
-        Timber.d("--------- onComplete");
-      }
-
-      @Override
-      public void onError(Throwable e) {
-        Timber.e(e, "--------- Woops on error!");
-        _log(String.format("Dang error. check your logs"));
-      }
-
-      @Override
-      public void onNext(String searchText) {
-        _log(String.format("onNext You searched for %s", searchText));
-        onCompleted();
-      }
-    };
-  }
-
-  /**
-   * @param searchText search text entered onTextChange
-   * @return a new observable which searches for text searchText, explicitly say you want subscription to be done on a a non-UI thread, otherwise it'll default to the main thread.
-   */
-  private Observable<String> _getASearchObservableFor(final String searchText) {
-    return Observable.create(new Observable.OnSubscribe<String>() {
-
-      @Override
-      public void call(Subscriber<? super String> subscriber) {
-
-        Timber.d("----------- inside the search observable");
-        subscriber.onNext(searchText);
-        // subscriber.onCompleted(); This seems to have no effect.
-      }
-    }).subscribeOn(Schedulers.io());
-  }
-
-  // -----------------------------------------------------------------------------------
-  // Method that help wiring up the example (irrelevant to RxJava)
-
-  private void _setupLogger() {
-    _logs = new ArrayList<String>();
-    _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
-    _logsList.setAdapter(_adapter);
-  }
-
-  private void _log(String logMsg) {
-
-    if (_isCurrentlyOnMainThread()) {
-      _logs.add(0, logMsg + " (main thread) ");
-      _adapter.clear();
-      _adapter.addAll(_logs);
-    } else {
-      _logs.add(0, logMsg + " (NOT main thread) ");
-
-      // You can only do below stuff on main thread.
-      new Handler(Looper.getMainLooper()).post(new Runnable() {
-
-        @Override
-        public void run() {
-          _adapter.clear();
-          _adapter.addAll(_logs);
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (_subscription != null) {
+            _subscription.unsubscribe();
         }
-      });
     }
-  }
 
-  private boolean _isCurrentlyOnMainThread() {
-    return Looper.myLooper() == Looper.getMainLooper();
-  }
-
-  private class LogAdapter
-      extends ArrayAdapter<String> {
-
-    public LogAdapter(Context context, List<String> logs) {
-      super(context, R.layout.item_log, R.id.item_log, logs);
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View layout = inflater.inflate(R.layout.fragment_subject_debounce, container, false);
+        ButterKnife.inject(this, layout);
+        return layout;
     }
-  }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        _setupLogger();
+
+        _searchTextEmitterSubject = PublishSubject.create();
+        _subscription = AppObservable.bindFragment(SubjectDebounceSearchEmitterFragment.this,
+              Observable.switchOnNext(_searchTextEmitterSubject))
+              .debounce(400, TimeUnit.MILLISECONDS, Schedulers.io())
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribe(_getSearchObserver());
+    }
+
+    // -----------------------------------------------------------------------------------
+    // Main Rx entities
+
+    private Observer<String> _getSearchObserver() {
+        return new Observer<String>() {
+
+            @Override
+            public void onCompleted() {
+                Timber.d("--------- onComplete");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Timber.e(e, "--------- Woops on error!");
+                _log(String.format("Dang error. check your logs"));
+            }
+
+            @Override
+            public void onNext(String searchText) {
+                _log(String.format("onNext You searched for %s", searchText));
+                onCompleted();
+            }
+        };
+    }
+
+    /**
+     * @param searchText search text entered onTextChange
+     * @return a new observable which searches for text searchText, explicitly say you want subscription to be done on a a non-UI thread, otherwise it'll default to the main thread.
+     */
+    private Observable<String> _getASearchObservableFor(final String searchText) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+
+                Timber.d("----------- inside the search observable");
+                subscriber.onNext(searchText);
+                // subscriber.onCompleted(); This seems to have no effect.
+            }
+        }).subscribeOn(Schedulers.io());
+    }
+
+    // -----------------------------------------------------------------------------------
+    // Method that help wiring up the example (irrelevant to RxJava)
+
+    private void _setupLogger() {
+        _logs = new ArrayList<String>();
+        _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
+        _logsList.setAdapter(_adapter);
+    }
+
+    private void _log(String logMsg) {
+
+        if (_isCurrentlyOnMainThread()) {
+            _logs.add(0, logMsg + " (main thread) ");
+            _adapter.clear();
+            _adapter.addAll(_logs);
+        } else {
+            _logs.add(0, logMsg + " (NOT main thread) ");
+
+            // You can only do below stuff on main thread.
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+
+                @Override
+                public void run() {
+                    _adapter.clear();
+                    _adapter.addAll(_logs);
+                }
+            });
+        }
+    }
+
+    private boolean _isCurrentlyOnMainThread() {
+        return Looper.myLooper() == Looper.getMainLooper();
+    }
+
+    private class LogAdapter
+          extends ArrayAdapter<String> {
+
+        public LogAdapter(Context context, List<String> logs) {
+            super(context, R.layout.item_log, R.id.item_log, logs);
+        }
+    }
 }

@@ -2,7 +2,6 @@ package com.morihacky.android.rxjava.rxbus;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,29 +10,30 @@ import com.morihacky.android.rxjava.BaseFragment;
 import com.morihacky.android.rxjava.app.R;
 
 public class RxBusDemoFragment
-    extends BaseFragment {
+      extends BaseFragment {
 
-  @Override
-  public View onCreateView(LayoutInflater inflater,
-                           @Nullable ViewGroup container,
-                           @Nullable Bundle savedInstanceState) {
-    View layout = inflater.inflate(R.layout.fragment_rxbus_demo, container, false);
-    ButterKnife.inject(this, layout);
-    return layout;
-  }
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View layout = inflater.inflate(R.layout.fragment_rxbus_demo, container, false);
+        ButterKnife.inject(this, layout);
+        return layout;
+    }
 
-  @Override
-  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-    getActivity().getSupportFragmentManager()
-        .beginTransaction()
-        .replace(R.id.demo_rxbus_frag_1, new RxBusDemo_TopFragment())
-        .replace(R.id.demo_rxbus_frag_2, new RxBusDemo_Bottom3Fragment())
-        //.replace(R.id.demo_rxbus_frag_2, new RxBusDemo_Bottom2Fragment())
-        //.replace(R.id.demo_rxbus_frag_2, new RxBusDemo_Bottom1Fragment())
-        .commit();
-  }
+        getActivity().getSupportFragmentManager()
+              .beginTransaction()
+              .replace(R.id.demo_rxbus_frag_1,
+                    new RxBusDemo_TopFragment()).replace(R.id.demo_rxbus_frag_2,
+              new RxBusDemo_Bottom3Fragment())
+              //.replace(R.id.demo_rxbus_frag_2, new RxBusDemo_Bottom2Fragment())
+              //.replace(R.id.demo_rxbus_frag_2, new RxBusDemo_Bottom1Fragment())
+              .commit();
+    }
 
-  public static class TapEvent {}
+    public static class TapEvent {}
 }

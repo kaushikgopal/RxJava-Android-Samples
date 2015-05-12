@@ -3,7 +3,6 @@ package com.morihacky.android.rxjava;
 import android.app.Application;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
-import timber.log.Timber;
 
 public class MyApp
       extends Application {
