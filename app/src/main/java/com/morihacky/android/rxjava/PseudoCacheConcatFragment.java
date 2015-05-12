@@ -30,7 +30,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.lang.String.format;
 
 public class PseudoCacheConcatFragment
-    extends Fragment {
+    extends BaseFragment {
 
   @InjectView(R.id.log_list) ListView _resultList;
 

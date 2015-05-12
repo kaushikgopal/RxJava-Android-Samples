@@ -34,7 +34,7 @@ import timber.log.Timber;
  * as demonstrated in the case of {@link com.morihacky.android.rxjava.SubjectDebounceSearchEmitterFragment}
  */
 public class BufferDemoFragment
-    extends Fragment {
+    extends BaseFragment {
 
   @InjectView(R.id.list_threading_log) ListView _logsList;
   @InjectView(R.id.btn_start_operation) Button _tapBtn;

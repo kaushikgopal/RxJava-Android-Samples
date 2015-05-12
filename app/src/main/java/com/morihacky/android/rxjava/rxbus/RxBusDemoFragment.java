@@ -7,10 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
+import com.morihacky.android.rxjava.BaseFragment;
 import com.morihacky.android.rxjava.app.R;
 
 public class RxBusDemoFragment
-    extends Fragment {
+    extends BaseFragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater,

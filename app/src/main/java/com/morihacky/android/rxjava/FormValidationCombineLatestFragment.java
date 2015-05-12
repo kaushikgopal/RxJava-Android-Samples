@@ -23,7 +23,7 @@ import static android.util.Patterns.EMAIL_ADDRESS;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 public class FormValidationCombineLatestFragment
-    extends Fragment {
+    extends BaseFragment {
 
   @InjectView(R.id.btn_demo_form_valid) TextView _btnValidIndicator;
   @InjectView(R.id.demo_combl_email) EditText _email;

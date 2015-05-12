@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import com.morihacky.android.rxjava.BaseFragment;
 import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.app.R;
 import rx.functions.Action1;
@@ -18,7 +19,7 @@ import rx.subscriptions.CompositeSubscription;
 import static rx.android.app.AppObservable.bindFragment;
 
 public class RxBusDemo_Bottom1Fragment
-    extends Fragment {
+    extends BaseFragment {
 
   private RxBus _rxBus;
   private CompositeSubscription _subscriptions;

@@ -20,7 +20,7 @@ import rx.functions.Action1;
 import rx.subjects.PublishSubject;
 
 public class DoubleBindingTextViewFragment
-    extends Fragment {
+    extends BaseFragment {
 
   @InjectView(R.id.double_binding_num1) EditText _number1;
   @InjectView(R.id.double_binding_num2) EditText _number2;

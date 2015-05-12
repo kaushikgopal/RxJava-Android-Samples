@@ -27,7 +27,7 @@ import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 public class PollingFragment
-    extends Fragment {
+    extends BaseFragment {
 
   public static final int INITIAL_DELAY = 0;
   public static final int POLLING_INTERVAL = 1000;

@@ -28,7 +28,7 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class DemoTimeoutFragment
-    extends Fragment {
+    extends BaseFragment {
 
   @InjectView(R.id.list_threading_log) ListView _logsList;
 

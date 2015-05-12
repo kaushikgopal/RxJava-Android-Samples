@@ -28,7 +28,7 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class ConcurrencyWithSchedulersDemoFragment
-    extends Fragment {
+    extends BaseFragment {
 
   @InjectView(R.id.progress_operation_running) ProgressBar _progress;
   @InjectView(R.id.list_threading_log) ListView _logsList;

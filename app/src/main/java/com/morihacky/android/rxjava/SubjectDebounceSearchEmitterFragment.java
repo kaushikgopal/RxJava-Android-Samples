@@ -46,7 +46,7 @@ import timber.log.Timber;
  * incapable of debounce    : this is the primary reason, since creating new observable everytime in subscription disregards debounce on subsequent calls
  */
 public class SubjectDebounceSearchEmitterFragment
-    extends Fragment {
+    extends BaseFragment {
 
   @InjectView(R.id.list_threading_log) ListView _logsList;
 

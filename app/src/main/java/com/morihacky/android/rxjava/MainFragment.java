@@ -12,7 +12,7 @@ import com.morihacky.android.rxjava.app.R;
 import com.morihacky.android.rxjava.rxbus.RxBusDemoFragment;
 
 public class MainFragment
-    extends Fragment {
+    extends BaseFragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater,

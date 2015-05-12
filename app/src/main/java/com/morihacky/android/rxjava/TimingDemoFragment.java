@@ -19,7 +19,7 @@ import rx.functions.Func1;
 import timber.log.Timber;
 
 public class TimingDemoFragment
-    extends Fragment {
+    extends BaseFragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater,
