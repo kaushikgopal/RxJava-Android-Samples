@@ -9,7 +9,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.morihacky.android.rxjava.BaseFragment;
 import com.morihacky.android.rxjava.MainActivity;
-import com.morihacky.android.rxjava.app.R;
+import com.morihacky.android.rxjava.R;
 
 public class RxBusDemo_TopFragment
       extends BaseFragment {

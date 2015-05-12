@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.morihacky.android.rxjava.app.R;
+import com.morihacky.android.rxjava.R;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;

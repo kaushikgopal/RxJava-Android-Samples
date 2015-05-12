@@ -13,7 +13,7 @@ import android.widget.ListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.app.R;
+import com.morihacky.android.rxjava.R;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;

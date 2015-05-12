@@ -11,7 +11,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.morihacky.android.rxjava.BaseFragment;
 import com.morihacky.android.rxjava.MainActivity;
-import com.morihacky.android.rxjava.app.R;
+import com.morihacky.android.rxjava.R;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.app.R;
+import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.rxbus.RxBusDemoFragment;
 
 public class MainFragment

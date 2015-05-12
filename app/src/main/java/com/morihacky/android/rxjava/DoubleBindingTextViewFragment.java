@@ -11,7 +11,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnTextChanged;
 import com.google.common.base.Strings;
-import com.morihacky.android.rxjava.app.R;
+import com.morihacky.android.rxjava.R;
 import rx.Subscription;
 import rx.functions.Action1;
 import rx.subjects.PublishSubject;
