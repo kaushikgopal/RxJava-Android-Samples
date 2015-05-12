@@ -13,7 +13,6 @@ import android.widget.ListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.R;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -26,7 +25,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class DemoTimeoutFragment
+public class TimeoutDemoFragment
       extends BaseFragment {
 
     @InjectView(R.id.list_threading_log) ListView _logsList;
@@ -59,7 +58,7 @@ public class DemoTimeoutFragment
 
     @OnClick(R.id.btn_demo_timeout_1_2s)
     public void onStart2sTask() {
-        _subscription = AppObservable.bindFragment(DemoTimeoutFragment.this,
+        _subscription = AppObservable.bindFragment(TimeoutDemoFragment.this,
               _getObservableTask_2sToComplete())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(_getEventCompletionObserver());
@@ -67,7 +66,7 @@ public class DemoTimeoutFragment
 
     @OnClick(R.id.btn_demo_timeout_1_5s)
     public void onStart5sTask() {
-        _subscription = AppObservable.bindFragment(DemoTimeoutFragment.this,
+        _subscription = AppObservable.bindFragment(TimeoutDemoFragment.this,
               _getObservableFor5sTask())
               .timeout(2, TimeUnit.SECONDS, _getTimeoutObservable())
               .subscribeOn(Schedulers.computation())

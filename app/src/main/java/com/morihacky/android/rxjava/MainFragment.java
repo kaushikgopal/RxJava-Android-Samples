@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.rxbus.RxBusDemoFragment;
 
 public class MainFragment
@@ -94,7 +93,7 @@ public class MainFragment
         getActivity().getSupportFragmentManager()
               .beginTransaction()
               .addToBackStack(this.toString())
-              .replace(R.id.activity_main, new DemoTimeoutFragment(), this.toString())
+              .replace(R.id.activity_main, new TimeoutDemoFragment(), this.toString())
               .commit();
     }
 
