@@ -2,7 +2,6 @@ package com.morihacky.android.rxjava;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.rxbus.RxBus;
 import timber.log.Timber;
 
@@ -27,11 +26,11 @@ public class MainActivity
 
         Timber.plant(new Timber.DebugTree());
 
-	    if(savedInstanceState == null){
-    	  getSupportFragmentManager().beginTransaction()
-        	  .addToBackStack(this.toString())
-	          .replace(R.id.activity_main, new MainFragment(), this.toString())
-   	       .commit();
-		}
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                  .addToBackStack(this.toString())
+                  .replace(R.id.activity_main, new MainFragment(), this.toString())
+                  .commit();
+        }
     }
 }
