@@ -22,7 +22,7 @@ public class TimingDemoFragment
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_timing_demo, container, false);
+        View layout = inflater.inflate(R.layout.fragment_demo_timing, container, false);
         ButterKnife.inject(this, layout);
         return layout;
     }

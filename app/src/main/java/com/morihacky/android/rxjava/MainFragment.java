@@ -116,4 +116,14 @@ public class MainFragment
               .replace(R.id.activity_main, new PseudoCacheConcatFragment(), this.toString())
               .commit();
     }
+
+    @OnClick(R.id.btn_demo_timing)
+    public void demoTimerIntervalDelays() {
+        getActivity().getSupportFragmentManager()
+              .beginTransaction()
+              .addToBackStack(this.toString())
+              .replace(R.id.activity_main, new TimingDemoFragment(), this.toString())
+              .commit();
+    }
+
 }

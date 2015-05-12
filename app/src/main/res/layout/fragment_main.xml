@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingBottom="@dimen/activity_vertical_margin"
@@ -77,7 +77,14 @@
             android:id="@+id/btn_demo_pseudo_cache"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="@string/btn_demo_pseudo_cache"
+            android:text="@string/btn_demo_pseudocache"
+            />
+
+        <Button
+            android:id="@+id/btn_demo_timing"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/btn_demo_timing"
             />
     </LinearLayout>
 </ScrollView>
