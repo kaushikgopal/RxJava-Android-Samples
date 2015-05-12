@@ -22,7 +22,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="run once after a delay"
+                android:text="C1: run once after a delay"
                 />
 
             <Button
@@ -30,7 +30,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="run at intervals (start with delay)"
+                android:text="C3: run at intervals (start with delay)"
                 />
         </TableRow>
 
@@ -44,7 +44,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="run 5 times at specific intervals"
+                android:text="C2: run 5 times at specific intervals"
                 />
 
             <Button
@@ -52,7 +52,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="intervals (but start immediately)"
+                android:text="C4: intervals (but start immediately)"
                 />
         </TableRow>
     </TableLayout>

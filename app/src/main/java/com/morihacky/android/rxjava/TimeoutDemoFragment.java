@@ -1,6 +1,5 @@
 package com.morihacky.android.rxjava;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,11 +7,11 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import com.morihacky.android.rxjava.wiring.LogAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -148,7 +147,7 @@ public class TimeoutDemoFragment
     // Method that help wiring up the example (irrelevant to RxJava)
 
     private void _setupLogger() {
-        _logs = new ArrayList<String>();
+        _logs = new ArrayList<>();
         _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
         _logsList.setAdapter(_adapter);
     }
@@ -178,11 +177,4 @@ public class TimeoutDemoFragment
         return Looper.myLooper() == Looper.getMainLooper();
     }
 
-    private class LogAdapter
-          extends ArrayAdapter<String> {
-
-        public LogAdapter(Context context, List<String> logs) {
-            super(context, R.layout.item_log, R.id.item_log, logs);
-        }
-    }
 }
