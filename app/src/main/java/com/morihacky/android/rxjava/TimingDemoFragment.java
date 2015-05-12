@@ -106,6 +106,36 @@ public class TimingDemoFragment
               });
     }
 
+    @OnClick(R.id.btn_demo_timing_3)
+    public void Btn3_RunTask_IntervalOf1s_StartImmediately() {
+        if (_subscription2 != null && !_subscription2.isUnsubscribed()) {
+            _subscription2.unsubscribe();
+            _log(String.format("C3 [%s] XXX BTN KILLED", _getCurrentTimestamp()));
+            return;
+        }
+
+        _log(String.format("C3 [%s] --- BTN click", _getCurrentTimestamp()));
+
+        _subscription2 = Observable//
+              .timer(0, 1, TimeUnit.SECONDS)//
+              .subscribe(new Observer<Long>() {
+                  @Override
+                  public void onCompleted() {
+                      _log(String.format("C3 [%s] XXXX COMPLETE", _getCurrentTimestamp()));
+                  }
+
+                  @Override
+                  public void onError(Throwable e) {
+                      Timber.e(e, "something went wrong in TimingDemoFragment example");
+                  }
+
+                  @Override
+                  public void onNext(Long number) {
+                      _log(String.format("C3 [%s]     NEXT", _getCurrentTimestamp()));
+                  }
+              });
+    }
+
     @OnClick(R.id.btn_demo_timing_4)
     public void Btn4_RunTask5Times_IntervalOf3s() {
         _log(String.format("D4 [%s] --- BTN click", _getCurrentTimestamp()));
