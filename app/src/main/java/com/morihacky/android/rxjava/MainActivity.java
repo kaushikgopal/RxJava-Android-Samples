@@ -27,9 +27,11 @@ public class MainActivity
 
         Timber.plant(new Timber.DebugTree());
 
-        getSupportFragmentManager().beginTransaction()
-              .addToBackStack(this.toString())
-              .replace(R.id.activity_main, new MainFragment(), this.toString())
-              .commit();
+	    if(savedInstanceState == null){
+    	  getSupportFragmentManager().beginTransaction()
+        	  .addToBackStack(this.toString())
+	          .replace(R.id.activity_main, new MainFragment(), this.toString())
+   	       .commit();
+		}
     }
 }
