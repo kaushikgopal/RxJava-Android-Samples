@@ -3,14 +3,16 @@
     android:background="@color/green"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
     <TextView
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:gravity="center"
-        android:text="@string/msg_demo_rxbus_1"/>
+        android:text="@string/msg_demo_rxbus_1"
+        />
 
     <Button
         android:id="@+id/btn_demo_rxbus_tap"
@@ -20,6 +22,7 @@
         android:layout_width="90dp"
         android:textSize="@dimen/text_xlarge"
         android:textColor="@android:color/white"
-        android:text="Tap"/>
+        android:text="Tap"
+        />
 
 </FrameLayout>

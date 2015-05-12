@@ -3,7 +3,8 @@
     android:background="@color/blue"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
     <TextView
         android:id="@+id/demo_rxbus_tap_count"
@@ -13,7 +14,8 @@
         android:layout_width="wrap_content"
         android:textSize="@dimen/text_xxlarge"
         android:textColor="@android:color/white"
-        android:text="1"/>
+        android:text="1"
+        />
 
     <TextView
         android:id="@+id/demo_rxbus_tap_txt"
@@ -24,5 +26,6 @@
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:textSize="@dimen/text_large"
         android:textColor="@android:color/white"
-        android:text="tap!"/>
+        android:text="tap!"
+        />
 </FrameLayout>

@@ -3,11 +3,13 @@
 <FrameLayout
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
     <Button
         android:id="@+id/btn_start_demo"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="Start"/>
+        android:text="Start"
+        />
 </FrameLayout>
