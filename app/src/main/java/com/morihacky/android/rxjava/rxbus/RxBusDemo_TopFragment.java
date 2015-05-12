@@ -8,11 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.morihacky.android.rxjava.BaseFragment;
 import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.app.R;
 
 public class RxBusDemo_TopFragment
-    extends Fragment {
+    extends BaseFragment {
 
   private RxBus _rxBus;
 
