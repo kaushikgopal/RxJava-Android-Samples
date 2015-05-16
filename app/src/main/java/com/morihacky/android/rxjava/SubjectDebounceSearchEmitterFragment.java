@@ -13,19 +13,17 @@ import android.widget.ListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnTextChanged;
-import com.morihacky.android.rxjava.R;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import rx.Observable;
 import rx.Observer;
-import rx.Subscriber;
 import rx.Subscription;
-import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 import timber.log.Timber;
+
+import static rx.android.app.AppObservable.bindFragment;
 
 /**
  * The reason we use a Subject for tracking the search query is because it emits observables.
@@ -53,13 +51,7 @@ public class SubjectDebounceSearchEmitterFragment
     private List<String> _logs;
 
     private Subscription _subscription;
-    private PublishSubject<Observable<String>> _searchTextEmitterSubject;
-
-    @OnTextChanged(R.id.input_txt_subject_debounce)
-    public void onTextEntered(CharSequence charsEntered) {
-        Timber.d("---------- text entered %s", charsEntered);
-        _searchTextEmitterSubject.onNext(_getASearchObservableFor(charsEntered.toString()));
-    }
+    private PublishSubject<String> _searchTextEmitterSubject;
 
     @Override
     public void onDestroy() {
@@ -84,11 +76,18 @@ public class SubjectDebounceSearchEmitterFragment
         _setupLogger();
 
         _searchTextEmitterSubject = PublishSubject.create();
-        _subscription = AppObservable.bindFragment(SubjectDebounceSearchEmitterFragment.this,
-              Observable.switchOnNext(_searchTextEmitterSubject))
-              .debounce(400, TimeUnit.MILLISECONDS, Schedulers.io())
-              .observeOn(AndroidSchedulers.mainThread())
+
+        _subscription = bindFragment(this,//
+              _searchTextEmitterSubject//
+                    .debounce(400, TimeUnit.MILLISECONDS, Schedulers.io())//
+                    .observeOn(AndroidSchedulers.mainThread()))//
               .subscribe(_getSearchObserver());
+    }
+
+    @OnTextChanged(R.id.input_txt_subject_debounce)
+    public void onTextEntered(CharSequence charsEntered) {
+        Timber.d("---------- text entered %s", charsEntered);
+        _searchTextEmitterSubject.onNext(charsEntered.toString());
     }
 
     // -----------------------------------------------------------------------------------
@@ -114,23 +113,6 @@ public class SubjectDebounceSearchEmitterFragment
                 onCompleted();
             }
         };
-    }
-
-    /**
-     * @param searchText search text entered onTextChange
-     * @return a new observable which searches for text searchText, explicitly say you want subscription to be done on a a non-UI thread, otherwise it'll default to the main thread.
-     */
-    private Observable<String> _getASearchObservableFor(final String searchText) {
-        return Observable.create(new Observable.OnSubscribe<String>() {
-
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
-
-                Timber.d("----------- inside the search observable");
-                subscriber.onNext(searchText);
-                // subscriber.onCompleted(); This seems to have no effect.
-            }
-        }).subscribeOn(Schedulers.io());
     }
 
     // -----------------------------------------------------------------------------------
