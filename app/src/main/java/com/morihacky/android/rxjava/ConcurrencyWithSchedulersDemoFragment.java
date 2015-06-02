@@ -74,6 +74,7 @@ public class ConcurrencyWithSchedulersDemoFragment
         return Observable.just(true).map(new Func1<Boolean, Boolean>() {
             @Override
             public Boolean call(Boolean aBoolean) {
+                _log("Within Observable");
                 _doSomeLongOperation_thatBlocksCurrentThread();
                 return aBoolean;
             }
