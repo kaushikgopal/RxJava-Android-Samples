@@ -57,6 +57,7 @@ public class MainFragment
         getActivity().getSupportFragmentManager()
               .beginTransaction()
               .addToBackStack(this.toString())
+              //.replace(R.id.activity_main, new RetrofitAsyncTaskDeathFragment(), this.toString())
               .replace(R.id.activity_main, new RetrofitFragment(), this.toString())
               .commit();
     }

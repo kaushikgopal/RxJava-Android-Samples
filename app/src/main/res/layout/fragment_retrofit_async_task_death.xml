@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:gravity="center"
+        android:text="@string/msg_demo_retrofit_async_task_death"
+        />
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        >
+
+        <Button
+            android:id="@+id/btn_demo_retrofit_async_death"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:textSize="14sp"
+            android:text="Log User Info:"
+            />
+
+        <EditText
+            android:id="@+id/btn_demo_retrofit_async_death_username"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:textSize="12sp"
+            android:text="kaushikgopal"
+            android:hint="owner"
+            />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/log_list"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        />
+
+</LinearLayout>
