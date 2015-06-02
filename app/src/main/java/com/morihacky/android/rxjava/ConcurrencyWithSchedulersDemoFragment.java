@@ -14,15 +14,14 @@ import android.widget.ProgressBar;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.R;
 import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
 import rx.Observer;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -72,23 +71,17 @@ public class ConcurrencyWithSchedulersDemoFragment
     }
 
     private Observable<Boolean> _getObservable() {
-        return Observable.create(new Observable.OnSubscribe<Boolean>() {
-
+        return Observable.just(true).map(new Func1<Boolean, Boolean>() {
             @Override
-            public void call(Subscriber<? super Boolean> observer) {
-
-                _log("Within Observable");
-
+            public Boolean call(Boolean aBoolean) {
                 _doSomeLongOperation_thatBlocksCurrentThread();
-                observer.onNext(true);
-                observer.onCompleted();
+                return aBoolean;
             }
         });
     }
 
     /**
-     * Observer that handles the result List<Integer> from Observable
-     * through the 3 important actions:
+     * Observer that handles the result through the 3 important actions:
      *
      * 1. onCompleted
      * 2. onError
@@ -106,13 +99,13 @@ public class ConcurrencyWithSchedulersDemoFragment
             @Override
             public void onError(Throwable e) {
                 Timber.e(e, "Error in RxJava Demo concurrency");
-                _log(String.format("Boo Error %s", e.getMessage()));
+                _log(String.format("Boo! Error %s", e.getMessage()));
                 _progress.setVisibility(View.INVISIBLE);
             }
 
             @Override
-            public void onNext(Boolean aBoolean) {
-                _log(String.format("onNext with return value \"%b\"", aBoolean));
+            public void onNext(Boolean bool) {
+                _log(String.format("onNext with return value \"%b\"", bool));
             }
         };
     }
