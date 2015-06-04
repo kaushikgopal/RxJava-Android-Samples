@@ -163,6 +163,12 @@ public class TimingDemoFragment
     // -----------------------------------------------------------------------------------
     // Method that help wiring up the example (irrelevant to RxJava)
 
+    @OnClick(R.id.btn_clr)
+    public void OnClearLog() {
+        _logs = new ArrayList<>();
+        _adapter.clear();
+    }
+
     private void _setupLogger() {
         _logs = new ArrayList<>();
         _adapter = new LogAdapter(getActivity(), new ArrayList<String>());

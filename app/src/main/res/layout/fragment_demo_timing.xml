@@ -18,13 +18,13 @@
             >
 
             <TextView
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:gravity="left"
-                android:layout_weight="1"
-                android:layout_span="2"
                 android:padding="@dimen/text_micro"
+                android:gravity="left"
                 android:text="@string/msg_demo_timing"
+                android:layout_span="2"
 
                 />
         </TableRow>
@@ -75,10 +75,26 @@
     </TableLayout>
 
 
-    <ListView
-        android:id="@+id/list_threading_log"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        />
+        >
+
+        <ListView
+            android:id="@+id/list_threading_log"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            />
+
+        <ImageButton
+            android:id="@+id/btn_clr"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            />
+    </LinearLayout>
+
 
 </LinearLayout>
