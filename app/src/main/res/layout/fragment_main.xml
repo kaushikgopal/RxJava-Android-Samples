@@ -52,12 +52,12 @@
             android:text="@string/btn_demo_double_binding_textview"
             />
 
-        <Button
+        <!--<Button
             android:id="@+id/btn_demo_polling"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:text="@string/btn_demo_polling"
-            />
+            />-->
 
         <Button
             android:id="@+id/btn_demo_rxbus"

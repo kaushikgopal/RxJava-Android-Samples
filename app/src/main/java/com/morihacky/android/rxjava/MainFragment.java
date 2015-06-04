@@ -71,14 +71,14 @@ public class MainFragment
               .commit();
     }
 
-    @OnClick(R.id.btn_demo_polling)
+    /*@OnClick(R.id.btn_demo_polling)
     public void demoPolling() {
         getActivity().getSupportFragmentManager()
               .beginTransaction()
               .addToBackStack(this.toString())
               .replace(R.id.activity_main, new PollingFragment(), this.toString())
               .commit();
-    }
+    }*/
 
     @OnClick(R.id.btn_demo_rxbus)
     public void demoRxBus() {
