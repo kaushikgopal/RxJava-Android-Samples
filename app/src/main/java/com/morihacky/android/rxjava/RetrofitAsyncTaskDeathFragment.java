@@ -69,7 +69,6 @@ public class RetrofitAsyncTaskDeathFragment
         _adapter.clear();
 
         /*new AsyncTask<String, Void, User>() {
-
             @Override
             protected User doInBackground(String... params) {
                 return _api.getUser(params[0]);
@@ -81,16 +80,9 @@ public class RetrofitAsyncTaskDeathFragment
             }
         }.execute(_username.getText().toString());*/
 
-
-        Observable.just(_username.getText().toString())
+        _api.user(_username.getText().toString())
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
-              .flatMap(new Func1<String, Observable<User>>() {
-                  @Override
-                  public Observable<User> call(String username) {
-                      return _api.user(username);
-                  }
-              })
               .subscribe(new Observer<User>() {
                   @Override
                   public void onCompleted() {
@@ -108,7 +100,6 @@ public class RetrofitAsyncTaskDeathFragment
                             user.email));
                   }
               });
-
     }
 
     // -----------------------------------------------------------------------------------
