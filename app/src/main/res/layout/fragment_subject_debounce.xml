@@ -15,13 +15,31 @@
         android:text="@string/msg_demo_subject"
         />
 
-    <EditText
-        android:id="@+id/input_txt_subject_debounce"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:textSize="16sp"
-        android:hint="Enter some search text"
-        />
+        >
+
+        <EditText
+            android:id="@+id/input_txt_subject_debounce"
+            android:layout_weight="7"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:inputType="textNoSuggestions"
+            android:textSize="16sp"
+            android:hint="Enter some search text"
+            />
+
+        <ImageButton
+            android:id="@+id/clr_subject_debounce"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/list_threading_log"

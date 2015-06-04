@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -73,8 +74,15 @@ public class SubjectDebounceSearchEmitterFragment
         return layout;
     }
 
+    @OnClick(R.id.clr_subject_debounce)
+    public void onClearLog() {
+        _logs = new ArrayList<>();
+        _adapter.clear();
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+
         super.onActivityCreated(savedInstanceState);
         _setupLogger();
 
@@ -105,7 +113,7 @@ public class SubjectDebounceSearchEmitterFragment
 
             @Override
             public void onNext(OnTextChangeEvent onTextChangeEvent) {
-                _log(format("onNext You searched for %s", onTextChangeEvent.text().toString()));
+                _log(format("Searching for %s", onTextChangeEvent.text().toString()));
             }
         };
     }
