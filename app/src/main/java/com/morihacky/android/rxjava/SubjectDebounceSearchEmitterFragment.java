@@ -9,20 +9,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnTextChanged;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.android.widget.OnTextChangeEvent;
+import rx.android.widget.WidgetObservable;
 import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
 import timber.log.Timber;
 
+import static java.lang.String.format;
 import static rx.android.app.AppObservable.bindFragment;
 
 /**
@@ -46,12 +49,12 @@ public class SubjectDebounceSearchEmitterFragment
       extends BaseFragment {
 
     @InjectView(R.id.list_threading_log) ListView _logsList;
+    @InjectView(R.id.input_txt_subject_debounce) EditText _inputSearchText;
 
     private LogAdapter _adapter;
     private List<String> _logs;
 
     private Subscription _subscription;
-    private PublishSubject<String> _searchTextEmitterSubject;
 
     @Override
     public void onDestroy() {
@@ -75,27 +78,20 @@ public class SubjectDebounceSearchEmitterFragment
         super.onActivityCreated(savedInstanceState);
         _setupLogger();
 
-        _searchTextEmitterSubject = PublishSubject.create();
+        Observable<OnTextChangeEvent> textChangeObservable = WidgetObservable.text(_inputSearchText);
 
         _subscription = bindFragment(this,//
-              _searchTextEmitterSubject//
+              textChangeObservable//
                     .debounce(400, TimeUnit.MILLISECONDS, Schedulers.io())//
                     .observeOn(AndroidSchedulers.mainThread()))//
               .subscribe(_getSearchObserver());
     }
 
-    @OnTextChanged(R.id.input_txt_subject_debounce)
-    public void onTextEntered(CharSequence charsEntered) {
-        Timber.d("---------- text entered %s", charsEntered);
-        _searchTextEmitterSubject.onNext(charsEntered.toString());
-    }
-
     // -----------------------------------------------------------------------------------
     // Main Rx entities
 
-    private Observer<String> _getSearchObserver() {
-        return new Observer<String>() {
-
+    private Observer<OnTextChangeEvent> _getSearchObserver() {
+        return new Observer<OnTextChangeEvent>() {
             @Override
             public void onCompleted() {
                 Timber.d("--------- onComplete");
@@ -104,13 +100,12 @@ public class SubjectDebounceSearchEmitterFragment
             @Override
             public void onError(Throwable e) {
                 Timber.e(e, "--------- Woops on error!");
-                _log(String.format("Dang error. check your logs"));
+                _log("Dang error. check your logs");
             }
 
             @Override
-            public void onNext(String searchText) {
-                _log(String.format("onNext You searched for %s", searchText));
-                onCompleted();
+            public void onNext(OnTextChangeEvent onTextChangeEvent) {
+                _log(format("onNext You searched for %s", onTextChangeEvent.text().toString()));
             }
         };
     }
