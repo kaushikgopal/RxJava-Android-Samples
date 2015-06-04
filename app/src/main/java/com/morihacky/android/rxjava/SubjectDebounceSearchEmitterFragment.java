@@ -90,7 +90,7 @@ public class SubjectDebounceSearchEmitterFragment
 
         _subscription = bindFragment(this,//
               textChangeObservable//
-                    .debounce(400, TimeUnit.MILLISECONDS, Schedulers.io())//
+                    .debounce(400, TimeUnit.MILLISECONDS)// default Scheduler is Computation
                     .observeOn(AndroidSchedulers.mainThread()))//
               .subscribe(_getSearchObserver());
     }
