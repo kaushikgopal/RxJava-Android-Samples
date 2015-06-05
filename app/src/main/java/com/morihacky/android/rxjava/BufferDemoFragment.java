@@ -11,17 +11,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import com.morihacky.android.rxjava.R;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import rx.Observable;
-import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -79,13 +80,13 @@ public class BufferDemoFragment
         return Observable.create(new Observable.OnSubscribe<Integer>() {
 
             @Override
-            public void call(Subscriber<? super Integer> subscriber) {
+            public void call(final Subscriber<? super Integer> subscriber) {
                 _tapBtn.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
+                        subscriber.onNext(++_tapCount);
                         Timber.d("--------- GOT A TAP");
-                        _tapCount += 1;
                         _log("GOT A TAP");
                     }
                 });
@@ -96,34 +97,14 @@ public class BufferDemoFragment
               .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private Observer<List<Integer>> _getObserver() {
-        return new Observer<List<Integer>>() {
-
+    private Action1<List<Integer>> _getObserver() {
+        return new Action1<List<Integer>>() {
             @Override
-            public void onCompleted() {
+            public void call(final List<Integer> integers) {
                 if (_tapCount > 0) {
                     _log(String.format("%d taps", _tapCount));
                     _tapCount = 0;
                 }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Timber.e(e, "--------- Woops on error!");
-                _log(String.format("Dang error. check your logs"));
-            }
-
-            @Override
-            public void onNext(List<Integer> integers) {
-                Timber.d("--------- onNext");
-                if (integers.size() > 0) {
-                    for (int i : integers) {
-                        _tapCount += i;
-                    }
-                } else {
-                    Timber.d("--------- No taps received ");
-                }
-                onCompleted();
             }
         };
     }
