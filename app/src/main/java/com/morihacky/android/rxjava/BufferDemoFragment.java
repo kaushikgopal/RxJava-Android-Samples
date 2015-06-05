@@ -1,6 +1,5 @@
 package com.morihacky.android.rxjava;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,29 +7,35 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.wiring.LogAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import rx.Observable;
 import rx.Observer;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import rx.android.view.OnClickEvent;
+import rx.android.view.ViewObservable;
+import rx.functions.Func1;
 import timber.log.Timber;
 
 /**
- * credit to @tomrozb for this implementation:
- * http://stackoverflow.com/questions/24922610/incorrect-understanding-of-buffer-in-rxjava
+ * This is a demonstration of the `buffer` Observable.
  *
- * An alternate mechanism of achieving the same result would be to use a {@link rx.subjects.PublishSubject}
- * as demonstrated in the case of {@link com.morihacky.android.rxjava.SubjectDebounceSearchEmitterFragment}
+ * The buffer observable allows taps to be collected only within a time span. So taps outside the
+ * 2s limit imposed by buffer will get accumulated in the next log statement.
+ *
+ * If you're looking for a more foolproof solution that accumulates "continuous" taps vs
+ * a more dumb solution as show below (i.e. number of taps within a timespan)
+ * look at {@link com.morihacky.android.rxjava.rxbus.RxBusDemo_Bottom3Fragment} where a combo
+ * of `publish` and `buffer` is used.
+ *
+ * Also http://nerds.weddingpartyapp.com/tech/2015/01/05/debouncedbuffer-used-in-rxbus-example/
+ * if you're looking for words instead of code
  */
 public class BufferDemoFragment
       extends BaseFragment {
@@ -40,14 +45,13 @@ public class BufferDemoFragment
 
     private LogAdapter _adapter;
     private List<String> _logs;
-    private int _tapCount = 0;
 
     private Subscription _subscription;
 
     @Override
-    public void onResume() {
-        super.onResume();
-        _subscription = _getBufferedObservable().subscribe(_getObserver());
+    public void onStart() {
+        super.onStart();
+        _subscription = _getBufferedSubscription();
     }
 
     @Override
@@ -74,65 +78,49 @@ public class BufferDemoFragment
     // -----------------------------------------------------------------------------------
     // Main Rx entities
 
-    private Observable<List<Integer>> _getBufferedObservable() {
-
-        return Observable.create(new Observable.OnSubscribe<Integer>() {
-
-            @Override
-            public void call(Subscriber<? super Integer> subscriber) {
-                _tapBtn.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        Timber.d("--------- GOT A TAP");
-                        _tapCount += 1;
-                        _log("GOT A TAP");
-                    }
-                });
-            }
-        })
+    private Subscription _getBufferedSubscription() {
+        return ViewObservable.clicks(_tapBtn)
+              .map(new Func1<OnClickEvent, Integer>() {
+                  @Override
+                  public Integer call(OnClickEvent onClickEvent) {
+                      Timber.d("--------- GOT A TAP");
+                      _log("GOT A TAP");
+                      return 1;
+                  }
+              })
               .buffer(2, TimeUnit.SECONDS)
-              .subscribeOn(Schedulers.io())
-              .observeOn(AndroidSchedulers.mainThread());
-    }
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribe(new Observer<List<Integer>>() {
 
-    private Observer<List<Integer>> _getObserver() {
-        return new Observer<List<Integer>>() {
+                  @Override
+                  public void onCompleted() {
+                      // fyi: you'll never reach here
+                      Timber.d("----- onCompleted");
+                  }
 
-            @Override
-            public void onCompleted() {
-                if (_tapCount > 0) {
-                    _log(String.format("%d taps", _tapCount));
-                    _tapCount = 0;
-                }
-            }
+                  @Override
+                  public void onError(Throwable e) {
+                      Timber.e(e, "--------- Woops on error!");
+                      _log("Dang error! check your logs");
+                  }
 
-            @Override
-            public void onError(Throwable e) {
-                Timber.e(e, "--------- Woops on error!");
-                _log(String.format("Dang error. check your logs"));
-            }
-
-            @Override
-            public void onNext(List<Integer> integers) {
-                Timber.d("--------- onNext");
-                if (integers.size() > 0) {
-                    for (int i : integers) {
-                        _tapCount += i;
-                    }
-                } else {
-                    Timber.d("--------- No taps received ");
-                }
-                onCompleted();
-            }
-        };
+                  @Override
+                  public void onNext(List<Integer> integers) {
+                      Timber.d("--------- onNext");
+                      if (integers.size() > 0) {
+                          _log(String.format("%d taps", integers.size()));
+                      } else {
+                          Timber.d("--------- No taps received ");
+                      }
+                  }
+              });
     }
 
     // -----------------------------------------------------------------------------------
     // Methods that help wiring up the example (irrelevant to RxJava)
 
     private void _setupLogger() {
-        _logs = new ArrayList<String>();
+        _logs = new ArrayList<>();
         _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
         _logsList.setAdapter(_adapter);
     }
@@ -160,13 +148,5 @@ public class BufferDemoFragment
 
     private boolean _isCurrentlyOnMainThread() {
         return Looper.myLooper() == Looper.getMainLooper();
-    }
-
-    private class LogAdapter
-          extends ArrayAdapter<String> {
-
-        public LogAdapter(Context context, List<String> logs) {
-            super(context, R.layout.item_log, R.id.item_log, logs);
-        }
     }
 }
