@@ -21,10 +21,9 @@ A button is provided and we accumulate the number of clicks on that button, over
 
 If you hit the button once. you'll get message saying the button was hit once. If you hit it 5 times continuosly within a span of 2 seconds, then you get a single log, saying you hit that button 5 times (vs 5 individual logs saying "Button hit once").
 
-Two possible implementations:
+Note:
 
-2a. Using a traditional observable - but encompassing the OnClick within the observable (as demoed here)
-2b. Using PublishSubject and sending single clicks to the Observable, which in-turn then sends it to the Observer
+If you're looking for a more foolproof solution that accumulates "continuous" taps vs just the number of taps within a time span, look at the [EventBus Demo](https://github.com/kaushikgopal/Android-RxJava/blob/master/app/src/main/java/com/morihacky/android/rxjava/rxbus/RxBusDemo_Bottom3Fragment.java) where a combo of the `publish` and `buffer` operators is used. For a more detailed explanation you can also have a look at this [blog post](http://nerds.weddingpartyapp.com/tech/2015/01/05/debouncedbuffer-used-in-rxbus-example/).
 
 ### Instant/Auto searching (subject + debounce)
 
