@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:padding="10dp"
         android:gravity="center"
-        android:text="@string/msg_demo_subject"
+        android:text="@string/msg_demo_debounce"
         />
 
     <LinearLayout
@@ -22,7 +22,7 @@
         >
 
         <EditText
-            android:id="@+id/input_txt_subject_debounce"
+            android:id="@+id/input_txt_debounce"
             android:layout_weight="7"
             android:layout_height="match_parent"
             android:layout_width="0dp"
@@ -32,7 +32,7 @@
             />
 
         <ImageButton
-            android:id="@+id/clr_subject_debounce"
+            android:id="@+id/clr_debounce"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_width="0dp"

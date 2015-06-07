@@ -23,7 +23,6 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.android.widget.OnTextChangeEvent;
 import rx.android.widget.WidgetObservable;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static java.lang.String.format;
@@ -33,7 +32,7 @@ public class DebounceSearchEmitterFragment
       extends BaseFragment {
 
     @InjectView(R.id.list_threading_log) ListView _logsList;
-    @InjectView(R.id.input_txt_subject_debounce) EditText _inputSearchText;
+    @InjectView(R.id.input_txt_debounce) EditText _inputSearchText;
 
     private LogAdapter _adapter;
     private List<String> _logs;
@@ -52,12 +51,12 @@ public class DebounceSearchEmitterFragment
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_subject_debounce, container, false);
+        View layout = inflater.inflate(R.layout.fragment_debounce, container, false);
         ButterKnife.inject(this, layout);
         return layout;
     }
 
-    @OnClick(R.id.clr_subject_debounce)
+    @OnClick(R.id.clr_debounce)
     public void onClearLog() {
         _logs = new ArrayList<>();
         _adapter.clear();

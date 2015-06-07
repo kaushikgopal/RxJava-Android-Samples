@@ -32,10 +32,10 @@
             />
 
         <Button
-            android:id="@+id/btn_demo_subject_debounce"
+            android:id="@+id/btn_demo_debounce"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="@string/btn_demo_subject_debounce"
+            android:text="@string/btn_demo_debounce"
             />
 
         <Button

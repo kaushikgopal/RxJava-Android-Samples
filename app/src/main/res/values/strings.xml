@@ -8,7 +8,7 @@
 
     <string name="btn_demo_schedulers">bg work (schedulers &amp; concurrency)</string>
     <string name="btn_demo_buffer">accumulate calls (buffer)</string>
-    <string name="btn_demo_subject_debounce">search text listener(subject debouncing)</string>
+    <string name="btn_demo_debounce">search text listener(debounce)</string>
     <string name="btn_demo_timeout">delayed jobs (timeout)</string>
     <string name="btn_demo_retrofit">Retrofit + RxJava</string>
     <string name="btn_demo_double_binding_textview">Double binding (PublishSubject)</string>
@@ -20,7 +20,7 @@
 
     <string name="msg_demo_concurrency_schedulers">This is a demo of how long running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava! \n\n To really see this shine. Hit the button multiple times and see how the button click which is a ui operation is never blocked because the long operation only runs in the background</string>
     <string name="msg_demo_buffer">This is a demo of how events can be accumulated using the "buffer" operation. Tap the button below repetitively and you will notice in the logs that button taps are collected over a span of 2s and printed below.</string>
-    <string name="msg_demo_subject">As you type in the input box, it will not shoot out log messages at every single input character change, but rather only pick the last one.</string>
+    <string name="msg_demo_debounce">As you type in the input box, it will not shoot out log messages at every single input character change, but rather only pick the last one.</string>
     <string name="msg_demo_timeout">This is a demo of terminating events, that take too long to process. Events in this demo should timeout in 3 seconds. Button 1 is an event that takes 2s to process, and Button 2 is a n event that takes 5s to process. Hit Button 2, and see in the logs that it\'s been cancelled, while this is not the case for Button 1.</string>
     <string name="msg_demo_retrofit">Retrofit from Square is a super easy networking helper library. It works really well with RxJava and these are examples taken from Jake Wharton\'s talk at Netflix (see README). Really the only interesting bits here are in the code and logs.</string>
     <string name="msg_demo_retrofit_async_task_death">This shows how you can replace an AsyncTask with RxJava. The interesting parts are in the code.</string>

@@ -41,7 +41,7 @@ public class MainFragment
               .commit();
     }
 
-    @OnClick(R.id.btn_demo_subject_debounce)
+    @OnClick(R.id.btn_demo_debounce)
     public void demoThrottling() {
         getActivity().getSupportFragmentManager()
               .beginTransaction()
