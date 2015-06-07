@@ -47,7 +47,7 @@ public class MainFragment
               .beginTransaction()
               .addToBackStack(this.toString())
               .replace(R.id.activity_main,
-                    new SubjectDebounceSearchEmitterFragment(),
+                    new DebounceSearchEmitterFragment(),
                     this.toString())
               .commit();
     }

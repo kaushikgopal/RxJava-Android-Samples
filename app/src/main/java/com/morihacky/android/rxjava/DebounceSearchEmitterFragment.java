@@ -29,7 +29,7 @@ import timber.log.Timber;
 import static java.lang.String.format;
 import static rx.android.app.AppObservable.bindFragment;
 
-public class SubjectDebounceSearchEmitterFragment
+public class DebounceSearchEmitterFragment
       extends BaseFragment {
 
     @InjectView(R.id.list_threading_log) ListView _logsList;
