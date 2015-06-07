@@ -29,23 +29,6 @@ import timber.log.Timber;
 import static java.lang.String.format;
 import static rx.android.app.AppObservable.bindFragment;
 
-/**
- * The reason we use a Subject for tracking the search query is because it emits observables.
- * Because a Subject subscribes to an Observable, it will trigger that Observable to begin emitting items
- * (if that Observable is "cold" — that is, if it waits for a subscription before it begins to emit items).
- * This can have the effect of making the resulting Subject a "hot" Observable variant of the original "cold" Observable.
- *
- * This allows us to create the subject and subscription one time onActivity creation
- * Subsequently we send in Observables to the Subject's subscriber onTextChanged
- *
- * (unlike the way it's done in {@link com.morihacky.android.rxjava.ConcurrencyWithSchedulersDemoFragment#startLongOperation()})
- * where we create the subscription on every single event change (OnClick or OnTextchanged) which is
- *
- * wasteful!                : not really since we anyway unsubscribe in OnDestroyView
- * less-elegant             : as a concept for sure
- * simpler actually         : adds one more step in the 3 step subscription process, where we create emitter, and then send observables to that emitter)
- * incapable of debounce    : this is the primary reason, since creating new observable everytime in subscription disregards debounce on subsequent calls
- */
 public class SubjectDebounceSearchEmitterFragment
       extends BaseFragment {
 
