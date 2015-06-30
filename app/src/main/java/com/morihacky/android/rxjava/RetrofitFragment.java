@@ -13,7 +13,6 @@ import android.widget.ListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.User;
@@ -27,6 +26,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.functions.Func2;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -41,11 +41,25 @@ public class RetrofitFragment
 
     private GithubApi _api;
     private ArrayAdapter<String> _adapter;
+    private CompositeSubscription _subscriptions = new CompositeSubscription();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         _api = _createGithubApi();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        _subscriptions = RxUtils.getNewCompositeSubIfUnsubscribed(_subscriptions);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        RxUtils.unsubscribeIfNotNull(_subscriptions);
     }
 
     @Override
@@ -70,42 +84,45 @@ public class RetrofitFragment
     public void onListContributorsClicked() {
         _adapter.clear();
 
-        _api.contributors(_username.getText().toString(), _repo.getText().toString())
-              .subscribeOn(Schedulers.io())
-              .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(new Observer<List<Contributor>>() {
-                  @Override
-                  public void onCompleted() {
-                      Timber.d("Retrofit call 1 completed");
-                  }
+        _subscriptions.add(//
+              _api.contributors(_username.getText().toString(), _repo.getText().toString())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<List<Contributor>>() {
+                        @Override
+                        public void onCompleted() {
+                            Timber.d("Retrofit call 1 completed");
+                        }
 
-                  @Override
-                  public void onError(Throwable e) {
-                      Timber.e(e, "woops we got an error while getting the list of contributors");
-                  }
+                        @Override
+                        public void onError(Throwable e) {
+                            Timber.e(e,
+                                  "woops we got an error while getting the list of contributors");
+                        }
 
-                  @Override
-                  public void onNext(List<Contributor> contributors) {
-                      for (Contributor c : contributors) {
-                          _adapter.add(format("%s has made %d contributions to %s",
-                                c.login,
-                                c.contributions,
-                                _repo.getText().toString()));
+                        @Override
+                        public void onNext(List<Contributor> contributors) {
+                            for (Contributor c : contributors) {
+                                _adapter.add(format("%s has made %d contributions to %s",
+                                      c.login,
+                                      c.contributions,
+                                      _repo.getText().toString()));
 
-                          Timber.d("%s has made %d contributions to %s",
-                                c.login,
-                                c.contributions,
-                                _repo.getText().toString());
-                      }
-                  }
-              });
+                                Timber.d("%s has made %d contributions to %s",
+                                      c.login,
+                                      c.contributions,
+                                      _repo.getText().toString());
+                            }
+                        }
+                    }));
     }
 
     @OnClick(R.id.btn_demo_retrofit_contributors_with_user_info)
     public void onListContributorsWithFullUserInfoClicked() {
         _adapter.clear();
 
-        _api.contributors(_username.getText().toString(), _repo.getText().toString())
+        _subscriptions.add(_api.contributors(_username.getText().toString(),
+              _repo.getText().toString())
               .flatMap(new Func1<List<Contributor>, Observable<Contributor>>() {
                   @Override
                   public Observable<Contributor> call(List<Contributor> contributors) {
@@ -167,7 +184,7 @@ public class RetrofitFragment
                             contributor.contributions,
                             _repo.getText().toString());
                   }
-              });
+              }));
     }
 
     // -----------------------------------------------------------------------------------
