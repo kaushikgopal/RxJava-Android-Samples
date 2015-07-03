@@ -112,6 +112,11 @@ Say you have a network failure. A sensible strategy would be to NOT keep retryin
 
 We simulate this behaviour using RxJava with the `retryWhen`
 
+`RetryWithDelay` code snippet courtesy:
+
+* http://stackoverflow.com/a/25292833/159825
+* Another excellent implementation via @[sddamico](https://github.com/sddamico) : https://gist.github.com/sddamico/c45d7cdabc41e663bea1
+
 #### "repeat" with exponential backoff
 
 Another variant of the exponential backoff strategy is to execute an operation repeatedly for a given number of times, but with delayed intervals. So you execute a certain operation 1 second from now, then you execute it again 10 seconds from now, then you execute the operation 20 seconds from now. After a grand total of 3 times you stop executing.

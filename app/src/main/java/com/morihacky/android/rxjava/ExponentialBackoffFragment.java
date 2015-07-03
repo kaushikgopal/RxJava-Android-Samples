@@ -67,9 +67,34 @@ public class ExponentialBackoffFragment
     public void startRetryingWithExponentialBackoffStrategy() {
         _logs = new ArrayList<>();
         _adapter.clear();
-    }
 
-    // -----------------------------------------------------------------------------------
+        _subscriptions.add(//
+              Observable//
+                    .error(new RuntimeException("testing")) // always fails
+                    .retryWhen(new RetryWithDelay(5, 1000))//
+                    .doOnSubscribe(new Action0() {
+                        @Override
+                        public void call() {
+                            _log("Attempting the impossible 5 times in intervals of 1s");
+                        }
+                    })//
+                    .subscribe(new Observer<Object>() {
+                        @Override
+                        public void onCompleted() {
+                            Timber.d("on Completed");
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            _log("Error: I give up!");
+                        }
+
+                        @Override
+                        public void onNext(Object aVoid) {
+                            Timber.d("on Next");
+                        }
+                    }));
+    }
 
     @OnClick(R.id.btn_eb_delay)
     public void startExecutingWithExponentialBackoffDelay() {
@@ -98,7 +123,7 @@ public class ExponentialBackoffFragment
                     .doOnSubscribe(new Action0() {
                         @Override
                         public void call() {
-                            _log(String.format("Execute 4 tasks with delay - time now: [xx:%2d]",
+                            _log(String.format("Execute 4 tasks with delay - time now: [xx:%02d]",
                                   _getSecondHand()));
                         }
                     })//
@@ -117,8 +142,10 @@ public class ExponentialBackoffFragment
 
                         @Override
                         public void onNext(Integer integer) {
-                            Timber.d("emitting %d [xx:%2d]", integer, _getSecondHand());
-                            _log(String.format("emitting %d  [xx:%2d]", integer, _getSecondHand()));
+                            Timber.d("executing Task %d [xx:%02d]", integer, _getSecondHand());
+                            _log(String.format("executing Task %d  [xx:%02d]",
+                                  integer,
+                                  _getSecondHand()));
 
                         }
                     }));
@@ -131,6 +158,8 @@ public class ExponentialBackoffFragment
         return (int) (TimeUnit.MILLISECONDS.toSeconds(millis) -
                       TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
     }
+
+    // -----------------------------------------------------------------------------------
 
     private void _setupLogger() {
         _logs = new ArrayList<>();
@@ -150,5 +179,52 @@ public class ExponentialBackoffFragment
                 _adapter.addAll(_logs);
             }
         });
+    }
+
+    // -----------------------------------------------------------------------------------
+
+    // CAUTION:
+    // --------------------------------------
+    // THIS class HAS NO BUSINESS BEING non-static
+    // I ONLY did this cause i wanted access to the `_log` method from inside here
+    // for the purpose of demonstration. In the real world, make it static and LET IT BE!!
+
+    // It's 12am in the morning and i feel lazy dammit !!!
+
+    //public static class RetryWithDelay
+    public class RetryWithDelay
+          implements Func1<Observable<? extends Throwable>, Observable<?>> {
+
+        private final int _maxRetries;
+        private final int _retryDelayMillis;
+        private int _retryCount;
+
+        public RetryWithDelay(final int maxRetries, final int retryDelayMillis) {
+            _maxRetries = maxRetries;
+            _retryDelayMillis = retryDelayMillis;
+            _retryCount = 0;
+        }
+
+        @Override
+        public Observable<?> call(Observable<? extends Throwable> attempts) {
+            return attempts.flatMap(new Func1<Throwable, Observable<?>>() {
+                @Override
+                public Observable<?> call(Throwable throwable) {
+                    if (++_retryCount < _maxRetries) {
+                        // When this Observable calls onNext, the original
+                        // Observable will be retried (i.e. re-subscribed).
+                        Timber.d("Retrying in %d ms", _retryCount * _retryDelayMillis);
+                        _log(String.format("Retrying in %d ms", _retryCount * _retryDelayMillis));
+
+                        return Observable.timer(_retryCount * _retryDelayMillis,
+                              TimeUnit.MILLISECONDS);
+                    }
+
+                    Timber.d("Argh! i give up");
+                    // Max retries hit. Just pass the error along.
+                    return Observable.error(throwable);
+                }
+            });
+        }
     }
 }
