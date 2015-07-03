@@ -95,7 +95,7 @@ After a [conversation I had with @artem_zin](https://twitter.com/kaushikgopal/st
 
 The `concat` (and the equivalent [`startWith`](http://reactivex.io/documentation/operators/startwith.html)) opeartor is strictly sequential, meaning all of the items emitted by the first Observable are emitted strictly before any of the items from the second Observable are emitted. So assuming the first observable (for some strange reason) takes really long to run through all its items, even if the first few items from the second observable have come down the wire it will forcibly be queued.
 
-The `merge` operator on the other hand interleaves items as they are emitted. The problem though is for some strange reason the same item is emitted by the cache or slower observable, it will overwrite the newer content. To account for this you have to monitor the "resultAge" somehow. This is demonstrated in the updated solution `PseudoCacheMergeFragment`.
+The `merge` operator on the other hand interleaves items as they are emitted. The problem here though is if for some strange reason an item is emitted by the cache or slower observable *after* the newer/fresher observable, it will overwrite the newer content. To account for this you have to monitor the "resultAge" somehow. This is demonstrated in the updated solution `PseudoCacheMergeFragment`.
 
 ### Simple Timing demos using timer/interval/delay
 
