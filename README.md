@@ -104,7 +104,7 @@ Cases demonstrated here:
 
 [Exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff) is a strategy where based on feedback from a certain output, we alter the rate of a process (usually reducing the number of retries or increasing the wait time before retrying or re-executing a certain process).
 
-The concept makes more sense with examples. RxJava makes it (relatively) simple to implement such a strategy.
+The concept makes more sense with examples. RxJava makes it (relatively) simple to implement such a strategy. My thanks to [Mike](https://twitter.com/m_evans10) for suggesting the idea.
 
 #### Retry (if error) with exponential backoff
 
