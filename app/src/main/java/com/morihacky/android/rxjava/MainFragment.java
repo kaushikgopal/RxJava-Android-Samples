@@ -109,7 +109,8 @@ public class MainFragment
         getActivity().getSupportFragmentManager()
               .beginTransaction()
               .addToBackStack(this.toString())
-              .replace(R.id.activity_main, new PseudoCacheConcatFragment(), this.toString())
+              //.replace(R.id.activity_main, new PseudoCacheConcatFragment(), this.toString())
+              .replace(R.id.activity_main, new PseudoCacheMergeFragment(), this.toString())
               .commit();
     }
 
