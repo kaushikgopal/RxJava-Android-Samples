@@ -100,9 +100,28 @@ Cases demonstrated here:
 3. run a task constantly every 1s (same as above but there's no delay before the first task fires off)
 4. run a task constantly every 3s, but after running it 5 times, terminate automatically
 
+### Exponential backoff
+
+[Exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff) is a strategy where based on feedback from a certain output we alter the rate of a process (usually reduce the number of retries or increase the wait time before retrying or re-executing a cetain process).
+
+It makes far more sense with examples, and RxJava makes it (relatively) simple to achieve such a strategy.
+
+#### retry (if error) with exponential backoff
+
+Say you have a network failure. A sensible strategy would be to NOT keep retrying your network call every 1 second. It would be smart instead (nay... elegant!) to retry with increasing delays. So you try at second 1 to execute the network call, no dice? try after 10 seconds... negatory? try after 20 seconds, no cookie? try after 1 minute. If this thing is still failing, you got to give up on the network yo!
+
+We simulate this behaviour using RxJava with the `retryWhen`
+
+#### "repeat" with exponential backoff
+
+Another variant of the exponential backoff strategy is to execute an operation repeatedly for a given number of times, but with delayed intervals. So you execute a certain operation 1 second from now, then you execute it again 10 seconds from now, then you execute the operation 20 seconds from now. After a grand total of 3 times you stop executing.
+
+Simulating this behavior is actually way more simpler than the retry mechanism. You can use a variant of the `delay` operator to achieve this.
+
 ## Work in Progress:
 
 Examples that I would like to have here, but haven't found the time yet to flush out.
+
 
 
 ### Pagination
