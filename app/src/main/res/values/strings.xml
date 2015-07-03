@@ -17,6 +17,7 @@
     <string name="btn_demo_form_validation_combinel">Form Validation with CombineLatest</string>
     <string name="btn_demo_pseudocache">Pseudo cache using concat</string>
     <string name="btn_demo_timing">Variations of timing/intervals/delays</string>
+    <string name="btn_demo_exponential_backoff">Exponential backoff</string>
 
     <string name="msg_demo_concurrency_schedulers">This is a demo of how long running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava! \n\n To really see this shine. Hit the button multiple times and see how the button click which is a ui operation is never blocked because the long operation only runs in the background</string>
     <string name="msg_demo_buffer">This is a demo of how events can be accumulated using the "buffer" operation. Tap the button below repetitively and you will notice in the logs that button taps are collected over a span of 2s and printed below.</string>
@@ -26,6 +27,7 @@
     <string name="msg_demo_retrofit_async_task_death">This shows how you can replace an AsyncTask with RxJava. The interesting parts are in the code.</string>
     <string name="msg_demo_doublebinding">Watch how the result gloriously auto-updates <ba></ba>sed on your changing inputs. Using a technique like this, you could achieve the two-way binding in Angular Js, or more efficiently use a pattern like the Presentation View Model.</string>
     <string name="msg_demo_polling">This is demo of polling or making a call repeatedly with RxJava. \n\nSimple polling: Notice in the logs how a network call (simulated) is repeatedly made in the background.</string>
+    <string name="msg_demo_exponential_backoff">These two examples demonstrate retrying and executing with a delay using an exponential backoff strategy.</string>
     <string name="msg_demo_rxbus_1">Tap on the below button and RxBus will listen to the events</string>
     <string name="msg_demo_form_comb_latest">Monitor the state of multiple observables with the combineLatest operator. Only after all the 3 inputs contain valid entries will the submit button light up</string>
     <string name="msg_demo_timing">BTN 1: run single task once (after 2s complete)\nBTN 2: run task every 1s (start delay of 1s) toggle \nBTN 3: run task every 1s (start immediately) toggle \nBTN 4: run task 5 times every 3s (then complete)</string>

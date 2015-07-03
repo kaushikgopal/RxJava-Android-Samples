@@ -46,20 +46,15 @@ public class MainFragment
         getActivity().getSupportFragmentManager()
               .beginTransaction()
               .addToBackStack(this.toString())
-              .replace(R.id.activity_main,
-                    new DebounceSearchEmitterFragment(),
-                    this.toString())
+              .replace(R.id.activity_main, new DebounceSearchEmitterFragment(), this.toString())
               .commit();
     }
 
     @OnClick(R.id.btn_demo_retrofit)
     public void demoRetrofitCalls() {
-        getActivity().getSupportFragmentManager()
-              .beginTransaction()
-              .addToBackStack(this.toString())
+        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(this.toString())
               //.replace(R.id.activity_main, new RetrofitAsyncTaskDeathFragment(), this.toString())
-              .replace(R.id.activity_main, new RetrofitFragment(), this.toString())
-              .commit();
+              .replace(R.id.activity_main, new RetrofitFragment(), this.toString()).commit();
     }
 
     @OnClick(R.id.btn_demo_double_binding_textview)
@@ -127,4 +122,12 @@ public class MainFragment
               .commit();
     }
 
+    @OnClick(R.id.btn_demo_exponential_backoff)
+    public void demoExponentialBackoff() {
+        getActivity().getSupportFragmentManager()
+              .beginTransaction()
+              .addToBackStack(this.toString())
+              .replace(R.id.activity_main, new ExponentialBackoffFragment(), this.toString())
+              .commit();
+    }
 }
