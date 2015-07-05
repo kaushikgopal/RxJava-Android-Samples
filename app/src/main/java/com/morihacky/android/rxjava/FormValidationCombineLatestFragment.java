@@ -7,115 +7,148 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+
 import com.morihacky.android.rxjava.R;
+
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.widget.OnTextChangeEvent;
 import rx.android.widget.WidgetObservable;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.functions.Func3;
+import rx.subscriptions.CompositeSubscription;
+import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
 import static android.util.Patterns.EMAIL_ADDRESS;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 public class FormValidationCombineLatestFragment
-      extends BaseFragment {
+        extends BaseFragment {
 
     @InjectView(R.id.btn_demo_form_valid) TextView _btnValidIndicator;
     @InjectView(R.id.demo_combl_email) EditText _email;
     @InjectView(R.id.demo_combl_password) EditText _password;
     @InjectView(R.id.demo_combl_num) EditText _number;
 
-    private Observable<OnTextChangeEvent> _emailChangeObservable;
-    private Observable<OnTextChangeEvent> _passwordChangeObservable;
-    private Observable<OnTextChangeEvent> _numberChangeObservable;
-
-    private Subscription _subscription = null;
+    private CompositeSubscription _subscriptions = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_form_validation_comb_latest,
-              container,
-              false);
+                container,
+                false);
         ButterKnife.inject(this, layout);
-
-        _emailChangeObservable = WidgetObservable.text(_email);
-        _passwordChangeObservable = WidgetObservable.text(_password);
-        _numberChangeObservable = WidgetObservable.text(_number);
-
-        _combineLatestEvents();
 
         return layout;
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        if (_subscription != null) {
-            _subscription.unsubscribe();
-        }
+    public void onResume() {
+        super.onResume();
+
+        Observable<Boolean> emailValidObservable = WidgetObservable.text(_email).map(new Func1<OnTextChangeEvent, Boolean>() {
+            @Override
+            public Boolean call(OnTextChangeEvent onTextChangeEvent) {
+                CharSequence text = onTextChangeEvent.text();
+                return !isNullOrEmpty(text.toString()) &&
+                        EMAIL_ADDRESS.matcher(text)
+                                .matches();
+            }
+        });
+
+        Observable<Boolean> passwordValidObservable = WidgetObservable.text(_password).map(new Func1<OnTextChangeEvent, Boolean>() {
+            @Override
+            public Boolean call(OnTextChangeEvent onTextChangeEvent) {
+                CharSequence text = onTextChangeEvent.text();
+                return !isNullOrEmpty(text.toString()) && text.length() > 8;
+            }
+        });
+
+        Observable<Boolean> numberValidObservable = WidgetObservable.text(_number).map(new Func1<OnTextChangeEvent, Boolean>() {
+            @Override
+            public Boolean call(OnTextChangeEvent onTextChangeEvent) {
+                String text = onTextChangeEvent.text().toString();
+                if (!isNullOrEmpty(text)) {
+                    int num = Integer.parseInt(text);
+                    return num > 0 && num <= 100;
+                } else {
+                    return false;
+                }
+            }
+        });
+
+        Subscription emailValidSubscription = emailValidObservable.subscribe(new Action1<Boolean>() {
+
+            @Override
+            public void call(Boolean isValid) {
+                _email.setError(isValid ? null : "Invalid Email!");
+            }
+        });
+
+        Subscription passwordValidSubscription = passwordValidObservable.subscribe(new Action1<Boolean>() {
+
+            @Override
+            public void call(Boolean isValid) {
+                _password.setError(isValid ? null : "Invalid Password!");
+            }
+        });
+
+        Subscription numberValidSubscription = numberValidObservable.subscribe(new Action1<Boolean>() {
+
+            @Override
+            public void call(Boolean isValid) {
+                _number.setError(isValid ? null : "Invalid Number!");
+            }
+        });
+
+        Subscription submitEnabledSubscription = Observable.combineLatest(emailValidObservable,
+                passwordValidObservable,
+                numberValidObservable,
+                new Func3<Boolean, Boolean, Boolean, Boolean>() {
+                    @Override
+                    public Boolean call(Boolean emailValid,
+                                        Boolean passwordValid,
+                                        Boolean numberValid) {
+
+                        return emailValid && passwordValid && numberValid;
+
+                    }
+                })
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("completed");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e, "there was an error");
+                    }
+
+                    @Override
+                    public void onNext(Boolean formValid) {
+                        if (formValid) {
+                            _btnValidIndicator.setBackgroundColor(getResources().getColor(R.color.blue));
+                        } else {
+                            _btnValidIndicator.setBackgroundColor(getResources().getColor(R.color.gray));
+                        }
+                    }
+                });
+
+        _subscriptions = Subscriptions.from(emailValidSubscription, passwordValidSubscription, numberValidSubscription, submitEnabledSubscription);
     }
 
-    private void _combineLatestEvents() {
-        _subscription = Observable.combineLatest(_emailChangeObservable,
-              _passwordChangeObservable,
-              _numberChangeObservable,
-              new Func3<OnTextChangeEvent, OnTextChangeEvent, OnTextChangeEvent, Boolean>() {
-                  @Override
-                  public Boolean call(OnTextChangeEvent onEmailChangeEvent,
-                                      OnTextChangeEvent onPasswordChangeEvent,
-                                      OnTextChangeEvent onNumberChangeEvent) {
-
-                      boolean emailValid = !isNullOrEmpty(onEmailChangeEvent.text().toString()) &&
-                                           EMAIL_ADDRESS.matcher(onEmailChangeEvent.text())
-                                                 .matches();
-                      if (!emailValid) {
-                          _email.setError("Invalid Email!");
-                      }
-
-                      boolean passValid = !isNullOrEmpty(onPasswordChangeEvent.text().toString()) &&
-                                          onPasswordChangeEvent.text().length() > 8;
-                      if (!passValid) {
-                          _password.setError("Invalid Password!");
-                      }
-
-                      boolean numValid = !isNullOrEmpty(onNumberChangeEvent.text().toString());
-                      if (numValid) {
-                          int num = Integer.parseInt(onNumberChangeEvent.text().toString());
-                          numValid = num > 0 && num <= 100;
-                      }
-                      if (!numValid) {
-                          _number.setError("Invalid Number!");
-                      }
-
-                      return emailValid && passValid && numValid;
-
-                  }
-              })//
-              .subscribe(new Observer<Boolean>() {
-                  @Override
-                  public void onCompleted() {
-                      Timber.d("completed");
-                  }
-
-                  @Override
-                  public void onError(Throwable e) {
-                      Timber.e(e, "there was an eroor");
-                  }
-
-                  @Override
-                  public void onNext(Boolean formValid) {
-                      if (formValid) {
-                          _btnValidIndicator.setBackgroundColor(getResources().getColor(R.color.blue));
-                      } else {
-                          _btnValidIndicator.setBackgroundColor(getResources().getColor(R.color.gray));
-                      }
-                  }
-              });
+    @Override
+    public void onPause() {
+        super.onPause();
+        _subscriptions.unsubscribe();
     }
 }
