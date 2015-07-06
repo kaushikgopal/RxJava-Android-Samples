@@ -3,7 +3,6 @@ package com.morihacky.android.rxjava;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import com.morihacky.android.rxjava.rxbus.RxBus;
-import timber.log.Timber;
 
 public class MainActivity
       extends FragmentActivity {
@@ -22,14 +21,10 @@ public class MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        Timber.plant(new Timber.DebugTree());
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                  .addToBackStack(this.toString())
-                  .replace(R.id.activity_main, new MainFragment(), this.toString())
+                  .replace(android.R.id.content, new MainFragment(), this.toString())
                   .commit();
         }
     }

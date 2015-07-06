@@ -25,10 +25,10 @@ public class MainFragment
     public void demoConcurrencyWithSchedulers() {
         getActivity().getSupportFragmentManager()
               .beginTransaction()
-              .addToBackStack(this.toString())
-              .replace(R.id.activity_main,
+              .addToBackStack(ConcurrencyWithSchedulersDemoFragment.class.getName())
+              .replace(android.R.id.content,
                     new ConcurrencyWithSchedulersDemoFragment(),
-                    this.toString())
+                    ConcurrencyWithSchedulersDemoFragment.class.getName())
               .commit();
     }
 
@@ -36,8 +36,10 @@ public class MainFragment
     public void demoBuffer() {
         getActivity().getSupportFragmentManager()
               .beginTransaction()
-              .addToBackStack(this.toString())
-              .replace(R.id.activity_main, new BufferDemoFragment(), this.toString())
+              .addToBackStack(BufferDemoFragment.class.toString())
+              .replace(android.R.id.content,
+                    new BufferDemoFragment(),
+                    BufferDemoFragment.class.toString())
               .commit();
     }
 
@@ -45,24 +47,31 @@ public class MainFragment
     public void demoThrottling() {
         getActivity().getSupportFragmentManager()
               .beginTransaction()
-              .addToBackStack(this.toString())
-              .replace(R.id.activity_main, new DebounceSearchEmitterFragment(), this.toString())
+              .addToBackStack(DebounceSearchEmitterFragment.class.toString())
+              .replace(android.R.id.content,
+                    new DebounceSearchEmitterFragment(),
+                    DebounceSearchEmitterFragment.class.toString())
               .commit();
     }
 
     @OnClick(R.id.btn_demo_retrofit)
     public void demoRetrofitCalls() {
-        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(this.toString())
-              //.replace(R.id.activity_main, new RetrofitAsyncTaskDeathFragment(), this.toString())
-              .replace(R.id.activity_main, new RetrofitFragment(), this.toString()).commit();
+        getActivity().getSupportFragmentManager()
+              .beginTransaction().addToBackStack(RetrofitFragment.class.toString())
+              //.replace(android.R.id.content, new RetrofitAsyncTaskDeathFragment(), RetrofitAsyncTaskDeathFragment.class.toString())
+              .replace(android.R.id.content,
+                    new RetrofitFragment(),
+                    RetrofitFragment.class.toString()).commit();
     }
 
     @OnClick(R.id.btn_demo_double_binding_textview)
     public void demoDoubleBindingWithPublishSubject() {
         getActivity().getSupportFragmentManager()
               .beginTransaction()
-              .addToBackStack(this.toString())
-              .replace(R.id.activity_main, new DoubleBindingTextViewFragment(), this.toString())
+              .addToBackStack(DoubleBindingTextViewFragment.class.toString())
+              .replace(android.R.id.content,
+                    new DoubleBindingTextViewFragment(),
+                    DoubleBindingTextViewFragment.class.toString())
               .commit();
     }
 
@@ -70,8 +79,8 @@ public class MainFragment
     public void demoPolling() {
         getActivity().getSupportFragmentManager()
               .beginTransaction()
-              .addToBackStack(this.toString())
-              .replace(R.id.activity_main, new PollingFragment(), this.toString())
+              .addToBackStack(PollingFragment.class.toString())
+              .replace(android.R.id.content, new PollingFragment(), PollingFragment.class.toString())
               .commit();
     }*/
 
@@ -79,8 +88,10 @@ public class MainFragment
     public void demoRxBus() {
         getActivity().getSupportFragmentManager()
               .beginTransaction()
-              .addToBackStack(this.toString())
-              .replace(R.id.activity_main, new RxBusDemoFragment(), this.toString())
+              .addToBackStack(RxBusDemoFragment.class.toString())
+              .replace(android.R.id.content,
+                    new RxBusDemoFragment(),
+                    RxBusDemoFragment.class.toString())
               .commit();
     }
 
@@ -88,8 +99,10 @@ public class MainFragment
     public void demoTimeout() {
         getActivity().getSupportFragmentManager()
               .beginTransaction()
-              .addToBackStack(this.toString())
-              .replace(R.id.activity_main, new TimeoutDemoFragment(), this.toString())
+              .addToBackStack(TimeoutDemoFragment.class.toString())
+              .replace(android.R.id.content,
+                    new TimeoutDemoFragment(),
+                    TimeoutDemoFragment.class.toString())
               .commit();
     }
 
@@ -97,29 +110,31 @@ public class MainFragment
     public void formValidation() {
         getActivity().getSupportFragmentManager()
               .beginTransaction()
-              .addToBackStack(this.toString())
-              .replace(R.id.activity_main,
+              .addToBackStack(FormValidationCombineLatestFragment.class.toString())
+              .replace(android.R.id.content,
                     new FormValidationCombineLatestFragment(),
-                    this.toString())
+                    FormValidationCombineLatestFragment.class.toString())
               .commit();
     }
 
     @OnClick(R.id.btn_demo_pseudo_cache)
     public void pseudoCacheDemo() {
-        getActivity().getSupportFragmentManager()
-              .beginTransaction()
-              .addToBackStack(this.toString())
-              //.replace(R.id.activity_main, new PseudoCacheConcatFragment(), this.toString())
-              .replace(R.id.activity_main, new PseudoCacheMergeFragment(), this.toString())
-              .commit();
+        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(
+              PseudoCacheMergeFragment.class.toString())
+              //.replace(android.R.id.content, new PseudoCacheConcatFragment(), PseudoCacheConcatFragment.class.toString())
+              .replace(android.R.id.content,
+                    new PseudoCacheMergeFragment(),
+                    PseudoCacheMergeFragment.class.toString()).commit();
     }
 
     @OnClick(R.id.btn_demo_timing)
     public void demoTimerIntervalDelays() {
         getActivity().getSupportFragmentManager()
               .beginTransaction()
-              .addToBackStack(this.toString())
-              .replace(R.id.activity_main, new TimingDemoFragment(), this.toString())
+              .addToBackStack(TimingDemoFragment.class.toString())
+              .replace(android.R.id.content,
+                    new TimingDemoFragment(),
+                    TimingDemoFragment.class.toString())
               .commit();
     }
 
@@ -127,8 +142,10 @@ public class MainFragment
     public void demoExponentialBackoff() {
         getActivity().getSupportFragmentManager()
               .beginTransaction()
-              .addToBackStack(this.toString())
-              .replace(R.id.activity_main, new ExponentialBackoffFragment(), this.toString())
+              .addToBackStack(ExponentialBackoffFragment.class.toString())
+              .replace(android.R.id.content,
+                    new ExponentialBackoffFragment(),
+                    ExponentialBackoffFragment.class.toString())
               .commit();
     }
 }
