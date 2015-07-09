@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
 import rx.Observer;
+import rx.functions.Action0;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -84,9 +85,14 @@ public class RotationPersistFragment
 
     @Override
     public void observeResults(Observable<Integer> ints) {
-        Timber.d("observable instance ints %s", ints.toString());
+        Timber.d("---- observable instance ints %s", ints.toString());
 
-        _subscriptions.add(ints.subscribe(new Observer<Integer>() {
+        _subscriptions.add(ints.doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+                _log("Subscribing to ints");
+            }
+        }).subscribe(new Observer<Integer>() {
             @Override
             public void onCompleted() {
                 _log("Observable is complete");
