@@ -148,4 +148,15 @@ public class MainFragment
                     ExponentialBackoffFragment.class.toString())
               .commit();
     }
+
+    @OnClick(R.id.btn_demo_rotation_persist)
+    public void demoRotationPersist() {
+        getActivity().getSupportFragmentManager()
+              .beginTransaction()
+              .addToBackStack(RotationPersistFragment.class.toString())
+              .replace(android.R.id.content,
+                    new RotationPersistFragment(),
+                    RotationPersistFragment.class.toString())
+              .commit();
+    }
 }

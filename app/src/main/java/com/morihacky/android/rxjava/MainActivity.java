@@ -24,7 +24,8 @@ public class MainActivity
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                  .replace(android.R.id.content, new MainFragment(), this.toString())
+                  //.replace(android.R.id.content, new MainFragment(), this.toString())
+                  .replace(android.R.id.content, new RotationPersistFragment(), this.toString())
                   .commit();
         }
     }

@@ -18,6 +18,7 @@
     <string name="btn_demo_pseudocache">Pseudo cache using concat</string>
     <string name="btn_demo_timing">Variations of timing/intervals/delays</string>
     <string name="btn_demo_exponential_backoff">Exponential backoff</string>
+    <string name="btn_demo_rotation_persist">Rotation persist</string>
 
     <string name="msg_demo_concurrency_schedulers">This is a demo of how long running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava! \n\n To really see this shine. Hit the button multiple times and see how the button click which is a ui operation is never blocked because the long operation only runs in the background</string>
     <string name="msg_demo_buffer">This is a demo of how events can be accumulated using the "buffer" operation. Tap the button below repetitively and you will notice in the logs that button taps are collected over a span of 2s and printed below.</string>
@@ -31,4 +32,5 @@
     <string name="msg_demo_rxbus_1">Tap on the below button and RxBus will listen to the events</string>
     <string name="msg_demo_form_comb_latest">Monitor the state of multiple observables with the combineLatest operator. Only after all the 3 inputs contain valid entries will the submit button light up</string>
     <string name="msg_demo_timing">BTN 1: run single task once (after 2s complete)\nBTN 2: run task every 1s (start delay of 1s) toggle \nBTN 3: run task every 1s (start immediately) toggle \nBTN 4: run task 5 times every 3s (then complete)</string>
+    <string name="msg_demo_rotation_persist">This is an example of starting an Observable and using the result across rotations. There are many ways to do this, we use a retained fragment in this example</string>
 </resources>
