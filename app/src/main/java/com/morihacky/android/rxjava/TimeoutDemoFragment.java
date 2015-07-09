@@ -57,7 +57,7 @@ public class TimeoutDemoFragment
 
     @OnClick(R.id.btn_demo_timeout_1_2s)
     public void onStart2sTask() {
-        _subscription = AppObservable.bindFragment(TimeoutDemoFragment.this,
+        _subscription = AppObservable.bindSupportFragment(TimeoutDemoFragment.this,
               _getObservableTask_2sToComplete())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(_getEventCompletionObserver());
@@ -65,7 +65,7 @@ public class TimeoutDemoFragment
 
     @OnClick(R.id.btn_demo_timeout_1_5s)
     public void onStart5sTask() {
-        _subscription = AppObservable.bindFragment(TimeoutDemoFragment.this,
+        _subscription = AppObservable.bindSupportFragment(TimeoutDemoFragment.this,
               _getObservableFor5sTask())
               .timeout(2, TimeUnit.SECONDS, _getTimeoutObservable())
               .subscribeOn(Schedulers.computation())

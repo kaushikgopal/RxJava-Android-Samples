@@ -64,7 +64,7 @@ public class ConcurrencyWithSchedulersDemoFragment
         _progress.setVisibility(View.VISIBLE);
         _log("Button Clicked");
 
-        _subscription = AppObservable.bindFragment(this, _getObservable())      // Observable
+        _subscription = AppObservable.bindSupportFragment(this, _getObservable())      // Observable
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(_getObserver());                             // Observer

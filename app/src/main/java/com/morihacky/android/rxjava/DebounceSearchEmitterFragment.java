@@ -27,6 +27,7 @@ import timber.log.Timber;
 
 import static java.lang.String.format;
 import static rx.android.app.AppObservable.bindFragment;
+import static rx.android.app.AppObservable.bindSupportFragment;
 
 public class DebounceSearchEmitterFragment
       extends BaseFragment {
@@ -70,7 +71,7 @@ public class DebounceSearchEmitterFragment
 
         Observable<OnTextChangeEvent> textChangeObservable = WidgetObservable.text(_inputSearchText);
 
-        _subscription = bindFragment(this,//
+        _subscription = bindSupportFragment(this,//
               textChangeObservable//
                     .debounce(400, TimeUnit.MILLISECONDS)// default Scheduler is Computation
                     .observeOn(AndroidSchedulers.mainThread()))//
