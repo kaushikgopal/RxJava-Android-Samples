@@ -26,7 +26,10 @@ public class RotationPersistFragment
       extends BaseFragment
       implements RotationPersistWorkerFragment.IAmYourMaster {
 
+    public static final String FRAG_TAG = RotationPersistWorkerFragment.class.getName();
+
     @InjectView(R.id.list_threading_log) ListView _logList;
+
     private LogAdapter _adapter;
     private List<String> _logs;
 
@@ -56,7 +59,6 @@ public class RotationPersistFragment
     @Override
     public void onPause() {
         super.onPause();
-
         RxUtils.unsubscribeIfNotNull(_subscriptions);
     }
 
@@ -67,48 +69,44 @@ public class RotationPersistFragment
         _logs = new ArrayList<>();
         _adapter.clear();
 
-        String FRAG_TAG = RotationPersistWorkerFragment.class.getName();
         FragmentManager fm = getActivity().getSupportFragmentManager();
         RotationPersistWorkerFragment frag =//
               (RotationPersistWorkerFragment) fm.findFragmentByTag(FRAG_TAG);
 
         if (frag == null) {
-            Timber.d("---- never created frag before");
-
-            // we've never created the frag before
             frag = new RotationPersistWorkerFragment();
             fm.beginTransaction().add(frag, FRAG_TAG).commit();
         } else {
-            Timber.d("---- Worker frag already spawned");
+            Timber.d("Worker frag already spawned");
         }
     }
 
     @Override
     public void observeResults(Observable<Integer> ints) {
-        Timber.d("---- observable instance ints %s", ints.toString());
 
-        _subscriptions.add(ints.doOnSubscribe(new Action0() {
-            @Override
-            public void call() {
-                _log("Subscribing to ints");
-            }
-        }).subscribe(new Observer<Integer>() {
-            @Override
-            public void onCompleted() {
-                _log("Observable is complete");
-            }
+        _subscriptions.add(//
+              ints.doOnSubscribe(new Action0() {
+                  @Override
+                  public void call() {
+                      _log("Subscribing to ints");
+                  }
+              }).subscribe(new Observer<Integer>() {
+                  @Override
+                  public void onCompleted() {
+                      _log("Observable is complete");
+                  }
 
-            @Override
-            public void onError(Throwable e) {
-                Timber.e(e, "Error in worker demo frag observable");
-                _log("Dang! something went wrong.");
-            }
+                  @Override
+                  public void onError(Throwable e) {
+                      Timber.e(e, "Error in worker demo frag observable");
+                      _log("Dang! something went wrong.");
+                  }
 
-            @Override
-            public void onNext(Integer integer) {
-                _log(String.format("Worker frag spits out - %d", integer));
-            }
-        }));
+                  @Override
+                  public void onNext(Integer integer) {
+                      _log(String.format("Worker frag spits out - %d", integer));
+                  }
+              }));
     }
 
     // -----------------------------------------------------------------------------------

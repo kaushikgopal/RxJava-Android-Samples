@@ -131,6 +131,16 @@ Another variant of the exponential backoff strategy is to execute an operation f
 
 Simulating this behavior is actually way more simpler than the prevoius retry mechanism. You can use a variant of the `delay` operator to achieve this.
 
+### Rotation Persist
+
+A common question that's asked when using RxJava in Android is, "how do i resume the work of an observable if a configuration change occurs (activity rotation, language locale change etc.)?".
+
+This example shows you one strategy viz. using retained Fragments. I started using retained fragments as "worker fragments" after reading this [fantastic post by Alex Lockwood](http://www.androiddesignpatterns.com/2013/04/retaining-objects-across-config-changes.html) quite sometime back.
+
+Hit the start button and rotate the screen to your heart's content; you'll see the observable continue from where it left out.
+
+*There are certain quirks about the source "hot" observable used in this example. Watch out for a blog post where i explain the specifics. I would NOT suggest using this strategy for intentionally making your observables hot.*
+
 ## Work in Progress:
 
 Examples that I would like to have here, but haven't found the time yet to flush out.

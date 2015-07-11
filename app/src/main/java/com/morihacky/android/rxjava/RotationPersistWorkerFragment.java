@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.functions.Func1;
-import timber.log.Timber;
 
 public class RotationPersistWorkerFragment
       extends Fragment {
@@ -16,7 +15,7 @@ public class RotationPersistWorkerFragment
     private IAmYourMaster _masterFrag;
 
     /**
-     * hold a reference to the activity -> caller fragment
+     * Hold a reference to the activity -> caller fragment
      * this way when the worker frag kicks off
      * we can talk back to the master and send results
      */
@@ -24,13 +23,7 @@ public class RotationPersistWorkerFragment
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        _masterFrag = (RotationPersistFragment) getActivity().getSupportFragmentManager()
-              .findFragmentByTag(RotationPersistFragment.class.getName());
-
         List<Fragment> frags = ((MainActivity) activity).getSupportFragmentManager().getFragments();
-
-        Timber.d("---- there are currently %d fragments attached", frags.size());
-
         for (Fragment f : frags) {
             if (f instanceof IAmYourMaster) {
                 _masterFrag = (IAmYourMaster) f;
@@ -38,13 +31,12 @@ public class RotationPersistWorkerFragment
         }
 
         if (_masterFrag == null) {
-            throw new ClassCastException("We did not find a master who can understand us :( !");
+            throw new ClassCastException("We did not find a master who can understand us :(");
         }
     }
 
     /**
-     * This method will only be called once when the retained
-     * Fragment is first created.
+     * This method will only be called once when the retained Fragment is first created.
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,8 +49,6 @@ public class RotationPersistWorkerFragment
             return;
         }
 
-        // Create and execute the "Hot" observable
-        Timber.d("---- Creating a new ints observable");
         _intsObservable =//
               Observable.interval(1, TimeUnit.SECONDS)//
                     .map(new Func1<Long, Integer>() {
@@ -67,13 +57,16 @@ public class RotationPersistWorkerFragment
                             return aLong.intValue();
                         }
                     })//
-                    .take(20);// cause i don't want this thing to run indefinitely
+                    .take(20);
 
         // -----------------------------------------------------------------------------------
         // Making our observable "HOT" for the purpose of the demo.
 
         _intsObservable = _intsObservable.share();
-        // Do not do this in production! (i blame Jake Wharton for giving me this clever idea)
+
+        // Do not do this in production!
+        // `.share` is "warm" not "hot"
+        // the below forceful subscription fakes the heat
         _intsObservable.subscribe();
     }
 
