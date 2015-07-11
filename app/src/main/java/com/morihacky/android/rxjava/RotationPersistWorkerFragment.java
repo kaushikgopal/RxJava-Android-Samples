@@ -16,7 +16,7 @@ public class RotationPersistWorkerFragment
     private IAmYourMaster _masterFrag;
 
     /**
-     * hold a refernce to the activity -> caller fragment
+     * hold a reference to the activity -> caller fragment
      * this way when the worker frag kicks off
      * we can talk back to the master and send results
      */
@@ -53,7 +53,6 @@ public class RotationPersistWorkerFragment
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
 
-
         if (_intsObservable != null) {
             return;
         }
@@ -68,8 +67,14 @@ public class RotationPersistWorkerFragment
                             return aLong.intValue();
                         }
                     })//
-                    .take(20)// cause i don't want this thing to run indefinitely
-                    .share(); // we need a "hot" observable for demoing the example
+                    .take(20);// cause i don't want this thing to run indefinitely
+
+        // -----------------------------------------------------------------------------------
+        // Making our observable "HOT" for the purpose of the demo.
+
+        _intsObservable = _intsObservable.share();
+        // Do not do this in production! (i blame Jake Wharton for giving me this clever idea)
+        _intsObservable.subscribe();
     }
 
     /**
