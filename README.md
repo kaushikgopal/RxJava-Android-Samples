@@ -137,7 +137,7 @@ A common question that's asked when using RxJava in Android is, "how do i resume
 
 This example shows you one strategy viz. using retained Fragments. I started using retained fragments as "worker fragments" after reading this [fantastic post by Alex Lockwood](http://www.androiddesignpatterns.com/2013/04/retaining-objects-across-config-changes.html) quite sometime back.
 
-Hit the start button and rotate the screen to your heart's content; you'll see the observable continue from where it left out.
+Hit the start button and rotate the screen to your heart's content; you'll see the observable continue from where it left off.
 
 *There are certain quirks about the "hotness" of the source observable used in this example. Check [my blog post](http://blog.kaush.co/2015/07/11/a-note-about-the-warmth-share-operator/) out where I explain the specifics.*
 
