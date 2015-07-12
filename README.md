@@ -139,12 +139,11 @@ This example shows you one strategy viz. using retained Fragments. I started usi
 
 Hit the start button and rotate the screen to your heart's content; you'll see the observable continue from where it left out.
 
-*There are certain quirks about the source "hot" observable used in this example. Watch out for a blog post where i explain the specifics. I would NOT suggest using this strategy for intentionally making your observables hot.*
+*There are certain quirks about the "hotness" of the source observable used in this example. Check [my blog post](http://blog.kaush.co/2015/07/11/a-note-about-the-warmth-share-operator/) out where I explain the specifics.*
 
 ## Work in Progress:
 
 Examples that I would like to have here, but haven't found the time yet to flush out.
-
 
 
 ### Pagination
