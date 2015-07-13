@@ -7,11 +7,12 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.functions.Func1;
+import rx.observables.ConnectableObservable;
 
 public class RotationPersistWorkerFragment
       extends Fragment {
 
-    private Observable<Integer> _intsObservable;
+    private ConnectableObservable<Integer> storedIntsObservable;
     private IAmYourMaster _masterFrag;
 
     /**
@@ -45,11 +46,11 @@ public class RotationPersistWorkerFragment
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
 
-        if (_intsObservable != null) {
+        if (storedIntsObservable != null) {
             return;
         }
 
-        _intsObservable =//
+        Observable<Integer> intsObservable =//
               Observable.interval(1, TimeUnit.SECONDS)//
                     .map(new Func1<Long, Integer>() {
                         @Override
@@ -62,12 +63,13 @@ public class RotationPersistWorkerFragment
         // -----------------------------------------------------------------------------------
         // Making our observable "HOT" for the purpose of the demo.
 
-        _intsObservable = _intsObservable.share();
+        //_intsObservable = _intsObservable.share();
+        storedIntsObservable = intsObservable.replay();
 
         // Do not do this in production!
         // `.share` is "warm" not "hot"
         // the below forceful subscription fakes the heat
-        _intsObservable.subscribe();
+        //_intsObservable.subscribe();
     }
 
     /**
@@ -76,7 +78,7 @@ public class RotationPersistWorkerFragment
     @Override
     public void onStart() {
         super.onStart();
-        _masterFrag.observeResults(_intsObservable);
+        _masterFrag.observeResults(storedIntsObservable);
     }
 
     /**
@@ -90,6 +92,6 @@ public class RotationPersistWorkerFragment
     }
 
     public interface IAmYourMaster {
-        void observeResults(Observable<Integer> ints);
+        void observeResults(ConnectableObservable<Integer> intsObservable);
     }
 }

@@ -14,9 +14,9 @@ import butterknife.OnClick;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 import java.util.ArrayList;
 import java.util.List;
-import rx.Observable;
 import rx.Observer;
 import rx.functions.Action0;
+import rx.observables.ConnectableObservable;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -82,13 +82,13 @@ public class RotationPersistFragment
     }
 
     @Override
-    public void observeResults(Observable<Integer> ints) {
+    public void observeResults(ConnectableObservable<Integer> intsObservable) {
 
         _subscriptions.add(//
-              ints.doOnSubscribe(new Action0() {
+              intsObservable.doOnSubscribe(new Action0() {
                   @Override
                   public void call() {
-                      _log("Subscribing to ints");
+                      _log("Subscribing to intsObservable");
                   }
               }).subscribe(new Observer<Integer>() {
                   @Override
@@ -107,6 +107,8 @@ public class RotationPersistFragment
                       _log(String.format("Worker frag spits out - %d", integer));
                   }
               }));
+
+        intsObservable.connect();
     }
 
     // -----------------------------------------------------------------------------------
