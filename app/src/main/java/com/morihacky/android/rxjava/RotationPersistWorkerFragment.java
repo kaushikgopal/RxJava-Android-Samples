@@ -76,8 +76,8 @@ public class RotationPersistWorkerFragment
      * The Worker fragment has started doing it's thing
      */
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         _masterFrag.observeResults(storedIntsObservable);
     }
 
