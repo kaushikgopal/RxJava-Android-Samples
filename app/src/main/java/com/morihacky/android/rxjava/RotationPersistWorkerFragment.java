@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import rx.Observable;
+import rx.Subscription;
 import rx.functions.Func1;
 import rx.observables.ConnectableObservable;
 
@@ -14,6 +15,7 @@ public class RotationPersistWorkerFragment
 
     private ConnectableObservable<Integer> storedIntsObservable;
     private IAmYourMaster _masterFrag;
+    private Subscription storedIntsSubscription;
 
     /**
      * Hold a reference to the activity -> caller fragment
@@ -66,6 +68,8 @@ public class RotationPersistWorkerFragment
         //_intsObservable = _intsObservable.share();
         storedIntsObservable = intsObservable.replay();
 
+        storedIntsSubscription = storedIntsObservable.connect();
+
         // Do not do this in production!
         // `.share` is "warm" not "hot"
         // the below forceful subscription fakes the heat
@@ -76,8 +80,8 @@ public class RotationPersistWorkerFragment
      * The Worker fragment has started doing it's thing
      */
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         _masterFrag.observeResults(storedIntsObservable);
     }
 
@@ -89,6 +93,11 @@ public class RotationPersistWorkerFragment
     public void onDetach() {
         super.onDetach();
         _masterFrag = null;
+    }
+
+    @Override public void onDestroy() {
+        super.onDestroy();
+        storedIntsSubscription.unsubscribe();
     }
 
     public interface IAmYourMaster {

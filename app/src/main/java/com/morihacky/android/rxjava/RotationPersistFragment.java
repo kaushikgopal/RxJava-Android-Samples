@@ -108,7 +108,6 @@ public class RotationPersistFragment
                   }
               }));
 
-        intsObservable.connect();
     }
 
     // -----------------------------------------------------------------------------------
