@@ -1,6 +1,7 @@
 package com.morihacky.android.rxjava;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import com.morihacky.android.rxjava.rxbus.RxBus;
 
@@ -16,6 +17,18 @@ public class MainActivity
         }
 
         return _rxBus;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Fragment frag = getSupportFragmentManager()//
+              .findFragmentByTag(RotationPersistWorkerFragment.class.getName());
+
+        if (frag != null) {
+            getSupportFragmentManager().beginTransaction().remove(frag).commit();
+        }
     }
 
     @Override
