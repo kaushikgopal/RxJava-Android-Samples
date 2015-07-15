@@ -65,7 +65,7 @@ public class RotationPersistFragment
     // -----------------------------------------------------------------------------------
 
     @OnClick(R.id.btn_rotate_persist)
-    public void startRetryingWithExponentialBackoffStrategy() {
+    public void startOperationFromWorkerFrag() {
         _logs = new ArrayList<>();
         _adapter.clear();
 
