@@ -1,7 +1,8 @@
-package com.morihacky.android.rxjava;
+package com.morihacky.android.rxjava.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,13 +29,14 @@ import timber.log.Timber;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.lang.String.format;
 
-public class PseudoCacheConcatFragment
+public class PseudoCacheMergeFragment
       extends BaseFragment {
 
     @InjectView(R.id.log_list) ListView _resultList;
 
     private Subscription _subscription = null;
     private HashMap<String, Long> _contributionMap = null;
+    private HashMap<Contributor, Long> _resultAgeMap = new HashMap<>();
     private ArrayAdapter<String> _adapter;
 
     @Override
@@ -65,9 +67,9 @@ public class PseudoCacheConcatFragment
         _resultList.setAdapter(_adapter);
         _initializeCache();
 
-        Observable.concat(_getCachedData(), _getFreshData())
+        Observable.merge(_getCachedData(), _getFreshData())
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(new Subscriber<Contributor>() {
+              .subscribe(new Subscriber<Pair<Contributor, Long>>() {
                   @Override
                   public void onCompleted() {
                       Timber.d("done loading all data");
@@ -79,8 +81,17 @@ public class PseudoCacheConcatFragment
                   }
 
                   @Override
-                  public void onNext(Contributor contributor) {
+                  public void onNext(Pair<Contributor, Long> contributorAgePair) {
+                      Contributor contributor = contributorAgePair.first;
+
+                      if (_resultAgeMap.containsKey(contributor) &&
+                          _resultAgeMap.get(contributor) > contributorAgePair.second) {
+                          return;
+                      }
+
                       _contributionMap.put(contributor.login, contributor.contributions);
+                      _resultAgeMap.put(contributor, contributorAgePair.second);
+
                       _adapter.clear();
                       _adapter.addAll(getListStringFromMap());
                   }
@@ -98,26 +109,36 @@ public class PseudoCacheConcatFragment
         return list;
     }
 
-    private Observable<Contributor> _getCachedData() {
+    private Observable<Pair<Contributor, Long>> _getCachedData() {
 
-        List<Contributor> list = new ArrayList<>();
+        List<Pair<Contributor, Long>> list = new ArrayList<>();
+
+        Pair<Contributor, Long> dataWithAgePair;
 
         for (String username : _contributionMap.keySet()) {
             Contributor c = new Contributor();
             c.login = username;
             c.contributions = _contributionMap.get(username);
-            list.add(c);
+
+            dataWithAgePair = new Pair<>(c, System.currentTimeMillis());
+            list.add(dataWithAgePair);
         }
 
         return Observable.from(list);
     }
 
-    private Observable<Contributor> _getFreshData() {
+    private Observable<Pair<Contributor, Long>> _getFreshData() {
         return _createGithubApi().contributors("square", "retrofit")
               .flatMap(new Func1<List<Contributor>, Observable<Contributor>>() {
                   @Override
                   public Observable<Contributor> call(List<Contributor> contributors) {
                       return Observable.from(contributors);
+                  }
+              })
+              .map(new Func1<Contributor, Pair<Contributor, Long>>() {
+                  @Override
+                  public Pair<Contributor, Long> call(Contributor contributor) {
+                      return new Pair<>(contributor, System.currentTimeMillis());
                   }
               });
     }

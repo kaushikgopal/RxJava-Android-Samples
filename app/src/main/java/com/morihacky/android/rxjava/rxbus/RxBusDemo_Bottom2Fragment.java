@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.morihacky.android.rxjava.BaseFragment;
+import com.morihacky.android.rxjava.fragments.BaseFragment;
 import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.R;
 import java.util.List;
@@ -19,7 +19,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
-import static rx.android.app.AppObservable.bindFragment;
 import static rx.android.app.AppObservable.bindSupportFragment;
 
 public class RxBusDemo_Bottom2Fragment

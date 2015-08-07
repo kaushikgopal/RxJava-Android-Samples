@@ -1,4 +1,4 @@
-package com.morihacky.android.rxjava;
+package com.morihacky.android.rxjava.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.rxbus.RxBusDemoFragment;
 
 public class MainFragment extends BaseFragment {

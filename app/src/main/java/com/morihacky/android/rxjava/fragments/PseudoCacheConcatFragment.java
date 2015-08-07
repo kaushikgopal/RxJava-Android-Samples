@@ -1,8 +1,7 @@
-package com.morihacky.android.rxjava;
+package com.morihacky.android.rxjava.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import android.widget.ListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import java.util.ArrayList;
@@ -28,14 +28,13 @@ import timber.log.Timber;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.lang.String.format;
 
-public class PseudoCacheMergeFragment
+public class PseudoCacheConcatFragment
       extends BaseFragment {
 
     @InjectView(R.id.log_list) ListView _resultList;
 
     private Subscription _subscription = null;
     private HashMap<String, Long> _contributionMap = null;
-    private HashMap<Contributor, Long> _resultAgeMap = new HashMap<>();
     private ArrayAdapter<String> _adapter;
 
     @Override
@@ -66,9 +65,9 @@ public class PseudoCacheMergeFragment
         _resultList.setAdapter(_adapter);
         _initializeCache();
 
-        Observable.merge(_getCachedData(), _getFreshData())
+        Observable.concat(_getCachedData(), _getFreshData())
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(new Subscriber<Pair<Contributor, Long>>() {
+              .subscribe(new Subscriber<Contributor>() {
                   @Override
                   public void onCompleted() {
                       Timber.d("done loading all data");
@@ -80,17 +79,8 @@ public class PseudoCacheMergeFragment
                   }
 
                   @Override
-                  public void onNext(Pair<Contributor, Long> contributorAgePair) {
-                      Contributor contributor = contributorAgePair.first;
-
-                      if (_resultAgeMap.containsKey(contributor) &&
-                          _resultAgeMap.get(contributor) > contributorAgePair.second) {
-                          return;
-                      }
-
+                  public void onNext(Contributor contributor) {
                       _contributionMap.put(contributor.login, contributor.contributions);
-                      _resultAgeMap.put(contributor, contributorAgePair.second);
-
                       _adapter.clear();
                       _adapter.addAll(getListStringFromMap());
                   }
@@ -108,36 +98,26 @@ public class PseudoCacheMergeFragment
         return list;
     }
 
-    private Observable<Pair<Contributor, Long>> _getCachedData() {
+    private Observable<Contributor> _getCachedData() {
 
-        List<Pair<Contributor, Long>> list = new ArrayList<>();
-
-        Pair<Contributor, Long> dataWithAgePair;
+        List<Contributor> list = new ArrayList<>();
 
         for (String username : _contributionMap.keySet()) {
             Contributor c = new Contributor();
             c.login = username;
             c.contributions = _contributionMap.get(username);
-
-            dataWithAgePair = new Pair<>(c, System.currentTimeMillis());
-            list.add(dataWithAgePair);
+            list.add(c);
         }
 
         return Observable.from(list);
     }
 
-    private Observable<Pair<Contributor, Long>> _getFreshData() {
+    private Observable<Contributor> _getFreshData() {
         return _createGithubApi().contributors("square", "retrofit")
               .flatMap(new Func1<List<Contributor>, Observable<Contributor>>() {
                   @Override
                   public Observable<Contributor> call(List<Contributor> contributors) {
                       return Observable.from(contributors);
-                  }
-              })
-              .map(new Func1<Contributor, Pair<Contributor, Long>>() {
-                  @Override
-                  public Pair<Contributor, Long> call(Contributor contributor) {
-                      return new Pair<>(contributor, System.currentTimeMillis());
                   }
               });
     }

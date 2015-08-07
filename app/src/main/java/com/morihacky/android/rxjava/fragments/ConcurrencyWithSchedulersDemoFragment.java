@@ -1,4 +1,4 @@
-package com.morihacky.android.rxjava;
+package com.morihacky.android.rxjava.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,35 +9,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
+import com.morihacky.android.rxjava.R;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
+import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.android.widget.OnTextChangeEvent;
-import rx.android.widget.WidgetObservable;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static java.lang.String.format;
-import static rx.android.app.AppObservable.bindFragment;
-import static rx.android.app.AppObservable.bindSupportFragment;
-
-public class DebounceSearchEmitterFragment
+public class ConcurrencyWithSchedulersDemoFragment
       extends BaseFragment {
 
+    @InjectView(R.id.progress_operation_running) ProgressBar _progress;
     @InjectView(R.id.list_threading_log) ListView _logsList;
-    @InjectView(R.id.input_txt_debounce) EditText _inputSearchText;
 
     private LogAdapter _adapter;
     private List<String> _logs;
-
     private Subscription _subscription;
 
     @Override
@@ -49,54 +46,69 @@ public class DebounceSearchEmitterFragment
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        _setupLogger();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_debounce, container, false);
+        View layout = inflater.inflate(R.layout.fragment_concurrency_schedulers, container, false);
         ButterKnife.inject(this, layout);
         return layout;
     }
 
-    @OnClick(R.id.clr_debounce)
-    public void onClearLog() {
-        _logs = new ArrayList<>();
-        _adapter.clear();
+    @OnClick(R.id.btn_start_operation)
+    public void startLongOperation() {
+
+        _progress.setVisibility(View.VISIBLE);
+        _log("Button Clicked");
+
+        _subscription = AppObservable.bindSupportFragment(this, _getObservable())      // Observable
+              .subscribeOn(Schedulers.io())
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribe(_getObserver());                             // Observer
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-
-        super.onActivityCreated(savedInstanceState);
-        _setupLogger();
-
-        Observable<OnTextChangeEvent> textChangeObservable = WidgetObservable.text(_inputSearchText);
-
-        _subscription = bindSupportFragment(this,//
-              textChangeObservable//
-                    .debounce(400, TimeUnit.MILLISECONDS)// default Scheduler is Computation
-                    .observeOn(AndroidSchedulers.mainThread()))//
-              .subscribe(_getSearchObserver());
+    private Observable<Boolean> _getObservable() {
+        return Observable.just(true).map(new Func1<Boolean, Boolean>() {
+            @Override
+            public Boolean call(Boolean aBoolean) {
+                _log("Within Observable");
+                _doSomeLongOperation_thatBlocksCurrentThread();
+                return aBoolean;
+            }
+        });
     }
 
-    // -----------------------------------------------------------------------------------
-    // Main Rx entities
+    /**
+     * Observer that handles the result through the 3 important actions:
+     *
+     * 1. onCompleted
+     * 2. onError
+     * 3. onNext
+     */
+    private Observer<Boolean> _getObserver() {
+        return new Observer<Boolean>() {
 
-    private Observer<OnTextChangeEvent> _getSearchObserver() {
-        return new Observer<OnTextChangeEvent>() {
             @Override
             public void onCompleted() {
-                Timber.d("--------- onComplete");
+                _log("On complete");
+                _progress.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onError(Throwable e) {
-                Timber.e(e, "--------- Woops on error!");
-                _log("Dang error. check your logs");
+                Timber.e(e, "Error in RxJava Demo concurrency");
+                _log(String.format("Boo! Error %s", e.getMessage()));
+                _progress.setVisibility(View.INVISIBLE);
             }
 
             @Override
-            public void onNext(OnTextChangeEvent onTextChangeEvent) {
-                _log(format("Searching for %s", onTextChangeEvent.text().toString()));
+            public void onNext(Boolean bool) {
+                _log(String.format("onNext with return value \"%b\"", bool));
             }
         };
     }
@@ -104,10 +116,14 @@ public class DebounceSearchEmitterFragment
     // -----------------------------------------------------------------------------------
     // Method that help wiring up the example (irrelevant to RxJava)
 
-    private void _setupLogger() {
-        _logs = new ArrayList<String>();
-        _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
-        _logsList.setAdapter(_adapter);
+    private void _doSomeLongOperation_thatBlocksCurrentThread() {
+        _log("performing long operation");
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            Timber.d("Operation was interrupted");
+        }
     }
 
     private void _log(String logMsg) {
@@ -129,6 +145,12 @@ public class DebounceSearchEmitterFragment
                 }
             });
         }
+    }
+
+    private void _setupLogger() {
+        _logs = new ArrayList<String>();
+        _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
+        _logsList.setAdapter(_adapter);
     }
 
     private boolean _isCurrentlyOnMainThread() {
