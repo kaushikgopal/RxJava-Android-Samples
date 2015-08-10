@@ -9,15 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+
 import com.morihacky.android.rxjava.wiring.LogAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import rx.Observer;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.android.view.OnClickEvent;
 import rx.android.view.ViewObservable;
 import rx.functions.Func1;
@@ -89,7 +91,6 @@ public class BufferDemoFragment
                   }
               })
               .buffer(2, TimeUnit.SECONDS)
-              .observeOn(AndroidSchedulers.mainThread())
               .subscribe(new Observer<List<Integer>>() {
 
                   @Override

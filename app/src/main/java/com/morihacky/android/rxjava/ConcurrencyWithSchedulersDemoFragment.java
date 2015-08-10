@@ -11,16 +11,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import java.util.ArrayList;
-import java.util.List;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.app.AppObservable;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
@@ -66,7 +67,6 @@ public class ConcurrencyWithSchedulersDemoFragment
 
         _subscription = AppObservable.bindSupportFragment(this, _getObservable())      // Observable
               .subscribeOn(Schedulers.io())
-              .observeOn(AndroidSchedulers.mainThread())
               .subscribe(_getObserver());                             // Observer
     }
 

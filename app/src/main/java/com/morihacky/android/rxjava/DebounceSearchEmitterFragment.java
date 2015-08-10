@@ -11,22 +11,22 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.android.widget.OnTextChangeEvent;
 import rx.android.widget.WidgetObservable;
 import timber.log.Timber;
 
 import static java.lang.String.format;
-import static rx.android.app.AppObservable.bindFragment;
 import static rx.android.app.AppObservable.bindSupportFragment;
 
 public class DebounceSearchEmitterFragment
@@ -73,8 +73,7 @@ public class DebounceSearchEmitterFragment
 
         _subscription = bindSupportFragment(this,//
               textChangeObservable//
-                    .debounce(400, TimeUnit.MILLISECONDS)// default Scheduler is Computation
-                    .observeOn(AndroidSchedulers.mainThread()))//
+                    .debounce(400, TimeUnit.MILLISECONDS))// default Scheduler is Computation//
               .subscribe(_getSearchObserver());
     }
 
