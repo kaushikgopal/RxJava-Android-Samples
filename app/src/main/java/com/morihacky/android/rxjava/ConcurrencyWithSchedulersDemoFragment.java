@@ -19,7 +19,6 @@ import java.util.List;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
-import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -64,7 +63,7 @@ public class ConcurrencyWithSchedulersDemoFragment
         _progress.setVisibility(View.VISIBLE);
         _log("Button Clicked");
 
-        _subscription = AppObservable.bindSupportFragment(this, _getObservable())      // Observable
+        _subscription = _getObservable()//
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(_getObserver());                             // Observer

@@ -19,7 +19,6 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
@@ -57,16 +56,14 @@ public class TimeoutDemoFragment
 
     @OnClick(R.id.btn_demo_timeout_1_2s)
     public void onStart2sTask() {
-        _subscription = AppObservable.bindSupportFragment(TimeoutDemoFragment.this,
-              _getObservableTask_2sToComplete())
-              .observeOn(AndroidSchedulers.mainThread())
+        _subscription = _getObservableTask_2sToComplete()//
+              .observeOn(AndroidSchedulers.mainThread())//
               .subscribe(_getEventCompletionObserver());
     }
 
     @OnClick(R.id.btn_demo_timeout_1_5s)
     public void onStart5sTask() {
-        _subscription = AppObservable.bindSupportFragment(TimeoutDemoFragment.this,
-              _getObservableFor5sTask())
+        _subscription = _getObservableFor5sTask()//
               .timeout(2, TimeUnit.SECONDS, _getTimeoutObservable())
               .subscribeOn(Schedulers.computation())
               .observeOn(AndroidSchedulers.mainThread())
@@ -176,5 +173,4 @@ public class TimeoutDemoFragment
     private boolean _isCurrentlyOnMainThread() {
         return Looper.myLooper() == Looper.getMainLooper();
     }
-
 }

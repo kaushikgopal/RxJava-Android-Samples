@@ -21,9 +21,6 @@ import rx.functions.Func1;
 import rx.observables.ConnectableObservable;
 import rx.subscriptions.CompositeSubscription;
 
-import static rx.android.app.AppObservable.bindFragment;
-import static rx.android.app.AppObservable.bindSupportFragment;
-
 public class RxBusDemo_Bottom3Fragment
       extends BaseFragment {
 
@@ -55,15 +52,14 @@ public class RxBusDemo_Bottom3Fragment
         ConnectableObservable<Object> tapEventEmitter = _rxBus.toObserverable().publish();
 
         _subscriptions//
-              .add(bindSupportFragment(this, tapEventEmitter)//
-                    .subscribe(new Action1<Object>() {
-                        @Override
-                        public void call(Object event) {
-                            if (event instanceof RxBusDemoFragment.TapEvent) {
-                                _showTapText();
-                            }
-                        }
-                    }));
+              .add(tapEventEmitter.subscribe(new Action1<Object>() {
+                  @Override
+                  public void call(Object event) {
+                      if (event instanceof RxBusDemoFragment.TapEvent) {
+                          _showTapText();
+                      }
+                  }
+              }));
 
         _subscriptions//
               .add(tapEventEmitter.publish(new Func1<Observable<Object>, Observable<List<Object>>>() {

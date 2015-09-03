@@ -19,9 +19,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
-import static rx.android.app.AppObservable.bindFragment;
-import static rx.android.app.AppObservable.bindSupportFragment;
-
 public class RxBusDemo_Bottom2Fragment
       extends BaseFragment {
 
@@ -53,15 +50,14 @@ public class RxBusDemo_Bottom2Fragment
         Observable<Object> tapEventEmitter = _rxBus.toObserverable().share();
 
         _subscriptions//
-              .add(bindSupportFragment(this, tapEventEmitter)//
-                    .subscribe(new Action1<Object>() {
-                        @Override
-                        public void call(Object event) {
-                            if (event instanceof RxBusDemoFragment.TapEvent) {
-                                _showTapText();
-                            }
-                        }
-                    }));
+              .add(tapEventEmitter.subscribe(new Action1<Object>() {
+                  @Override
+                  public void call(Object event) {
+                      if (event instanceof RxBusDemoFragment.TapEvent) {
+                          _showTapText();
+                      }
+                  }
+              }));
 
         Observable<Object> debouncedEmitter = tapEventEmitter.debounce(1, TimeUnit.SECONDS);
         Observable<List<Object>> debouncedBufferEmitter = tapEventEmitter.buffer(debouncedEmitter);

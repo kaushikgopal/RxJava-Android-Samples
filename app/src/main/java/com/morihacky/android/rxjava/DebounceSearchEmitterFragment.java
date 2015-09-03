@@ -14,20 +14,17 @@ import android.widget.ListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import com.jakewharton.rxbinding.widget.RxTextView;
+import com.jakewharton.rxbinding.widget.TextViewTextChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.android.widget.OnTextChangeEvent;
-import rx.android.widget.WidgetObservable;
 import timber.log.Timber;
 
 import static java.lang.String.format;
-import static rx.android.app.AppObservable.bindFragment;
-import static rx.android.app.AppObservable.bindSupportFragment;
 
 public class DebounceSearchEmitterFragment
       extends BaseFragment {
@@ -69,20 +66,17 @@ public class DebounceSearchEmitterFragment
         super.onActivityCreated(savedInstanceState);
         _setupLogger();
 
-        Observable<OnTextChangeEvent> textChangeObservable = WidgetObservable.text(_inputSearchText);
-
-        _subscription = bindSupportFragment(this,//
-              textChangeObservable//
-                    .debounce(400, TimeUnit.MILLISECONDS)// default Scheduler is Computation
-                    .observeOn(AndroidSchedulers.mainThread()))//
+        _subscription = RxTextView.textChangeEvents(_inputSearchText)//
+              .debounce(400, TimeUnit.MILLISECONDS)// default Scheduler is Computation
+              .observeOn(AndroidSchedulers.mainThread())//
               .subscribe(_getSearchObserver());
     }
 
     // -----------------------------------------------------------------------------------
     // Main Rx entities
 
-    private Observer<OnTextChangeEvent> _getSearchObserver() {
-        return new Observer<OnTextChangeEvent>() {
+    private Observer<TextViewTextChangeEvent> _getSearchObserver() {
+        return new Observer<TextViewTextChangeEvent>() {
             @Override
             public void onCompleted() {
                 Timber.d("--------- onComplete");
@@ -95,7 +89,7 @@ public class DebounceSearchEmitterFragment
             }
 
             @Override
-            public void onNext(OnTextChangeEvent onTextChangeEvent) {
+            public void onNext(TextViewTextChangeEvent onTextChangeEvent) {
                 _log(format("Searching for %s", onTextChangeEvent.text().toString()));
             }
         };

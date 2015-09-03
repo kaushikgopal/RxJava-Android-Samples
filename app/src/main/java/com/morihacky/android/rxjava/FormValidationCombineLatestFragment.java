@@ -7,20 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import com.jakewharton.rxbinding.widget.RxTextView;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
-import rx.android.widget.OnTextChangeEvent;
-import rx.android.widget.WidgetObservable;
 import rx.functions.Func3;
 import timber.log.Timber;
 
 import static android.text.TextUtils.isEmpty;
 import static android.util.Patterns.EMAIL_ADDRESS;
-
 
 public class FormValidationCombineLatestFragment
       extends BaseFragment {
@@ -30,9 +27,9 @@ public class FormValidationCombineLatestFragment
     @InjectView(R.id.demo_combl_password) EditText _password;
     @InjectView(R.id.demo_combl_num) EditText _number;
 
-    private Observable<OnTextChangeEvent> _emailChangeObservable;
-    private Observable<OnTextChangeEvent> _passwordChangeObservable;
-    private Observable<OnTextChangeEvent> _numberChangeObservable;
+    private Observable<CharSequence> _emailChangeObservable;
+    private Observable<CharSequence> _passwordChangeObservable;
+    private Observable<CharSequence> _numberChangeObservable;
 
     private Subscription _subscription = null;
 
@@ -45,9 +42,9 @@ public class FormValidationCombineLatestFragment
               false);
         ButterKnife.inject(this, layout);
 
-        _emailChangeObservable = WidgetObservable.text(_email);
-        _passwordChangeObservable = WidgetObservable.text(_password);
-        _numberChangeObservable = WidgetObservable.text(_number);
+        _emailChangeObservable = RxTextView.textChanges(_email);
+        _passwordChangeObservable = RxTextView.textChanges(_password);
+        _numberChangeObservable = RxTextView.textChanges(_number);
 
         _combineLatestEvents();
 
@@ -66,28 +63,26 @@ public class FormValidationCombineLatestFragment
         _subscription = Observable.combineLatest(_emailChangeObservable,
               _passwordChangeObservable,
               _numberChangeObservable,
-              new Func3<OnTextChangeEvent, OnTextChangeEvent, OnTextChangeEvent, Boolean>() {
+              new Func3<CharSequence, CharSequence, CharSequence, Boolean>() {
                   @Override
-                  public Boolean call(OnTextChangeEvent onEmailChangeEvent,
-                                      OnTextChangeEvent onPasswordChangeEvent,
-                                      OnTextChangeEvent onNumberChangeEvent) {
+                  public Boolean call(CharSequence newEmail,
+                                      CharSequence newPassword,
+                                      CharSequence newNumber) {
 
-                      boolean emailValid = !isEmpty(onEmailChangeEvent.text().toString()) &&
-                                           EMAIL_ADDRESS.matcher(onEmailChangeEvent.text())
-                                                 .matches();
+                      boolean emailValid = !isEmpty(newEmail) &&
+                                           EMAIL_ADDRESS.matcher(newEmail).matches();
                       if (!emailValid) {
                           _email.setError("Invalid Email!");
                       }
 
-                      boolean passValid = !isEmpty(onPasswordChangeEvent.text().toString()) &&
-                                          onPasswordChangeEvent.text().length() > 8;
+                      boolean passValid = !isEmpty(newPassword) && newPassword.length() > 8;
                       if (!passValid) {
                           _password.setError("Invalid Password!");
                       }
 
-                      boolean numValid = !isEmpty(onNumberChangeEvent.text().toString());
+                      boolean numValid = !isEmpty(newNumber);
                       if (numValid) {
-                          int num = Integer.parseInt(onNumberChangeEvent.text().toString());
+                          int num = Integer.parseInt(newNumber.toString());
                           numValid = num > 0 && num <= 100;
                       }
                       if (!numValid) {
