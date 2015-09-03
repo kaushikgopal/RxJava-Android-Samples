@@ -12,10 +12,13 @@ import butterknife.OnClick;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.rxbus.RxBusDemoFragment;
 
-public class MainFragment extends BaseFragment {
+public class MainFragment
+      extends BaseFragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.inject(this, layout);
         return layout;
@@ -79,9 +82,9 @@ public class MainFragment extends BaseFragment {
     private void clickedOn(@NonNull Fragment fragment) {
         final String tag = fragment.getClass().toString();
         getActivity().getSupportFragmentManager()
-            .beginTransaction()
-            .addToBackStack(tag)
-            .replace(android.R.id.content, fragment, tag)
-            .commit();
+              .beginTransaction()
+              .addToBackStack(tag)
+              .replace(android.R.id.content, fragment, tag)
+              .commit();
     }
 }

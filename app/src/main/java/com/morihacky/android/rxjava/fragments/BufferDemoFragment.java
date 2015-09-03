@@ -9,18 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.view.ViewClickEvent;
-import com.morihacky.android.rxjava.wiring.LogAdapter;
 import com.morihacky.android.rxjava.R;
-
+import com.morihacky.android.rxjava.wiring.LogAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -85,7 +82,8 @@ public class BufferDemoFragment
     private Subscription _getBufferedSubscription() {
         return RxView.clickEvents(_tapBtn)
               .map(new Func1<ViewClickEvent, Integer>() {
-                  @Override public Integer call(ViewClickEvent onClickEvent) {
+                  @Override
+                  public Integer call(ViewClickEvent onClickEvent) {
                       Timber.d("--------- GOT A TAP");
                       _log("GOT A TAP");
                       return 1;

@@ -4,23 +4,19 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-
-import com.morihacky.android.rxjava.R;
-import com.morihacky.android.rxjava.retrofit.GithubApi;
-import com.morihacky.android.rxjava.retrofit.User;
-
-import java.util.ArrayList;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.retrofit.GithubApi;
+import com.morihacky.android.rxjava.retrofit.User;
+import java.util.ArrayList;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import rx.Observer;
