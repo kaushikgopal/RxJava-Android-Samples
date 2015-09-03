@@ -1,4 +1,4 @@
-package com.morihacky.android.rxjava;
+package com.morihacky.android.rxjava.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,17 +10,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-
-import com.morihacky.android.rxjava.retrofit.Contributor;
-import com.morihacky.android.rxjava.retrofit.GithubApi;
-import com.morihacky.android.rxjava.retrofit.User;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.RxUtils;
+import com.morihacky.android.rxjava.retrofit.Contributor;
+import com.morihacky.android.rxjava.retrofit.GithubApi;
+import com.morihacky.android.rxjava.retrofit.User;
+import java.util.ArrayList;
+import java.util.List;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import rx.Observable;

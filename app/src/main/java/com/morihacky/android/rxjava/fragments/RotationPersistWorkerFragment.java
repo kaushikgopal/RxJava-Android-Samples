@@ -1,8 +1,9 @@
-package com.morihacky.android.rxjava;
+package com.morihacky.android.rxjava.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import com.morihacky.android.rxjava.MainActivity;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import rx.Observable;
@@ -95,7 +96,8 @@ public class RotationPersistWorkerFragment
         _masterFrag = null;
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         super.onDestroy();
         storedIntsSubscription.unsubscribe();
     }

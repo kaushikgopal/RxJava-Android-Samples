@@ -1,4 +1,4 @@
-package com.morihacky.android.rxjava;
+package com.morihacky.android.rxjava.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import com.morihacky.android.rxjava.R;
 import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
