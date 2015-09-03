@@ -42,9 +42,9 @@ public class FormValidationCombineLatestFragment
               false);
         ButterKnife.inject(this, layout);
 
-        _emailChangeObservable = RxTextView.textChanges(_email);
-        _passwordChangeObservable = RxTextView.textChanges(_password);
-        _numberChangeObservable = RxTextView.textChanges(_number);
+        _emailChangeObservable = RxTextView.textChanges(_email).skip(1);
+        _passwordChangeObservable = RxTextView.textChanges(_password).skip(1);
+        _numberChangeObservable = RxTextView.textChanges(_number).skip(1);
 
         _combineLatestEvents();
 
