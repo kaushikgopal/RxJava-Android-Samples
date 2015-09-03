@@ -10,14 +10,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
+
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.User;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import rx.Observable;
@@ -29,7 +32,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
+import static android.text.TextUtils.isEmpty;
 import static java.lang.String.format;
 
 public class RetrofitFragment
@@ -136,7 +139,7 @@ public class RetrofitFragment
                             .filter(new Func1<User, Boolean>() {
                                 @Override
                                 public Boolean call(User user) {
-                                    return !isNullOrEmpty(user.name) && !isNullOrEmpty(user.email);
+                                    return !isEmpty(user.name) && !isEmpty(user.email);
                                 }
                             });
 
@@ -196,7 +199,7 @@ public class RetrofitFragment
         //.setLogLevel(RestAdapter.LogLevel.FULL);
 
         final String githubToken = getResources().getString(R.string.github_oauth_token);
-        if (!isNullOrEmpty(githubToken)) {
+        if (!isEmpty(githubToken)) {
             builder.setRequestInterceptor(new RequestInterceptor() {
                 @Override
                 public void intercept(RequestFacade request) {

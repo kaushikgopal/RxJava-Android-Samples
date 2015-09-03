@@ -8,14 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
+
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import rx.Observable;
@@ -25,7 +28,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import timber.log.Timber;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
+import static android.text.TextUtils.isEmpty;
 import static java.lang.String.format;
 
 public class PseudoCacheMergeFragment
@@ -149,7 +152,7 @@ public class PseudoCacheMergeFragment
         //.setLogLevel(RestAdapter.LogLevel.FULL);
 
         final String githubToken = getResources().getString(R.string.github_oauth_token);
-        if (!isNullOrEmpty(githubToken)) {
+        if (!isEmpty(githubToken)) {
             builder.setRequestInterceptor(new RequestInterceptor() {
                 @Override
                 public void intercept(RequestFacade request) {

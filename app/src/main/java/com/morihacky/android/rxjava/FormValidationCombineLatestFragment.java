@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.morihacky.android.rxjava.R;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
@@ -18,8 +18,9 @@ import rx.android.widget.WidgetObservable;
 import rx.functions.Func3;
 import timber.log.Timber;
 
+import static android.text.TextUtils.isEmpty;
 import static android.util.Patterns.EMAIL_ADDRESS;
-import static com.google.common.base.Strings.isNullOrEmpty;
+
 
 public class FormValidationCombineLatestFragment
       extends BaseFragment {
@@ -71,20 +72,20 @@ public class FormValidationCombineLatestFragment
                                       OnTextChangeEvent onPasswordChangeEvent,
                                       OnTextChangeEvent onNumberChangeEvent) {
 
-                      boolean emailValid = !isNullOrEmpty(onEmailChangeEvent.text().toString()) &&
+                      boolean emailValid = !isEmpty(onEmailChangeEvent.text().toString()) &&
                                            EMAIL_ADDRESS.matcher(onEmailChangeEvent.text())
                                                  .matches();
                       if (!emailValid) {
                           _email.setError("Invalid Email!");
                       }
 
-                      boolean passValid = !isNullOrEmpty(onPasswordChangeEvent.text().toString()) &&
+                      boolean passValid = !isEmpty(onPasswordChangeEvent.text().toString()) &&
                                           onPasswordChangeEvent.text().length() > 8;
                       if (!passValid) {
                           _password.setError("Invalid Password!");
                       }
 
-                      boolean numValid = !isNullOrEmpty(onNumberChangeEvent.text().toString());
+                      boolean numValid = !isEmpty(onNumberChangeEvent.text().toString());
                       if (numValid) {
                           int num = Integer.parseInt(onNumberChangeEvent.text().toString());
                           numValid = num > 0 && num <= 100;

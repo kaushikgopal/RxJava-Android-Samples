@@ -4,27 +4,29 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.morihacky.android.rxjava.retrofit.GithubApi;
+import com.morihacky.android.rxjava.retrofit.User;
+
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.retrofit.GithubApi;
-import com.morihacky.android.rxjava.retrofit.User;
-import java.util.ArrayList;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
-import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
+import static android.text.TextUtils.isEmpty;
 import static java.lang.String.format;
 
 public class RetrofitAsyncTaskDeathFragment
@@ -109,7 +111,7 @@ public class RetrofitAsyncTaskDeathFragment
         //.setLogLevel(RestAdapter.LogLevel.FULL);
 
         final String githubToken = getResources().getString(R.string.github_oauth_token);
-        if (!isNullOrEmpty(githubToken)) {
+        if (!isEmpty(githubToken)) {
             builder.setRequestInterceptor(new RequestInterceptor() {
                 @Override
                 public void intercept(RequestFacade request) {

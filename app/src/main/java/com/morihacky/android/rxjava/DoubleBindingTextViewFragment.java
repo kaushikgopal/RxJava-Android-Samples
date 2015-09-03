@@ -7,14 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnTextChanged;
-import com.google.common.base.Strings;
-import com.morihacky.android.rxjava.R;
 import rx.Subscription;
 import rx.functions.Action1;
 import rx.subjects.PublishSubject;
+
+import static android.text.TextUtils.isEmpty;
 
 public class DoubleBindingTextViewFragment
       extends BaseFragment {
@@ -52,11 +53,11 @@ public class DoubleBindingTextViewFragment
         float num1 = 0;
         float num2 = 0;
 
-        if (!Strings.isNullOrEmpty(_number1.getText().toString())) {
+        if (!isEmpty(_number1.getText().toString())) {
             num1 = Float.parseFloat(_number1.getText().toString());
         }
 
-        if (!Strings.isNullOrEmpty(_number2.getText().toString())) {
+        if (!isEmpty(_number2.getText().toString())) {
             num2 = Float.parseFloat(_number2.getText().toString());
         }
 
