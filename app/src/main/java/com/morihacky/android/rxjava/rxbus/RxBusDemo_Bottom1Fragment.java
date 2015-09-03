@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.morihacky.android.rxjava.BaseFragment;
+import com.morihacky.android.rxjava.fragments.BaseFragment;
 import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.R;
 import rx.functions.Action1;

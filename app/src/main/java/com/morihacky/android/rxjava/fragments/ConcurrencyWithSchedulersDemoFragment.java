@@ -1,4 +1,4 @@
-package com.morihacky.android.rxjava;
+package com.morihacky.android.rxjava.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,6 +16,8 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.morihacky.android.rxjava.R;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;

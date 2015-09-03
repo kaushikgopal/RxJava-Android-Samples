@@ -1,10 +1,12 @@
-package com.morihacky.android.rxjava;
+package com.morihacky.android.rxjava.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import com.morihacky.android.rxjava.MainActivity;
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Func1;

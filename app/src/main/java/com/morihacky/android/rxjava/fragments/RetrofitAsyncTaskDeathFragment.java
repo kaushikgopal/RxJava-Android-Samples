@@ -1,4 +1,4 @@
-package com.morihacky.android.rxjava;
+package com.morihacky.android.rxjava.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.User;
 

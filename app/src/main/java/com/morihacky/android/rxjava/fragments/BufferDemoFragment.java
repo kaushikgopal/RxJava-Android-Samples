@@ -1,4 +1,4 @@
-package com.morihacky.android.rxjava;
+package com.morihacky.android.rxjava.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.view.ViewClickEvent;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
+import com.morihacky.android.rxjava.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,17 +95,20 @@ public class BufferDemoFragment
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(new Observer<List<Integer>>() {
 
-                  @Override public void onCompleted() {
+                  @Override
+                  public void onCompleted() {
                       // fyi: you'll never reach here
                       Timber.d("----- onCompleted");
                   }
 
-                  @Override public void onError(Throwable e) {
+                  @Override
+                  public void onError(Throwable e) {
                       Timber.e(e, "--------- Woops on error!");
                       _log("Dang error! check your logs");
                   }
 
-                  @Override public void onNext(List<Integer> integers) {
+                  @Override
+                  public void onNext(List<Integer> integers) {
                       Timber.d("--------- onNext");
                       if (integers.size() > 0) {
                           _log(String.format("%d taps", integers.size()));

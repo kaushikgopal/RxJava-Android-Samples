@@ -1,4 +1,4 @@
-package com.morihacky.android.rxjava;
+package com.morihacky.android.rxjava.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,6 +19,9 @@ import com.jakewharton.rxbinding.widget.TextViewTextChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import com.morihacky.android.rxjava.R;
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
