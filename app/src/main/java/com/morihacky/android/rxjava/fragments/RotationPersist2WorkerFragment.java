@@ -9,27 +9,21 @@ import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Func1;
-import rx.observables.ConnectableObservable;
+import rx.subjects.PublishSubject;
+import rx.subjects.Subject;
 
 public class RotationPersist2WorkerFragment
       extends Fragment {
 
     private IAmYourMaster _masterFrag;
-    private ConnectableObservable<Integer> _storedIntsObservable;
     private Subscription _storedIntsSubscription;
+    private Subject<Integer, Integer> _intStream = PublishSubject.create();
 
     /**
-     * FIXME:
+     * Since we're holding a reference to the Master a.k.a Activity/Master Frag
+     * remember to explicitly remove the worker fragment or you'll have a mem leak in your hands.
      *
-     * 1. dangerous techniques such as replay and connectable observables (both code smells in Rx).
-     * 2. you terminate the interval in a non-Rx manner using a global subscription variable  instead of using takeUntil
-     * 3. ? you use the technique of making the parent implement a callback interface where it is possible to also do that in an Rx-based manner.
-     */
-
-    /**
-     * Hold a reference to the activity -> caller fragment
-     * this way when the worker frag kicks off
-     * we can talk back to the master and send results
+     * See {@link MainActivity#onBackPressed()}
      */
     @Override
     public void onAttach(Activity activity) {
@@ -57,11 +51,7 @@ public class RotationPersist2WorkerFragment
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
 
-        if (_storedIntsObservable != null) {
-            return;
-        }
-
-        Observable<Integer> intsObservable =//
+        _storedIntsSubscription =//
               Observable.interval(1, TimeUnit.SECONDS)//
                     .map(new Func1<Long, Integer>() {
                         @Override
@@ -69,20 +59,8 @@ public class RotationPersist2WorkerFragment
                             return aLong.intValue();
                         }
                     })//
-                    .take(20);
-
-        // -----------------------------------------------------------------------------------
-        // Making our observable "HOT" for the purpose of the demo.
-        // we can simply use subjects for this.
-        // Connecteable Observables are messy and a code smell
-
-        //_intsObservable = _intsObservable.share();
-        _storedIntsObservable = intsObservable.replay();
-        // we use replay to turn the observable "hot"
-
-        _storedIntsSubscription = _storedIntsObservable.connect();
-
-
+                    .take(20)//
+                    .subscribe(_intStream);
     }
 
     /**
@@ -91,7 +69,7 @@ public class RotationPersist2WorkerFragment
     @Override
     public void onResume() {
         super.onResume();
-        _masterFrag.observeResults(_storedIntsObservable);
+        _masterFrag.setStream(_intStream.asObservable());
     }
 
     /**
@@ -111,6 +89,6 @@ public class RotationPersist2WorkerFragment
     }
 
     public interface IAmYourMaster {
-        void observeResults(ConnectableObservable<Integer> intsObservable);
+        void setStream(Observable<Integer> intStream);
     }
 }

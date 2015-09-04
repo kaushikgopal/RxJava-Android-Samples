@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import com.morihacky.android.rxjava.fragments.MainFragment;
 import com.morihacky.android.rxjava.fragments.RotationPersist1WorkerFragment;
+import com.morihacky.android.rxjava.fragments.RotationPersist2WorkerFragment;
 import com.morihacky.android.rxjava.rxbus.RxBus;
 
 public class MainActivity
@@ -24,13 +25,7 @@ public class MainActivity
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-        Fragment frag = getSupportFragmentManager()//
-              .findFragmentByTag(RotationPersist1WorkerFragment.class.getName());
-
-        if (frag != null) {
-            getSupportFragmentManager().beginTransaction().remove(frag).commit();
-        }
+        _removeWorkerFragments();
     }
 
     @Override
@@ -41,6 +36,22 @@ public class MainActivity
             getSupportFragmentManager().beginTransaction()
                   .replace(android.R.id.content, new MainFragment(), this.toString())
                   .commit();
+        }
+    }
+
+    private void _removeWorkerFragments() {
+        Fragment frag = getSupportFragmentManager()//
+              .findFragmentByTag(RotationPersist1WorkerFragment.class.getName());
+
+        if (frag != null) {
+            getSupportFragmentManager().beginTransaction().remove(frag).commit();
+        }
+
+        frag = getSupportFragmentManager()//
+              .findFragmentByTag(RotationPersist2WorkerFragment.class.getName());
+
+        if (frag != null) {
+            getSupportFragmentManager().beginTransaction().remove(frag).commit();
         }
     }
 }

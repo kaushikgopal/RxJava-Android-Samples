@@ -16,9 +16,9 @@ import com.morihacky.android.rxjava.RxUtils;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 import java.util.ArrayList;
 import java.util.List;
+import rx.Observable;
 import rx.Observer;
 import rx.functions.Action0;
-import rx.observables.ConnectableObservable;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -26,9 +26,9 @@ import static android.os.Looper.getMainLooper;
 
 public class RotationPersist2Fragment
       extends BaseFragment
-      implements RotationPersist1WorkerFragment.IAmYourMaster {
+      implements RotationPersist2WorkerFragment.IAmYourMaster {
 
-    public static final String FRAG_TAG = RotationPersist1WorkerFragment.class.getName();
+    public static final String FRAG_TAG = RotationPersist2WorkerFragment.class.getName();
 
     @InjectView(R.id.list_threading_log) ListView _logList;
 
@@ -45,11 +45,11 @@ public class RotationPersist2Fragment
         _adapter.clear();
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        RotationPersist1WorkerFragment frag =//
-              (RotationPersist1WorkerFragment) fm.findFragmentByTag(FRAG_TAG);
+        RotationPersist2WorkerFragment frag =//
+              (RotationPersist2WorkerFragment) fm.findFragmentByTag(FRAG_TAG);
 
         if (frag == null) {
-            frag = new RotationPersist1WorkerFragment();
+            frag = new RotationPersist2WorkerFragment();
             fm.beginTransaction().add(frag, FRAG_TAG).commit();
         } else {
             Timber.d("Worker frag already spawned");
@@ -57,10 +57,10 @@ public class RotationPersist2Fragment
     }
 
     @Override
-    public void observeResults(ConnectableObservable<Integer> intsObservable) {
+    public void setStream(Observable<Integer> intStream) {
 
         _subscriptions.add(//
-              intsObservable.doOnSubscribe(new Action0() {
+              intStream.doOnSubscribe(new Action0() {
                   @Override
                   public void call() {
                       _log("Subscribing to intsObservable");
@@ -134,5 +134,4 @@ public class RotationPersist2Fragment
             }
         });
     }
-
 }
