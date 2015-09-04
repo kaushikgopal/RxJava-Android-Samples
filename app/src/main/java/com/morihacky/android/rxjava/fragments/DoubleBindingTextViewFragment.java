@@ -10,6 +10,7 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnTextChanged;
+import com.morihacky.android.rxjava.R;
 import rx.Subscription;
 import rx.functions.Action1;
 import rx.subjects.PublishSubject;

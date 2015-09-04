@@ -10,6 +10,7 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.jakewharton.rxbinding.widget.RxTextView;
+import com.morihacky.android.rxjava.R;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
