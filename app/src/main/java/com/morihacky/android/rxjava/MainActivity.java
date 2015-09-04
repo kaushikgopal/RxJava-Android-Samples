@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import com.morihacky.android.rxjava.fragments.MainFragment;
-import com.morihacky.android.rxjava.fragments.RotationPersistWorkerFragment;
+import com.morihacky.android.rxjava.fragments.RotationPersist1WorkerFragment;
 import com.morihacky.android.rxjava.rxbus.RxBus;
 
 public class MainActivity
@@ -26,7 +26,7 @@ public class MainActivity
         super.onBackPressed();
 
         Fragment frag = getSupportFragmentManager()//
-              .findFragmentByTag(RotationPersistWorkerFragment.class.getName());
+              .findFragmentByTag(RotationPersist1WorkerFragment.class.getName());
 
         if (frag != null) {
             getSupportFragmentManager().beginTransaction().remove(frag).commit();

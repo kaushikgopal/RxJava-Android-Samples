@@ -11,12 +11,12 @@ import rx.Subscription;
 import rx.functions.Func1;
 import rx.observables.ConnectableObservable;
 
-public class RotationPersistWorkerFragment
+public class RotationPersist1WorkerFragment
       extends Fragment {
 
-    private ConnectableObservable<Integer> storedIntsObservable;
     private IAmYourMaster _masterFrag;
-    private Subscription storedIntsSubscription;
+    private ConnectableObservable<Integer> _storedIntsObservable;
+    private Subscription _storedIntsSubscription;
 
     /**
      * Hold a reference to the activity -> caller fragment
@@ -49,7 +49,7 @@ public class RotationPersistWorkerFragment
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
 
-        if (storedIntsObservable != null) {
+        if (_storedIntsObservable != null) {
             return;
         }
 
@@ -67,9 +67,9 @@ public class RotationPersistWorkerFragment
         // Making our observable "HOT" for the purpose of the demo.
 
         //_intsObservable = _intsObservable.share();
-        storedIntsObservable = intsObservable.replay();
+        _storedIntsObservable = intsObservable.replay();
 
-        storedIntsSubscription = storedIntsObservable.connect();
+        _storedIntsSubscription = _storedIntsObservable.connect();
 
         // Do not do this in production!
         // `.share` is "warm" not "hot"
@@ -83,7 +83,7 @@ public class RotationPersistWorkerFragment
     @Override
     public void onResume() {
         super.onResume();
-        _masterFrag.observeResults(storedIntsObservable);
+        _masterFrag.observeResults(_storedIntsObservable);
     }
 
     /**
@@ -99,7 +99,7 @@ public class RotationPersistWorkerFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        storedIntsSubscription.unsubscribe();
+        _storedIntsSubscription.unsubscribe();
     }
 
     public interface IAmYourMaster {

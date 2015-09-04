@@ -24,11 +24,11 @@ import timber.log.Timber;
 
 import static android.os.Looper.getMainLooper;
 
-public class RotationPersistFragment
+public class RotationPersist1Fragment
       extends BaseFragment
-      implements RotationPersistWorkerFragment.IAmYourMaster {
+      implements RotationPersist1WorkerFragment.IAmYourMaster {
 
-    public static final String FRAG_TAG = RotationPersistWorkerFragment.class.getName();
+    public static final String FRAG_TAG = RotationPersist1WorkerFragment.class.getName();
 
     @InjectView(R.id.list_threading_log) ListView _logList;
 
@@ -36,33 +36,6 @@ public class RotationPersistFragment
     private List<String> _logs;
 
     private CompositeSubscription _subscriptions = new CompositeSubscription();
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        _subscriptions = RxUtils.getNewCompositeSubIfUnsubscribed(_subscriptions);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        _setupLogger();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_rotation_persist, container, false);
-        ButterKnife.inject(this, layout);
-        return layout;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        RxUtils.unsubscribeIfNotNull(_subscriptions);
-    }
 
     // -----------------------------------------------------------------------------------
 
@@ -72,11 +45,11 @@ public class RotationPersistFragment
         _adapter.clear();
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        RotationPersistWorkerFragment frag =//
-              (RotationPersistWorkerFragment) fm.findFragmentByTag(FRAG_TAG);
+        RotationPersist1WorkerFragment frag =//
+              (RotationPersist1WorkerFragment) fm.findFragmentByTag(FRAG_TAG);
 
         if (frag == null) {
-            frag = new RotationPersistWorkerFragment();
+            frag = new RotationPersist1WorkerFragment();
             fm.beginTransaction().add(frag, FRAG_TAG).commit();
         } else {
             Timber.d("Worker frag already spawned");
@@ -113,6 +86,35 @@ public class RotationPersistFragment
     }
 
     // -----------------------------------------------------------------------------------
+    // Boilerplate
+    // -----------------------------------------------------------------------------------
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        _subscriptions = RxUtils.getNewCompositeSubIfUnsubscribed(_subscriptions);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        _setupLogger();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View layout = inflater.inflate(R.layout.fragment_rotation_persist, container, false);
+        ButterKnife.inject(this, layout);
+        return layout;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        RxUtils.unsubscribeIfNotNull(_subscriptions);
+    }
 
     private void _setupLogger() {
         _logs = new ArrayList<>();

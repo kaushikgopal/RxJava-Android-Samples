@@ -76,7 +76,7 @@ public class MainFragment
 
     @OnClick(R.id.btn_demo_rotation_persist)
     void demoRotationPersist() {
-        clickedOn(new RotationPersistFragment());
+        clickedOn(new RotationPersist1Fragment());
     }
 
     private void clickedOn(@NonNull Fragment fragment) {
