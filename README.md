@@ -7,7 +7,7 @@ This is a repository with real-world useful examples of using RxJava with Androi
 
 ### Concurrency using schedulers
 
-A common requirement is to offload lengthy heavy I/O intensive operations to a background thread (non-UI thread) and feed the results back to the UI/main thread, on completion. This is a demo of how long-running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava! Think of this as a replacement to AsyncTasks.
+A common requirement is to offload lengthy heavy I/O intensive operationsacc to a background thread (non-UI thread) and feed the results back to the UI/main thread, on completion. This is a demo of how long-running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava! Think of this as a replacement to AsyncTasks.
 
 The long operation is simulated by a blocking Thread.sleep call (since this is done in a background thread, our UI is never interrupted).
 
@@ -69,7 +69,7 @@ Have a look at the accompanying blog posts for details on this demo:
 
 1. [Implementing an event bus with RxJava](http://nerds.weddingpartyapp.com/tech/2014/12/24/implementing-an-event-bus-with-rxjava-rxbus/)
 2. [DebouncedBuffer used for the fancier variant of the demo](http://nerds.weddingpartyapp.com/tech/2014/12/24/secret-bonus-part-debouncedbuffer-used-in-rxbus-example/)
-3. [share/publish/refcount](http://nerds.weddingpartyapp.com/tech/2014/12/24/rxjava-share-publish-refcount-and-all-that-jazz/)
+3. [share/publish/refcount](http://nerds.weddingpartyapp.com/tech/2015/01/21/rxjava-share-publish-refcount-and-all-that-jazz/)
 
 ### Form validation - using [`.combineLatest`](http://reactivex.io/documentation/operators/combinelatest.html)
 
