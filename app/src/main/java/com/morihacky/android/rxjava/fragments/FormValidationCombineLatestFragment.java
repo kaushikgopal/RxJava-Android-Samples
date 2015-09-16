@@ -102,7 +102,7 @@ public class FormValidationCombineLatestFragment
 
                   @Override
                   public void onError(Throwable e) {
-                      Timber.e(e, "there was an eroor");
+                      Timber.e(e, "there was an error");
                   }
 
                   @Override
