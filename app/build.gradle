@@ -12,7 +12,9 @@ dependencies {
 
     compile 'com.jakewharton:butterknife:5.1.1'
     compile 'com.jakewharton.timber:timber:2.4.2'
-    compile 'com.squareup.retrofit:retrofit:1.6.1'
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
+    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
 
