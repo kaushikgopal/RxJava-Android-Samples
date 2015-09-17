@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,17 @@ import butterknife.OnClick;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.User;
+import com.squareup.okhttp.Interceptor;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
 import java.util.ArrayList;
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
+
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
+import retrofit.RxJavaCallAdapterFactory;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -102,19 +111,26 @@ public class RetrofitAsyncTaskDeathFragment
     // -----------------------------------------------------------------------------------
 
     private GithubApi _createGithubApi() {
-
-        RestAdapter.Builder builder = new RestAdapter.Builder().setEndpoint(
-              "https://api.github.com/");
-        //.setLogLevel(RestAdapter.LogLevel.FULL);
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl("https://api.github.com");
 
         final String githubToken = getResources().getString(R.string.github_oauth_token);
-        if (!isEmpty(githubToken)) {
-            builder.setRequestInterceptor(new RequestInterceptor() {
+
+        if (!TextUtils.isEmpty(githubToken)) {
+            OkHttpClient client = new OkHttpClient();
+            client.interceptors().add(new Interceptor() {
                 @Override
-                public void intercept(RequestFacade request) {
-                    request.addHeader("Authorization", format("token %s", githubToken));
+                public Response intercept(Chain chain) throws IOException {
+                    Request request = chain.request();
+                    Request newReq = request.newBuilder()
+                            .addHeader("Authorization", format("token %s", githubToken))
+                            .build();
+                    return chain.proceed(newReq);
                 }
             });
+            builder.client(client);
         }
 
         return builder.build().create(GithubApi.class);
