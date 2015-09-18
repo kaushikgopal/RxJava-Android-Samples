@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-    compile  'com.android.support:support-v13:21.0.2'
+    compile 'com.android.support:support-v13:23.0.1'
 
     compile 'io.reactivex:rxandroid:1.0.1'
     // Because RxAndroid releases are few and far between, it is recommended you also
@@ -22,7 +22,7 @@ dependencies {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23'
+    buildToolsVersion '23.0.1'
 
     defaultConfig {
         applicationId "com.morihacky.android.rxjava"
