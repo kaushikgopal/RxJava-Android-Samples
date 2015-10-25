@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.jakewharton.rxbinding.widget.TextViewTextChangeEvent;
@@ -30,8 +30,8 @@ import static java.lang.String.format;
 public class DebounceSearchEmitterFragment
       extends BaseFragment {
 
-    @InjectView(R.id.list_threading_log) ListView _logsList;
-    @InjectView(R.id.input_txt_debounce) EditText _inputSearchText;
+    @Bind(R.id.list_threading_log) ListView _logsList;
+    @Bind(R.id.input_txt_debounce) EditText _inputSearchText;
 
     private LogAdapter _adapter;
     private List<String> _logs;
@@ -51,7 +51,7 @@ public class DebounceSearchEmitterFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_debounce, container, false);
-        ButterKnife.inject(this, layout);
+        ButterKnife.bind(this, layout);
         return layout;
     }
 

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import com.morihacky.android.rxjava.R;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class PollingFragment
 
     public static final int INITIAL_DELAY = 0;
     public static final int POLLING_INTERVAL = 1000;
-    @InjectView(R.id.list_threading_log) ListView _logsList;
+    @Bind(R.id.list_threading_log) ListView _logsList;
 
     private LogAdapter _adapter;
     private List<String> _logs;
@@ -55,7 +55,7 @@ public class PollingFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_polling, container, false);
-        ButterKnife.inject(this, layout);
+        ButterKnife.bind(this, layout);
         return layout;
     }
 
