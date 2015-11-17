@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.fragments.BaseFragment;
@@ -18,7 +18,7 @@ import rx.subscriptions.CompositeSubscription;
 public class RxBusDemo_Bottom1Fragment
       extends BaseFragment {
 
-    @InjectView(R.id.demo_rxbus_tap_txt) TextView _tapEventTxtShow;
+    @Bind(R.id.demo_rxbus_tap_txt) TextView _tapEventTxtShow;
     private RxBus _rxBus;
     private CompositeSubscription _subscriptions;
 
@@ -27,7 +27,7 @@ public class RxBusDemo_Bottom1Fragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_rxbus_bottom, container, false);
-        ButterKnife.inject(this, layout);
+        ButterKnife.bind(this, layout);
         return layout;
     }
 

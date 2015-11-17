@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import butterknife.OnClick;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.RxUtils;
@@ -30,7 +30,7 @@ public class RotationPersist2Fragment
 
     public static final String FRAG_TAG = RotationPersist2WorkerFragment.class.getName();
 
-    @InjectView(R.id.list_threading_log) ListView _logList;
+    @Bind(R.id.list_threading_log) ListView _logList;
 
     private LogAdapter _adapter;
     private List<String> _logs;
@@ -105,7 +105,7 @@ public class RotationPersist2Fragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_rotation_persist, container, false);
-        ButterKnife.inject(this, layout);
+        ButterKnife.bind(this, layout);
         return layout;
     }
 

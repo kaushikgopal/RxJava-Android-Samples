@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import butterknife.OnTextChanged;
 import com.morihacky.android.rxjava.R;
 import rx.Subscription;
@@ -20,9 +20,9 @@ import static android.text.TextUtils.isEmpty;
 public class DoubleBindingTextViewFragment
       extends BaseFragment {
 
-    @InjectView(R.id.double_binding_num1) EditText _number1;
-    @InjectView(R.id.double_binding_num2) EditText _number2;
-    @InjectView(R.id.double_binding_result) TextView _result;
+    @Bind(R.id.double_binding_num1) EditText _number1;
+    @Bind(R.id.double_binding_num2) EditText _number2;
+    @Bind(R.id.double_binding_result) TextView _result;
 
     Subscription _subscription;
     PublishSubject<Float> _resultEmitterSubject;
@@ -32,7 +32,7 @@ public class DoubleBindingTextViewFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_double_binding_textview, container, false);
-        ButterKnife.inject(this, layout);
+        ButterKnife.bind(this, layout);
 
         _resultEmitterSubject = PublishSubject.create();
         _subscription = _resultEmitterSubject.asObservable().subscribe(new Action1<Float>() {
