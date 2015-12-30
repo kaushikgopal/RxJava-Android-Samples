@@ -18,6 +18,8 @@ dependencies {
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
+    compile 'com.mcxiaoke.volley:library:1.0.19'
+
 }
 
 android {

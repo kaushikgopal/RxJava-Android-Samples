@@ -19,7 +19,8 @@
     <string name="btn_demo_timing">Variations of timing/intervals/delays</string>
     <string name="btn_demo_exponential_backoff">Exponential backoff</string>
     <string name="btn_demo_rotation_persist">Rotation persist</string>
-
+    <string name="btn_demo_volley">Volley request demo</string>
+    <string name="msg_demo_volley">This is a Volley request demo</string>
     <string name="msg_demo_concurrency_schedulers">This is a demo of how long running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava! \n\n To really see this shine. Hit the button multiple times and see how the button click which is a ui operation is never blocked because the long operation only runs in the background</string>
     <string name="msg_demo_buffer">This is a demo of how events can be accumulated using the "buffer" operation. Tap the button below repetitively and you will notice in the logs that button taps are collected over a span of 2s and printed below.</string>
     <string name="msg_demo_debounce">As you type in the input box, it will not shoot out log messages at every single input character change, but rather only pick the last one.</string>

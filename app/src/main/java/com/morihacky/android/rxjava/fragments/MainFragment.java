@@ -7,10 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.rxbus.RxBusDemoFragment;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainFragment
       extends BaseFragment {
@@ -78,6 +80,11 @@ public class MainFragment
     void demoRotationPersist() {
         clickedOn(new RotationPersist2Fragment());
         //clickedOn(new RotationPersist1Fragment());
+    }
+
+    @OnClick(R.id.btn_demo_volley)
+    void demoVolleyRequest() {
+        clickedOn(new VolleyDemoFragment());
     }
 
     private void clickedOn(@NonNull Fragment fragment) {
