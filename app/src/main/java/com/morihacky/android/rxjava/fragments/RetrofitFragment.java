@@ -37,8 +37,10 @@ import static java.lang.String.format;
 public class RetrofitFragment
       extends Fragment {
 
-    @Bind(R.id.demo_retrofit_contributors_username) EditText _username;
-    @Bind(R.id.demo_retrofit_contributors_repository) EditText _repo;
+    @Bind(R.id.demo_retrofit_contributors_username) EditText _contributorsUsername;
+    @Bind(R.id.demo_retrofit_contributors_repository) EditText _contributorsRepo;
+    @Bind(R.id.demo_retrofit_contributors_with_user_info_username) EditText _userInfoUsername;
+    @Bind(R.id.demo_retrofit_contributors_with_user_info_repository) EditText _userInfoRepo;
     @Bind(R.id.log_list) ListView _resultList;
 
     private GithubApi _api;
@@ -87,106 +89,105 @@ public class RetrofitFragment
         _adapter.clear();
 
         _subscriptions.add(//
-              _api.contributors(_username.getText().toString(), _repo.getText().toString())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<List<Contributor>>() {
-                        @Override
-                        public void onCompleted() {
-                            Timber.d("Retrofit call 1 completed");
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            Timber.e(e,
-                                  "woops we got an error while getting the list of contributors");
-                        }
-
-                        @Override
-                        public void onNext(List<Contributor> contributors) {
-                            for (Contributor c : contributors) {
-                                _adapter.add(format("%s has made %d contributions to %s",
-                                      c.login,
-                                      c.contributions,
-                                      _repo.getText().toString()));
-
-                                Timber.d("%s has made %d contributions to %s",
-                                      c.login,
-                                      c.contributions,
-                                      _repo.getText().toString());
+                _api.contributors(_contributorsUsername.getText().toString(), _contributorsRepo.getText().toString())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<List<Contributor>>() {
+                            @Override
+                            public void onCompleted() {
+                                Timber.d("Retrofit call 1 completed");
                             }
-                        }
-                    }));
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Timber.e(e,
+                                        "woops we got an error while getting the list of contributors");
+                            }
+
+                            @Override
+                            public void onNext(List<Contributor> contributors) {
+                                for (Contributor c : contributors) {
+                                    _adapter.add(format("%s has made %d contributions to %s",
+                                            c.login,
+                                            c.contributions,
+                                            _contributorsRepo.getText().toString()));
+
+                                    Timber.d("%s has made %d contributions to %s",
+                                            c.login,
+                                            c.contributions,
+                                            _contributorsRepo.getText().toString());
+                                }
+                            }
+                        }));
     }
 
     @OnClick(R.id.btn_demo_retrofit_contributors_with_user_info)
     public void onListContributorsWithFullUserInfoClicked() {
         _adapter.clear();
 
-        _subscriptions.add(_api.contributors(_username.getText().toString(),
-              _repo.getText().toString())
-              .flatMap(new Func1<List<Contributor>, Observable<Contributor>>() {
-                  @Override
-                  public Observable<Contributor> call(List<Contributor> contributors) {
-                      return Observable.from(contributors);
-                  }
-              })
-              .flatMap(new Func1<Contributor, Observable<Pair<User, Contributor>>>() {
-                  @Override
-                  public Observable<Pair<User, Contributor>> call(Contributor contributor) {
-                      Observable<User> _userObservable = _api.user(contributor.login)
-                            .filter(new Func1<User, Boolean>() {
-                                @Override
-                                public Boolean call(User user) {
-                                    return !isEmpty(user.name) && !isEmpty(user.email);
-                                }
-                            });
+        _subscriptions.add(_api.contributors(_userInfoUsername.getText().toString(), _userInfoRepo.getText().toString())
+                .flatMap(new Func1<List<Contributor>, Observable<Contributor>>() {
+                    @Override
+                    public Observable<Contributor> call(List<Contributor> contributors) {
+                        return Observable.from(contributors);
+                    }
+                })
+                .flatMap(new Func1<Contributor, Observable<Pair<User, Contributor>>>() {
+                    @Override
+                    public Observable<Pair<User, Contributor>> call(Contributor contributor) {
+                        Observable<User> _userObservable = _api.user(contributor.login)
+                                .filter(new Func1<User, Boolean>() {
+                                    @Override
+                                    public Boolean call(User user) {
+                                        return !isEmpty(user.name) && !isEmpty(user.email);
+                                    }
+                                });
 
-                      return Observable.zip(_userObservable,
-                            Observable.just(contributor),
-                            new Func2<User, Contributor, Pair<User, Contributor>>() {
-                                @Override
-                                public Pair<User, Contributor> call(User user,
-                                                                    Contributor contributor) {
-                                    return new Pair<>(user, contributor);
-                                }
-                            });
-                  }
-              })
-              .subscribeOn(Schedulers.newThread())
-              .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(new Observer<Pair<User, Contributor>>() {
-                  @Override
-                  public void onCompleted() {
-                      Timber.d("Retrofit call 2 completed ");
-                  }
+                        return Observable.zip(_userObservable,
+                                Observable.just(contributor),
+                                new Func2<User, Contributor, Pair<User, Contributor>>() {
+                                    @Override
+                                    public Pair<User, Contributor> call(User user,
+                                                                        Contributor contributor) {
+                                        return new Pair<>(user, contributor);
+                                    }
+                                });
+                    }
+                })
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Pair<User, Contributor>>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("Retrofit call 2 completed ");
+                    }
 
-                  @Override
-                  public void onError(Throwable e) {
-                      Timber.e(e,
-                            "error while getting the list of contributors along with full names");
-                  }
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e,
+                                "error while getting the list of contributors along with full names");
+                    }
 
-                  @Override
-                  public void onNext(Pair<User, Contributor> pair) {
-                      User user = pair.first;
-                      Contributor contributor = pair.second;
+                    @Override
+                    public void onNext(Pair<User, Contributor> pair) {
+                        User user = pair.first;
+                        Contributor contributor = pair.second;
 
-                      _adapter.add(format("%s(%s) has made %d contributions to %s",
-                            user.name,
-                            user.email,
-                            contributor.contributions,
-                            _repo.getText().toString()));
+                        _adapter.add(format("%s(%s) has made %d contributions to %s",
+                                user.name,
+                                user.email,
+                                contributor.contributions,
+                                _contributorsRepo.getText().toString()));
 
-                      _adapter.notifyDataSetChanged();
+                        _adapter.notifyDataSetChanged();
 
-                      Timber.d("%s(%s) has made %d contributions to %s",
-                            user.name,
-                            user.email,
-                            contributor.contributions,
-                            _repo.getText().toString());
-                  }
-              }));
+                        Timber.d("%s(%s) has made %d contributions to %s",
+                                user.name,
+                                user.email,
+                                contributor.contributions,
+                                _contributorsRepo.getText().toString());
+                    }
+                }));
     }
 
     // -----------------------------------------------------------------------------------
