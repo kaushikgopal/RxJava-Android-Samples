@@ -118,7 +118,7 @@ public class TimingDemoFragment
         _log(String.format("C3 [%s] --- BTN click", _getCurrentTimestamp()));
 
         _subscription2 = Observable//
-              .timer(0, 1, TimeUnit.SECONDS)//
+              .interval(0, 1, TimeUnit.SECONDS)//
               .subscribe(new Observer<Long>() {
                   @Override
                   public void onCompleted() {
