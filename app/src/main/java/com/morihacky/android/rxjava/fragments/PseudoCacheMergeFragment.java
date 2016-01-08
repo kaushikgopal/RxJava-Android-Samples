@@ -67,7 +67,7 @@ public class PseudoCacheMergeFragment
         _resultList.setAdapter(_adapter);
         _initializeCache();
 
-        Observable.merge(_getCachedData(), _getFreshData())
+        _subscription = Observable.merge(_getCachedData(), _getFreshData())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(new Subscriber<Pair<Contributor, Long>>() {
                   @Override
