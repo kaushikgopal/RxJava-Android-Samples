@@ -2,7 +2,7 @@ package com.morihacky.android.rxjava;
 
 import android.app.Application;
 
-import com.morihacky.android.rxjava.wiring.MyVolley;
+import com.morihacky.android.rxjava.volley.MyVolley;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import timber.log.Timber;
@@ -28,9 +28,9 @@ public class MyApp
         _instance = (MyApp) getApplicationContext();
         _refWatcher = LeakCanary.install(this);
 
-        Timber.plant(new Timber.DebugTree());
-
-        //volley init
+        // Initialize Volley
         MyVolley.init(this);
+
+        Timber.plant(new Timber.DebugTree());
     }
 }

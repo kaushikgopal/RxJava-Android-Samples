@@ -13,6 +13,7 @@ import com.morihacky.android.rxjava.rxbus.RxBusDemoFragment;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.morihacky.android.rxjava.volley.VolleyDemoFragment;
 
 public class MainFragment
       extends BaseFragment {
