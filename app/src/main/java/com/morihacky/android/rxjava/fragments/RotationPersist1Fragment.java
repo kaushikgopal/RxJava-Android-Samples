@@ -8,14 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
+
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.RxUtils;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observer;
 import rx.functions.Action0;
 import rx.observables.ConnectableObservable;
@@ -30,7 +33,7 @@ public class RotationPersist1Fragment
 
     public static final String FRAG_TAG = RotationPersist1WorkerFragment.class.getName();
 
-    @InjectView(R.id.list_threading_log) ListView _logList;
+    @Bind(R.id.list_threading_log) ListView _logList;
 
     private LogAdapter _adapter;
     private List<String> _logs;
@@ -106,7 +109,7 @@ public class RotationPersist1Fragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_rotation_persist, container, false);
-        ButterKnife.inject(this, layout);
+        ButterKnife.bind(this, layout);
         return layout;
     }
 

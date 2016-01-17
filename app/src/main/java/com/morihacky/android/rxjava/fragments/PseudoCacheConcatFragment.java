@@ -8,9 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
+
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
@@ -27,6 +25,9 @@ import java.util.List;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -39,7 +40,7 @@ import static java.lang.String.format;
 public class PseudoCacheConcatFragment
       extends BaseFragment {
 
-    @InjectView(R.id.log_list) ListView _resultList;
+    @Bind(R.id.log_list) ListView _resultList;
 
     private Subscription _subscription = null;
     private HashMap<String, Long> _contributionMap = null;
@@ -50,7 +51,7 @@ public class PseudoCacheConcatFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_pseudo_cache_concat, container, false);
-        ButterKnife.inject(this, layout);
+        ButterKnife.bind(this, layout);
         _initializeCache();
         return layout;
     }

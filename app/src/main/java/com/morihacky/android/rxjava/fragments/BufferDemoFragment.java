@@ -9,15 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.view.ViewClickEvent;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -41,8 +44,8 @@ import timber.log.Timber;
 public class BufferDemoFragment
       extends BaseFragment {
 
-    @InjectView(R.id.list_threading_log) ListView _logsList;
-    @InjectView(R.id.btn_start_operation) Button _tapBtn;
+    @Bind(R.id.list_threading_log) ListView _logsList;
+    @Bind(R.id.btn_start_operation) Button _tapBtn;
 
     private LogAdapter _adapter;
     private List<String> _logs;
@@ -72,7 +75,7 @@ public class BufferDemoFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_buffer, container, false);
-        ButterKnife.inject(this, layout);
+        ButterKnife.bind(this, layout);
         return layout;
     }
 

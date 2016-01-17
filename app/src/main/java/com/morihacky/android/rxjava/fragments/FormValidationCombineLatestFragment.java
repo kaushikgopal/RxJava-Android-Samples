@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.morihacky.android.rxjava.R;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
@@ -23,10 +25,10 @@ import static android.util.Patterns.EMAIL_ADDRESS;
 public class FormValidationCombineLatestFragment
       extends BaseFragment {
 
-    @InjectView(R.id.btn_demo_form_valid) TextView _btnValidIndicator;
-    @InjectView(R.id.demo_combl_email) EditText _email;
-    @InjectView(R.id.demo_combl_password) EditText _password;
-    @InjectView(R.id.demo_combl_num) EditText _number;
+    @Bind(R.id.btn_demo_form_valid) TextView _btnValidIndicator;
+    @Bind(R.id.demo_combl_email) EditText _email;
+    @Bind(R.id.demo_combl_password) EditText _password;
+    @Bind(R.id.demo_combl_num) EditText _number;
 
     private Observable<CharSequence> _emailChangeObservable;
     private Observable<CharSequence> _passwordChangeObservable;
@@ -41,7 +43,7 @@ public class FormValidationCombineLatestFragment
         View layout = inflater.inflate(R.layout.fragment_form_validation_comb_latest,
               container,
               false);
-        ButterKnife.inject(this, layout);
+        ButterKnife.bind(this, layout);
 
         _emailChangeObservable = RxTextView.textChanges(_email).skip(1);
         _passwordChangeObservable = RxTextView.textChanges(_password).skip(1);

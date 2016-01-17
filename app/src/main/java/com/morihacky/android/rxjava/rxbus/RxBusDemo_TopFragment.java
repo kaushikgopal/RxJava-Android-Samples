@@ -21,7 +21,7 @@ public class RxBusDemo_TopFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_rxbus_top, container, false);
-        ButterKnife.inject(this, layout);
+        ButterKnife.bind(this, layout);
         return layout;
     }
 
