@@ -2,31 +2,30 @@ package com.morihacky.android.rxjava.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import butterknife.ButterKnife;
-import butterknife.Bind;
-import butterknife.OnClick;
+
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
+import com.morihacky.android.rxjava.retrofit.GithubService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import timber.log.Timber;
-
-import static java.lang.String.format;
 
 public class PseudoCacheConcatFragment
       extends BaseFragment {
@@ -113,32 +112,15 @@ public class PseudoCacheConcatFragment
     }
 
     private Observable<Contributor> _getFreshData() {
-        return _createGithubApi().contributors("square", "retrofit")
+        String githubToken = getResources().getString(R.string.github_oauth_token);
+        GithubApi githubService = GithubService.createGithubService(githubToken);
+        return githubService.contributors("square", "retrofit")
               .flatMap(new Func1<List<Contributor>, Observable<Contributor>>() {
                   @Override
                   public Observable<Contributor> call(List<Contributor> contributors) {
                       return Observable.from(contributors);
                   }
               });
-    }
-
-    private GithubApi _createGithubApi() {
-
-        RestAdapter.Builder builder = new RestAdapter.Builder().setEndpoint(
-              "https://api.github.com/");
-        //.setLogLevel(RestAdapter.LogLevel.FULL);
-
-        final String githubToken = getResources().getString(R.string.github_oauth_token);
-        if (!TextUtils.isEmpty(githubToken)) {
-            builder.setRequestInterceptor(new RequestInterceptor() {
-                @Override
-                public void intercept(RequestFacade request) {
-                    request.addHeader("Authorization", format("token %s", githubToken));
-                }
-            });
-        }
-
-        return builder.build().create(GithubApi.class);
     }
 
     private void _initializeCache() {

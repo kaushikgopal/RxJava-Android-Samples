@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import butterknife.ButterKnife;
-import butterknife.Bind;
-import butterknife.OnTextChanged;
+
 import com.morihacky.android.rxjava.R;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnTextChanged;
 import rx.Subscription;
 import rx.functions.Action1;
 import rx.subjects.PublishSubject;

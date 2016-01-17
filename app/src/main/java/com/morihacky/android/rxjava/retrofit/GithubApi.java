@@ -1,8 +1,9 @@
 package com.morihacky.android.rxjava.retrofit;
 
 import java.util.List;
-import retrofit.http.GET;
-import retrofit.http.Path;
+
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 import rx.Observable;
 
 public interface GithubApi {

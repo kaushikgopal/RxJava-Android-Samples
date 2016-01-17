@@ -10,20 +10,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import butterknife.ButterKnife;
-import butterknife.Bind;
-import butterknife.OnClick;
+
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
+import com.morihacky.android.rxjava.retrofit.GithubService;
 import com.morihacky.android.rxjava.retrofit.User;
+
 import java.util.ArrayList;
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static android.text.TextUtils.isEmpty;
 import static java.lang.String.format;
 
 public class RetrofitAsyncTaskDeathFragment
@@ -32,13 +33,15 @@ public class RetrofitAsyncTaskDeathFragment
     @Bind(R.id.btn_demo_retrofit_async_death_username) EditText _username;
     @Bind(R.id.log_list) ListView _resultList;
 
-    private GithubApi _api;
+    private GithubApi _githubService;
     private ArrayAdapter<String> _adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _api = _createGithubApi();
+
+        String githubToken = getResources().getString(R.string.github_oauth_token);
+        _githubService = GithubService.createGithubService(githubToken);
     }
 
     @Override
@@ -68,7 +71,7 @@ public class RetrofitAsyncTaskDeathFragment
         /*new AsyncTask<String, Void, User>() {
             @Override
             protected User doInBackground(String... params) {
-                return _api.getUser(params[0]);
+                return _githubService.getUser(params[0]);
             }
 
             @Override
@@ -77,7 +80,7 @@ public class RetrofitAsyncTaskDeathFragment
             }
         }.execute(_username.getText().toString());*/
 
-        _api.user(_username.getText().toString())
+        _githubService.user(_username.getText().toString())
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(new Observer<User>() {
@@ -101,33 +104,12 @@ public class RetrofitAsyncTaskDeathFragment
 
     // -----------------------------------------------------------------------------------
 
-    private GithubApi _createGithubApi() {
-
-        RestAdapter.Builder builder = new RestAdapter.Builder().setEndpoint(
-              "https://api.github.com/");
-        //.setLogLevel(RestAdapter.LogLevel.FULL);
-
-        final String githubToken = getResources().getString(R.string.github_oauth_token);
-        if (!isEmpty(githubToken)) {
-            builder.setRequestInterceptor(new RequestInterceptor() {
-                @Override
-                public void intercept(RequestFacade request) {
-                    request.addHeader("Authorization", format("token %s", githubToken));
-                }
-            });
-        }
-
-        return builder.build().create(GithubApi.class);
-    }
-
-    // -----------------------------------------------------------------------------------
-
     private class GetGithubUser
           extends AsyncTask<String, Void, User> {
 
         @Override
         protected User doInBackground(String... params) {
-            return _api.getUser(params[0]);
+            return _githubService.getUser(params[0]);
         }
 
         @Override
