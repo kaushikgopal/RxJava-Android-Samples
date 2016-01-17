@@ -2,7 +2,6 @@ package com.morihacky.android.rxjava.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,19 +11,12 @@ import android.widget.ListView;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import com.morihacky.android.rxjava.retrofit.GithubService;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,8 +26,6 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import timber.log.Timber;
-
-import static java.lang.String.format;
 
 public class PseudoCacheConcatFragment
       extends BaseFragment {
@@ -122,39 +112,15 @@ public class PseudoCacheConcatFragment
     }
 
     private Observable<Contributor> _getFreshData() {
-        return _createGithubApi().contributors("square", "retrofit")
+        String githubToken = getResources().getString(R.string.github_oauth_token);
+        GithubApi githubService = GithubService.createGithubService(githubToken);
+        return githubService.contributors("square", "retrofit")
               .flatMap(new Func1<List<Contributor>, Observable<Contributor>>() {
                   @Override
                   public Observable<Contributor> call(List<Contributor> contributors) {
                       return Observable.from(contributors);
                   }
               });
-    }
-
-    private GithubApi _createGithubApi() {
-        Retrofit.Builder builder =new Retrofit.Builder()
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://api.github.com");
-
-        final String githubToken = getResources().getString(R.string.github_oauth_token);
-
-        if (!TextUtils.isEmpty(githubToken)) {
-            OkHttpClient client = new OkHttpClient();
-            client.interceptors().add(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    Request request = chain.request();
-                    Request newReq = request.newBuilder()
-                            .addHeader("Authorization", format("token %s", githubToken))
-                            .build();
-                    return chain.proceed(newReq);
-                }
-            });
-            builder.client(client);
-        }
-
-        return builder.build().create(GithubApi.class);
     }
 
     private void _initializeCache() {

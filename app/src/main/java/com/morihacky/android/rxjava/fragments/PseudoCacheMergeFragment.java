@@ -2,57 +2,43 @@ package com.morihacky.android.rxjava.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import com.morihacky.android.rxjava.R;
-import com.morihacky.android.rxjava.retrofit.Contributor;
-import com.morihacky.android.rxjava.retrofit.GithubApi;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.retrofit.Contributor;
+import com.morihacky.android.rxjava.retrofit.GithubApi;
+import com.morihacky.android.rxjava.retrofit.GithubService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
-
-import static android.text.TextUtils.isEmpty;
-import static java.lang.String.format;
 
 public class PseudoCacheMergeFragment
       extends BaseFragment {
 
     @Bind(R.id.log_list) ListView _resultList;
-
-    private Subscription _subscription = null;
+    private ArrayAdapter<String> _adapter;
     private HashMap<String, Long> _contributionMap = null;
     private HashMap<Contributor, Long> _resultAgeMap = new HashMap<>();
-    private ArrayAdapter<String> _adapter;
+    private Subscription _subscription = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+          @Nullable ViewGroup container,
+          @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_pseudo_cache_concat, container, false);
         ButterKnife.bind(this, layout);
         _initializeCache();
@@ -69,15 +55,13 @@ public class PseudoCacheMergeFragment
 
     @OnClick(R.id.btn_start_pseudo_cache)
     public void onDemoPseudoCacheClicked() {
-        _adapter = new ArrayAdapter<>(getActivity(),
-              R.layout.item_log,
-              R.id.item_log,
-              new ArrayList<String>());
+        _adapter = new ArrayAdapter<>(getActivity(), R.layout.item_log, R.id.item_log, new ArrayList<String>());
 
         _resultList.setAdapter(_adapter);
         _initializeCache();
 
         Observable.merge(_getCachedData(), _getFreshData())
+              .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(new Subscriber<Pair<Contributor, Long>>() {
                   @Override
@@ -138,7 +122,10 @@ public class PseudoCacheMergeFragment
     }
 
     private Observable<Pair<Contributor, Long>> _getFreshData() {
-        return _createGithubApi().contributors("square", "retrofit")
+        String githubToken = getResources().getString(R.string.github_oauth_token);
+        GithubApi githubService = GithubService.createGithubService(githubToken);
+
+        return githubService.contributors("square", "retrofit")
               .flatMap(new Func1<List<Contributor>, Observable<Contributor>>() {
                   @Override
                   public Observable<Contributor> call(List<Contributor> contributors) {
@@ -151,32 +138,6 @@ public class PseudoCacheMergeFragment
                       return new Pair<>(contributor, System.currentTimeMillis());
                   }
               });
-    }
-
-    private GithubApi _createGithubApi() {
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://api.github.com");
-
-        final String githubToken = getResources().getString(R.string.github_oauth_token);
-
-        if (!TextUtils.isEmpty(githubToken)) {
-            OkHttpClient client = new OkHttpClient();
-            client.interceptors().add(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    Request request = chain.request();
-                    Request newReq = request.newBuilder()
-                            .addHeader("Authorization", format("token %s", githubToken))
-                            .build();
-                    return chain.proceed(newReq);
-                }
-            });
-            builder.client(client);
-        }
-
-        return builder.build().create(GithubApi.class);
     }
 
     private void _initializeCache() {

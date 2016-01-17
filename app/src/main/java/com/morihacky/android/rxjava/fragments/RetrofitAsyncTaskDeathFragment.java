@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +13,11 @@ import android.widget.ListView;
 
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
+import com.morihacky.android.rxjava.retrofit.GithubService;
 import com.morihacky.android.rxjava.retrofit.User;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -33,7 +25,6 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static android.text.TextUtils.isEmpty;
 import static java.lang.String.format;
 
 public class RetrofitAsyncTaskDeathFragment
@@ -42,13 +33,15 @@ public class RetrofitAsyncTaskDeathFragment
     @Bind(R.id.btn_demo_retrofit_async_death_username) EditText _username;
     @Bind(R.id.log_list) ListView _resultList;
 
-    private GithubApi _api;
+    private GithubApi _githubService;
     private ArrayAdapter<String> _adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _api = _createGithubApi();
+
+        String githubToken = getResources().getString(R.string.github_oauth_token);
+        _githubService = GithubService.createGithubService(githubToken);
     }
 
     @Override
@@ -78,7 +71,7 @@ public class RetrofitAsyncTaskDeathFragment
         /*new AsyncTask<String, Void, User>() {
             @Override
             protected User doInBackground(String... params) {
-                return _api.getUser(params[0]);
+                return _githubService.getUser(params[0]);
             }
 
             @Override
@@ -87,7 +80,7 @@ public class RetrofitAsyncTaskDeathFragment
             }
         }.execute(_username.getText().toString());*/
 
-        _api.user(_username.getText().toString())
+        _githubService.user(_username.getText().toString())
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(new Observer<User>() {
@@ -111,40 +104,12 @@ public class RetrofitAsyncTaskDeathFragment
 
     // -----------------------------------------------------------------------------------
 
-    private GithubApi _createGithubApi() {
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://api.github.com");
-
-        final String githubToken = getResources().getString(R.string.github_oauth_token);
-
-        if (!TextUtils.isEmpty(githubToken)) {
-            OkHttpClient client = new OkHttpClient();
-            client.interceptors().add(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    Request request = chain.request();
-                    Request newReq = request.newBuilder()
-                            .addHeader("Authorization", format("token %s", githubToken))
-                            .build();
-                    return chain.proceed(newReq);
-                }
-            });
-            builder.client(client);
-        }
-
-        return builder.build().create(GithubApi.class);
-    }
-
-    // -----------------------------------------------------------------------------------
-
     private class GetGithubUser
           extends AsyncTask<String, Void, User> {
 
         @Override
         protected User doInBackground(String... params) {
-            return _api.getUser(params[0]);
+            return _githubService.getUser(params[0]);
         }
 
         @Override
