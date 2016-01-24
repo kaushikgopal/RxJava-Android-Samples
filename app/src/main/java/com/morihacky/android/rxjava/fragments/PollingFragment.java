@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.RxUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
+import rx.Scheduler;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -39,17 +42,14 @@ public class PollingFragment
     private List<String> _logs;
     private CompositeSubscription _subscriptions;
     private int _counter = 0;
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        _subscriptions.unsubscribe();
-    }
+    private Scheduler.Worker _worker;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         _subscriptions = new CompositeSubscription();
+        _worker = Schedulers.newThread()
+                .createWorker();
         _setupLogger();
     }
 
@@ -62,30 +62,81 @@ public class PollingFragment
         return layout;
     }
 
-    @OnClick(R.id.btn_start_simple_polling)
-    public void onStartSimplePollingClicked() {
-        _subscriptions.add(Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(final Subscriber<? super String> observer) {
-
-                Schedulers.newThread().createWorker() //
-                      .schedulePeriodically(new Action0() {
-                          @Override
-                          public void call() {
-                              observer.onNext(_doNetworkCallAndGetStringResult());
-                          }
-                      }, INITIAL_DELAY, POLLING_INTERVAL, TimeUnit.MILLISECONDS);
-            }
-        }).take(10).subscribe(new Action1<String>() {
-            @Override
-            public void call(String s) {
-                _log(String.format("String polling - %s", s));
-            }
-        }));
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RxUtils.unsubscribeIfNotNull(_subscriptions);
+        ButterKnife.unbind(this);
     }
 
+    @OnClick(R.id.btn_start_simple_polling)
+    public void onStartSimplePollingClicked() {
+        _setupLogger();
+        _log(String.format("Simple String polling - %s", _counter));
+        _subscriptions.add(Observable.create(
+                        new Observable.OnSubscribe<String>() {
+                            @Override
+                            public void call(final Subscriber<? super String> subscriber) {
+                                Subscription subscription = _worker
+                                        .schedulePeriodically(new Action0() {
+                                            @Override
+                                            public void call() {
+                                                subscriber.onNext(_doNetworkCallAndGetStringResult());
+                                            }
+                                        }, INITIAL_DELAY, POLLING_INTERVAL, TimeUnit.MILLISECONDS);
+                                subscriber.add(subscription);
+                            }
+                        })
+                        .take(10)
+                        .subscribe(new Action1<String>() {
+                            @Override
+                            public void call(String s) {
+                                _log(String.format("String polling - %s", s));
+                            }
+                        })
+        );
+    }
+
+    @OnClick(R.id.btn_start_increasingly_delayed_polling)
+    public void onStartIncreasinglyDelayedPolling() {
+        _setupLogger();
+        _log(String.format("Increasingly delayed String polling - %s", _counter));
+        continueIncreasinglyDelayedPolling(1000, 10);
+    }
+
+    private void continueIncreasinglyDelayedPolling(final int delay, final int limit) {
+        _subscriptions = _unsubscribeAndGetNewCompositeSub(_subscriptions);
+         Observable.create(
+                new Observable.OnSubscribe<String>() {
+                    @Override
+                    public void call(final Subscriber<? super String> subscriber) {
+
+                        Subscription subscription = _worker.schedule(new Action0() {
+                                    @Override
+                                    public void call() {
+                                        subscriber.onNext(_doNetworkCallAndGetStringResult());
+                                    }
+                        }, delay, TimeUnit.MILLISECONDS);
+                        subscriber.add(subscription);
+                    }
+                })
+                .take(limit)
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        continueIncreasinglyDelayedPolling(delay + 1000, limit - 1);
+                        Timber.d("delay of %d", delay);
+                        _log(String.format("String polling - %s", s));
+                    }
+                });
+    }
     // -----------------------------------------------------------------------------------
     // Method that help wiring up the example (irrelevant to RxJava)
+
+    private static CompositeSubscription _unsubscribeAndGetNewCompositeSub(CompositeSubscription subscription){
+        RxUtils.unsubscribeIfNotNull(subscription);
+        return  RxUtils.getNewCompositeSubIfUnsubscribed(subscription);
+    }
 
     private String _doNetworkCallAndGetStringResult() {
 
@@ -120,9 +171,11 @@ public class PollingFragment
     }
 
     private void _setupLogger() {
-        _logs = new ArrayList<String>();
+        _logs = new ArrayList<>();
         _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
         _logsList.setAdapter(_adapter);
+        _subscriptions = _unsubscribeAndGetNewCompositeSub(_subscriptions);
+        _counter = 0;
     }
 
     private boolean _isCurrentlyOnMainThread() {
@@ -130,7 +183,7 @@ public class PollingFragment
     }
 
     private class LogAdapter
-          extends ArrayAdapter<String> {
+            extends ArrayAdapter<String> {
 
         public LogAdapter(Context context, List<String> logs) {
             super(context, R.layout.item_log, R.id.item_log, logs);
