@@ -75,8 +75,13 @@ public class RetrofitFragment
     @Override
     public void onPause() {
         super.onPause();
-
         RxUtils.unsubscribeIfNotNull(_subscriptions);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
     @OnClick(R.id.btn_demo_retrofit_contributors)

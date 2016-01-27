@@ -54,6 +54,12 @@ public class TimingDemoFragment
         return layout;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
     // -----------------------------------------------------------------------------------
 
     @OnClick(R.id.btn_demo_timing_1)

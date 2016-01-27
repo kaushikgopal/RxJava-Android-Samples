@@ -15,6 +15,7 @@ import android.widget.ListView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.jakewharton.rxbinding.widget.TextViewTextChangeEvent;
 import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.RxUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +45,8 @@ public class DebounceSearchEmitterFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (_subscription != null) {
-            _subscription.unsubscribe();
-        }
+        RxUtils.unsubscribeIfNotNull(_subscription);
+        ButterKnife.unbind(this);
     }
 
     @Override

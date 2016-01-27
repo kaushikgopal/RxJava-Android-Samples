@@ -66,6 +66,12 @@ public class ExponentialBackoffFragment
         RxUtils.unsubscribeIfNotNull(_subscriptions);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
     // -----------------------------------------------------------------------------------
 
     @OnClick(R.id.btn_eb_retry)
