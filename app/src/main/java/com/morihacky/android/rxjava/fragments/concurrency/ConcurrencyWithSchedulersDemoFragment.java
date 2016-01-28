@@ -1,4 +1,4 @@
-package com.morihacky.android.rxjava.fragments;
+package com.morihacky.android.rxjava.fragments.concurrency;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.fragments.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
