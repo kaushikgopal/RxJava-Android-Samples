@@ -1,4 +1,4 @@
-package com.morihacky.android.rxjava.fragments;
+package com.morihacky.android.rxjava.fragments.concurrency;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.fragments.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,9 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -37,6 +36,7 @@ public class ConcurrencyWithSchedulersDemoFragment
     private LogAdapter _adapter;
     private List<String> _logs;
     private Subscription _subscription;
+	private ConcurrencyWithSchedulersHelper helper;
 
     @Override
     public void onDestroy() {
@@ -52,7 +52,13 @@ public class ConcurrencyWithSchedulersDemoFragment
         _setupLogger();
     }
 
-    @Override
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		helper = new ConcurrencyWithSchedulersHelper(this);
+	}
+
+	@Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -67,21 +73,10 @@ public class ConcurrencyWithSchedulersDemoFragment
         _progress.setVisibility(View.VISIBLE);
         _log("Button Clicked");
 
-        _subscription = _getObservable()//
+        _subscription = helper.getObservable()//
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(_getObserver());                             // Observer
-    }
-
-    private Observable<Boolean> _getObservable() {
-        return Observable.just(true).map(new Func1<Boolean, Boolean>() {
-            @Override
-            public Boolean call(Boolean aBoolean) {
-                _log("Within Observable");
-                _doSomeLongOperation_thatBlocksCurrentThread();
-                return aBoolean;
-            }
-        });
     }
 
     /**
@@ -115,19 +110,9 @@ public class ConcurrencyWithSchedulersDemoFragment
     }
 
     // -----------------------------------------------------------------------------------
-    // Method that help wiring up the example (irrelevant to RxJava)
+    // Methods that help wiring up the example (irrelevant to RxJava)
 
-    private void _doSomeLongOperation_thatBlocksCurrentThread() {
-        _log("performing long operation");
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            Timber.d("Operation was interrupted");
-        }
-    }
-
-    private void _log(String logMsg) {
+    void _log(String logMsg) {
 
         if (_isCurrentlyOnMainThread()) {
             _logs.add(0, logMsg + " (main thread) ");

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.fragments.concurrency.ConcurrencyWithSchedulersDemoFragment;
 import com.morihacky.android.rxjava.rxbus.RxBusDemoFragment;
 
 import butterknife.ButterKnife;
