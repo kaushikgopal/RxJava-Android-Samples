@@ -2,6 +2,7 @@ package com.morihacky.android.rxjava.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
+import rx.functions.Func1;
 import rx.functions.Func3;
 import timber.log.Timber;
 
@@ -46,18 +48,22 @@ public class FormValidationCombineLatestFragment
               false);
         ButterKnife.bind(this, layout);
 
-        _emailChangeObservable = RxTextView.textChanges(_email).skip(1);
-        _passwordChangeObservable = RxTextView.textChanges(_password).skip(1);
-        _numberChangeObservable = RxTextView.textChanges(_number).skip(1);
-
-        _combineLatestEvents();
+        _emailChangeObservable = RxTextView.textChanges(_email);
+        _passwordChangeObservable = RxTextView.textChanges(_password);
+        _numberChangeObservable = RxTextView.textChanges(_number);
 
         return layout;
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStart() {
+        super.onStart();
+        _combineLatestEvents();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
         RxUtils.unsubscribeIfNotNull(_subscription);
     }
 
@@ -68,58 +74,97 @@ public class FormValidationCombineLatestFragment
     }
 
     private void _combineLatestEvents() {
-        _subscription = Observable.combineLatest(_emailChangeObservable,
-              _passwordChangeObservable,
-              _numberChangeObservable,
-              new Func3<CharSequence, CharSequence, CharSequence, Boolean>() {
-                  @Override
-                  public Boolean call(CharSequence newEmail,
-                                      CharSequence newPassword,
-                                      CharSequence newNumber) {
+        _subscription = Observable.combineLatest(
+                _emailChangeObservable,
+                _passwordChangeObservable,
+                _numberChangeObservable,
+                new Func3<CharSequence, CharSequence, CharSequence, FormValidator>() {
+                    @Override
+                    public FormValidator call(CharSequence newEmail,
+                                              CharSequence newPassword,
+                                              CharSequence newNumber) {
 
-                      boolean emailValid = !isEmpty(newEmail) &&
-                                           EMAIL_ADDRESS.matcher(newEmail).matches();
-                      if (!emailValid) {
-                          _email.setError("Invalid Email!");
-                      }
+                        return new FormValidator(newEmail, newPassword, newNumber);
+                    }
+                })
+                .skipWhile(new FormIsClean())
+                .map(new Func1<FormValidator, Boolean>() {
+                    @Override
+                    public Boolean call(FormValidator form) {
+                        if (!form.emailValid) {
+                            _email.setError("Invalid Email!");
+                        }
+                        if (!form.passwordValid) {
+                            _password.setError("Invalid Password!");
+                        }
+                        if (!form.numberValid) {
+                            _number.setError("Invalid Number!");
+                        }
 
-                      boolean passValid = !isEmpty(newPassword) && newPassword.length() > 8;
-                      if (!passValid) {
-                          _password.setError("Invalid Password!");
-                      }
+                        return form.valid;
+                    }
+                })
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("completed");
+                    }
 
-                      boolean numValid = !isEmpty(newNumber);
-                      if (numValid) {
-                          int num = Integer.parseInt(newNumber.toString());
-                          numValid = num > 0 && num <= 100;
-                      }
-                      if (!numValid) {
-                          _number.setError("Invalid Number!");
-                      }
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e, "there was an error");
+                    }
 
-                      return emailValid && passValid && numValid;
+                    @Override
+                    public void onNext(Boolean formValid) {
+                        if (formValid) {
+                            _btnValidIndicator.setBackgroundColor(
+                                    ContextCompat.getColor(getActivity(), R.color.blue)
+                            );
+                        } else {
+                            _btnValidIndicator.setBackgroundColor(
+                                    ContextCompat.getColor(getActivity(), R.color.gray)
+                            );
+                        }
+                    }
+                });
+    }
 
-                  }
-              })//
-              .subscribe(new Observer<Boolean>() {
-                  @Override
-                  public void onCompleted() {
-                      Timber.d("completed");
-                  }
+    private static class FormIsClean implements Func1<FormValidator, Boolean> {
 
-                  @Override
-                  public void onError(Throwable e) {
-                      Timber.e(e, "there was an error");
-                  }
+        private boolean isDirty = false;
 
-                  @Override
-                  public void onNext(Boolean formValid) {
-                      if (formValid) {
-                          _btnValidIndicator.setBackgroundColor(getResources().getColor(R.color.blue));
-                      } else {
-                          _btnValidIndicator.setBackgroundColor(getResources().getColor(R.color.gray));
-                      }
-                  }
-              });
+        @Override
+        public Boolean call(FormValidator formValidator) {
+            if (!isDirty) {
+                isDirty = formValidator.allFieldsDirty;
+            }
+            return !isDirty;
+        }
+    }
+
+    private static class FormValidator {
+        private final boolean emailValid;
+        private final boolean passwordValid;
+        private final boolean numberValid;
+        private final boolean valid;
+        private final boolean allFieldsDirty;
+
+        public FormValidator(CharSequence newEmail, CharSequence newPassword, CharSequence newNumber) {
+            this.emailValid = !isEmpty(newEmail) && EMAIL_ADDRESS.matcher(newEmail).matches();
+            this.passwordValid = !isEmpty(newPassword) && newPassword.length() > 8;
+            this.numberValid = isValidPhoneNumber(newNumber);
+            valid = emailValid && passwordValid && numberValid;
+            allFieldsDirty = !isEmpty(newEmail) && !isEmpty(newPassword) && !isEmpty(newNumber);
+        }
+
+        private static boolean isValidPhoneNumber(CharSequence newNumber) {
+            boolean numValid = !isEmpty(newNumber);
+            if (numValid) {
+                int num = Integer.parseInt(newNumber.toString());
+                numValid = num > 0 && num <= 100;
+            }
+            return numValid;
+        }
     }
 }
