@@ -64,6 +64,12 @@ public class RetrofitAsyncTaskDeathFragment
         return layout;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
     @OnClick(R.id.btn_demo_retrofit_async_death)
     public void onGetGithubUserClicked() {
         _adapter.clear();

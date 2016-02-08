@@ -119,6 +119,12 @@ public class RotationPersist1Fragment
         RxUtils.unsubscribeIfNotNull(_subscriptions);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
     private void _setupLogger() {
         _logs = new ArrayList<>();
         _adapter = new LogAdapter(getActivity(), new ArrayList<String>());

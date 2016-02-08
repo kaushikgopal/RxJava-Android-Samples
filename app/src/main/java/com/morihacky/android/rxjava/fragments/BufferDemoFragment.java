@@ -79,6 +79,11 @@ public class BufferDemoFragment
         return layout;
     }
 
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
     // -----------------------------------------------------------------------------------
     // Main Rx entities
 

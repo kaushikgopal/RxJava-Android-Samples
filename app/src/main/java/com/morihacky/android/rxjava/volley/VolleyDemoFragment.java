@@ -65,6 +65,12 @@ public class VolleyDemoFragment
         _compositeSubscription.unsubscribe();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
     public Observable<JSONObject> newGetRouteData() {
         return Observable.defer(new Func0<Observable<JSONObject>>() {
             @Override

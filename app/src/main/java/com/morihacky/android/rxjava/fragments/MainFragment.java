@@ -27,6 +27,12 @@ public class MainFragment
         return layout;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
     @OnClick(R.id.btn_demo_schedulers)
     void demoConcurrencyWithSchedulers() {
         clickedOn(new ConcurrencyWithSchedulersDemoFragment());
