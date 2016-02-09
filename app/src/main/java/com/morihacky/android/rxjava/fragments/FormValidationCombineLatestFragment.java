@@ -78,30 +78,38 @@ public class FormValidationCombineLatestFragment
                 _emailChangeObservable,
                 _passwordChangeObservable,
                 _numberChangeObservable,
-                new Func3<CharSequence, CharSequence, CharSequence, FormValidator>() {
+                new Func3<CharSequence, CharSequence, CharSequence, Form>() {
                     @Override
-                    public FormValidator call(CharSequence newEmail,
+                    public Form call(CharSequence newEmail,
                                               CharSequence newPassword,
                                               CharSequence newNumber) {
 
-                        return new FormValidator(newEmail, newPassword, newNumber);
+                        return new Form(newEmail, newPassword, newNumber);
                     }
                 })
                 .skipWhile(new FormIsClean())
-                .map(new Func1<FormValidator, Boolean>() {
+                .map(new Func1<Form, Boolean>() {
                     @Override
-                    public Boolean call(FormValidator form) {
-                        if (!form.emailValid) {
+                    public Boolean call(Form form) {
+                        boolean emailValid = !isEmpty(form.email) && EMAIL_ADDRESS.matcher(form.email).matches();
+                        boolean passwordValid = !isEmpty(form.password) && form.password.length() > 8;
+                        boolean numberValid = !isEmpty(form.number);
+                        if (numberValid) {
+                            int num = Integer.parseInt(form.number.toString());
+                            numberValid = num > 0 && num <= 100;
+                        }
+
+                        if (!emailValid) {
                             _email.setError("Invalid Email!");
                         }
-                        if (!form.passwordValid) {
+                        if (!passwordValid) {
                             _password.setError("Invalid Password!");
                         }
-                        if (!form.numberValid) {
+                        if (!numberValid) {
                             _number.setError("Invalid Number!");
                         }
 
-                        return form.valid;
+                        return emailValid && passwordValid && numberValid;
                     }
                 })
                 .subscribe(new Observer<Boolean>() {
@@ -116,8 +124,8 @@ public class FormValidationCombineLatestFragment
                     }
 
                     @Override
-                    public void onNext(Boolean formValid) {
-                        if (formValid) {
+                    public void onNext(Boolean valid) {
+                        if (valid) {
                             _btnValidIndicator.setBackgroundColor(
                                     ContextCompat.getColor(getActivity(), R.color.blue)
                             );
@@ -130,41 +138,28 @@ public class FormValidationCombineLatestFragment
                 });
     }
 
-    private static class FormIsClean implements Func1<FormValidator, Boolean> {
+    private static class FormIsClean implements Func1<Form, Boolean> {
 
         private boolean isDirty = false;
 
         @Override
-        public Boolean call(FormValidator formValidator) {
+        public Boolean call(Form form) {
             if (!isDirty) {
-                isDirty = formValidator.allFieldsDirty;
+                isDirty = !isEmpty(form.email) && !isEmpty(form.password) && !isEmpty(form.number);
             }
             return !isDirty;
         }
     }
 
-    private static class FormValidator {
-        private final boolean emailValid;
-        private final boolean passwordValid;
-        private final boolean numberValid;
-        private final boolean valid;
-        private final boolean allFieldsDirty;
+    private static class Form {
+        private final CharSequence email;
+        private final CharSequence password;
+        private final CharSequence number;
 
-        public FormValidator(CharSequence newEmail, CharSequence newPassword, CharSequence newNumber) {
-            this.emailValid = !isEmpty(newEmail) && EMAIL_ADDRESS.matcher(newEmail).matches();
-            this.passwordValid = !isEmpty(newPassword) && newPassword.length() > 8;
-            this.numberValid = isValidPhoneNumber(newNumber);
-            valid = emailValid && passwordValid && numberValid;
-            allFieldsDirty = !isEmpty(newEmail) && !isEmpty(newPassword) && !isEmpty(newNumber);
-        }
-
-        private static boolean isValidPhoneNumber(CharSequence newNumber) {
-            boolean numValid = !isEmpty(newNumber);
-            if (numValid) {
-                int num = Integer.parseInt(newNumber.toString());
-                numValid = num > 0 && num <= 100;
-            }
-            return numValid;
+        public Form(CharSequence newEmail, CharSequence newPassword, CharSequence newNumber) {
+            this.email = newEmail;
+            this.password = newPassword;
+            this.number = newNumber;
         }
     }
 }
