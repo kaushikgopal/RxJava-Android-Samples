@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.RxUtils;
+import com.morihacky.android.rxjava.ShowsLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class ConcurrencyWithSchedulersDemoFragment
-      extends BaseFragment {
+      extends BaseFragment implements ShowsLoader {
 
     @Bind(R.id.progress_operation_running) ProgressBar _progress;
     @Bind(R.id.list_threading_log) ListView _logsList;
@@ -64,12 +65,12 @@ public class ConcurrencyWithSchedulersDemoFragment
     @OnClick(R.id.btn_start_operation)
     public void startLongOperation() {
 
-        _progress.setVisibility(View.VISIBLE);
         _log("Button Clicked");
 
         _subscription = _getObservable()//
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
+              .compose(RxUtils.<Boolean>applyLoadingFlipping(this))
               .subscribe(_getObserver());                             // Observer
     }
 
@@ -86,7 +87,7 @@ public class ConcurrencyWithSchedulersDemoFragment
 
     /**
      * Observer that handles the result through the 3 important actions:
-     *
+     * <p/>
      * 1. onCompleted
      * 2. onError
      * 3. onNext
@@ -97,14 +98,12 @@ public class ConcurrencyWithSchedulersDemoFragment
             @Override
             public void onCompleted() {
                 _log("On complete");
-                _progress.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onError(Throwable e) {
                 Timber.e(e, "Error in RxJava Demo concurrency");
                 _log(String.format("Boo! Error %s", e.getMessage()));
-                _progress.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -112,6 +111,11 @@ public class ConcurrencyWithSchedulersDemoFragment
                 _log(String.format("onNext with return value \"%b\"", bool));
             }
         };
+    }
+
+    @Override
+    public void showLoader(boolean visible) {
+        _progress.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 
     // -----------------------------------------------------------------------------------
@@ -149,7 +153,7 @@ public class ConcurrencyWithSchedulersDemoFragment
     }
 
     private void _setupLogger() {
-        _logs = new ArrayList<String>();
+        _logs = new ArrayList<>();
         _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
         _logsList.setAdapter(_adapter);
     }
