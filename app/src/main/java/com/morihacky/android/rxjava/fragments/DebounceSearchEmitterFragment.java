@@ -27,15 +27,18 @@ import butterknife.OnClick;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import timber.log.Timber;
 
 import static java.lang.String.format;
 
 public class DebounceSearchEmitterFragment
-      extends BaseFragment {
+        extends BaseFragment {
 
-    @Bind(R.id.list_threading_log) ListView _logsList;
-    @Bind(R.id.input_txt_debounce) EditText _inputSearchText;
+    @Bind(R.id.list_threading_log)
+    ListView _logsList;
+    @Bind(R.id.input_txt_debounce)
+    EditText _inputSearchText;
 
     private LogAdapter _adapter;
     private List<String> _logs;
@@ -71,9 +74,15 @@ public class DebounceSearchEmitterFragment
         _setupLogger();
 
         _subscription = RxTextView.textChangeEvents(_inputSearchText)//
-              .debounce(400, TimeUnit.MILLISECONDS)// default Scheduler is Computation
-              .observeOn(AndroidSchedulers.mainThread())//
-              .subscribe(_getSearchObserver());
+                .filter(new Func1<TextViewTextChangeEvent, Boolean>() { // start searching after typing at least 3 characters
+                    @Override
+                    public Boolean call(TextViewTextChangeEvent textViewTextChangeEvent) {
+                        return textViewTextChangeEvent.text().length() >= 3;
+                    }
+                })
+                .debounce(400, TimeUnit.MILLISECONDS)// default Scheduler is Computation
+                .observeOn(AndroidSchedulers.mainThread())//
+                .subscribe(_getSearchObserver());
     }
 
     // -----------------------------------------------------------------------------------
@@ -134,7 +143,7 @@ public class DebounceSearchEmitterFragment
     }
 
     private class LogAdapter
-          extends ArrayAdapter<String> {
+            extends ArrayAdapter<String> {
 
         public LogAdapter(Context context, List<String> logs) {
             super(context, R.layout.item_log, R.id.item_log, logs);
