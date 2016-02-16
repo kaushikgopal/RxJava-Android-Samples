@@ -15,17 +15,19 @@ build/
 
 # Gradle files
 .gradle/
-build/
 subProjects/facebook/build
 
 # Intellij project files
-.idea/
+.idea/libraries
+.idea/.name
+.idea/compiler.xml
+.idea/gradle.xml
+.idea/modules.xml
+.idea/runConfigurations.xml
+.idea/vcs.xml
 .idea/workspace.xml
+.idea/misc.xml
 gen-external-apklibs/
-*.iml
-
-# Intellij
-.idea/
 *.iml
 *.iws
 
@@ -43,4 +45,4 @@ pom.xml.*
 #Ant
 build.xml
 ant.properties
-local.properties
+profiles_settings.xml
