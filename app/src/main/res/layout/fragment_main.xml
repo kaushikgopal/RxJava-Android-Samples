@@ -106,5 +106,11 @@
             android:layout_width="match_parent"
             android:text="@string/btn_demo_volley"
             />
+        <Button
+            android:id="@+id/btn_demo_parallel"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Parallel network call"
+            />
     </LinearLayout>
 </ScrollView>

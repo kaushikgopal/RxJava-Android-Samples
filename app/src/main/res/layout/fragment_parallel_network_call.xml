@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:gravity="center"
+        android:text="@string/msg_demo_parallel_network_call"
+        />
+
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        >
+
+        <Button
+            android:id="@+id/btn_orchectrate_1"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="orchestration 1"
+            />
+
+        <Button
+            android:id="@+id/btn_orchectrate_2"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="orchestration 2"
+            />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/list_threading_log"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        />
+</LinearLayout>

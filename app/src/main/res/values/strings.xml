@@ -34,4 +34,5 @@
     <string name="msg_demo_form_comb_latest">Monitor the state of multiple observables with the combineLatest operator. Only after all the 3 inputs contain valid entries will the submit button light up</string>
     <string name="msg_demo_timing">BTN 1: run single task once (after 2s complete)\nBTN 2: run task every 1s (start delay of 1s) toggle \nBTN 3: run task every 1s (start immediately) toggle \nBTN 4: run task 5 times every 3s (then complete)</string>
     <string name="msg_demo_rotation_persist">This is an example of starting an Observable and using the result across rotations. There are many ways to do this, we use a retained fragment in this example</string>
+    <string name="msg_demo_parallel_network_call">These example demonstrate how to orchectrate multiple observer.</string>
 </resources>

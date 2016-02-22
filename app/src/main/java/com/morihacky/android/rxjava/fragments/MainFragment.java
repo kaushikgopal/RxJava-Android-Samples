@@ -94,6 +94,12 @@ public class MainFragment
         clickedOn(new VolleyDemoFragment());
     }
 
+    @OnClick(R.id.btn_demo_parallel)
+    void demoParallelNetworkCall() {
+        clickedOn(new ParallelNetworkCallFragment());
+        //clickedOn(new RotationPersist1Fragment());
+    }
+
     private void clickedOn(@NonNull Fragment fragment) {
         final String tag = fragment.getClass().toString();
         getActivity().getSupportFragmentManager()
