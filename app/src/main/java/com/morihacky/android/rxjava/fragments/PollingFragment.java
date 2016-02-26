@@ -16,41 +16,35 @@ import com.morihacky.android.rxjava.RxUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
-import rx.Scheduler;
-import rx.Subscriber;
-import rx.Subscription;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 public class PollingFragment
       extends BaseFragment {
 
-    public static final int INITIAL_DELAY = 0;
-    public static final int POLLING_INTERVAL = 500;
+    private static final int INITIAL_DELAY = 0;
+    private static final int POLLING_INTERVAL = 1000;
+
     @Bind(R.id.list_threading_log) ListView _logsList;
 
     private LogAdapter _adapter;
     private List<String> _logs;
-    private CompositeSubscription _subscriptions;
+    private CompositeSubscription _subscriptions = new CompositeSubscription();
     private int _counter = 0;
-    private Scheduler.Worker _worker;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        _subscriptions = new CompositeSubscription();
-        _worker = Schedulers.newThread()
-                .createWorker();
         _setupLogger();
     }
 
@@ -72,8 +66,6 @@ public class PollingFragment
 
     @OnClick(R.id.btn_start_simple_polling)
     public void onStartSimplePollingClicked() {
-        _setupLogger();
-
         _subscriptions.add(//
               Observable.interval(INITIAL_DELAY, POLLING_INTERVAL, TimeUnit.MILLISECONDS)
                     .map(new Func1<Long, String>() {
@@ -100,43 +92,88 @@ public class PollingFragment
     @OnClick(R.id.btn_start_increasingly_delayed_polling)
     public void onStartIncreasinglyDelayedPolling() {
         _setupLogger();
-        _log(String.format("Increasingly delayed String polling - %s", _counter));
-        continueIncreasinglyDelayedPolling(1000, 10);
+
+        final int pollingInterval = POLLING_INTERVAL;
+        final int repeatLimit = 5;
+
+        _log(String.format(Locale.US, "Start increasingly delayed polling now time: [xx:%02d]",
+              _getSecondHand()));
+
+        _subscriptions.add(//
+              Observable.just(1)
+                    .repeatWhen(new RepeatWithDelay(repeatLimit, pollingInterval))
+                    .subscribe(new Action1<Object>() {
+                        @Override
+                        public void call(Object o) {
+                            _log(String.format(Locale.US, "Executing polled task now time : [xx:%02d]",
+                                  _getSecondHand()));
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable e) {
+                            Timber.d(e, "arrrr. Error");
+                        }
+                    })
+        );
     }
 
-    private void continueIncreasinglyDelayedPolling(final int delay, final int limit) {
-        _subscriptions = _unsubscribeAndGetNewCompositeSub(_subscriptions);
-         Observable.create(
-                new Observable.OnSubscribe<String>() {
-                    @Override
-                    public void call(final Subscriber<? super String> subscriber) {
+    // -----------------------------------------------------------------------------------
 
-                        Subscription subscription = _worker.schedule(new Action0() {
-                                    @Override
-                                    public void call() {
-                                        subscriber.onNext(_doNetworkCallAndGetStringResult());
-                                    }
-                        }, delay, TimeUnit.MILLISECONDS);
-                        subscriber.add(subscription);
+    // CAUTION:
+    // --------------------------------------
+    // THIS notificationHandler class HAS NO BUSINESS BEING non-static
+    // I ONLY did this cause i wanted access to the `_log` method from inside here
+    // for the purpose of demonstration. In the real world, make it static and LET IT BE!!
+
+    // It's 12am in the morning and i feel lazy dammit !!!
+
+    //public static class RepeatWithDelay
+    public class RepeatWithDelay
+          implements Func1<Observable<? extends Void>, Observable<?>> {
+
+        private final int _repeatLimit;
+        private final int _pollingInterval;
+        private int _repeatCount = 1;
+
+        RepeatWithDelay(int repeatLimit, int pollingInterval) {
+            _pollingInterval = pollingInterval;
+            _repeatLimit = repeatLimit;
+        }
+
+        // this is a notificationhandler, all we care about is
+        // the emission "type" not emission "content"
+        // only onNext triggers a re-subscription
+
+        @Override
+        public Observable<?> call(Observable<? extends Void> inputObservable) {
+
+            // it is critical to use inputObservable in the chain for the result
+            // ignoring it and doing your own thing will break the sequence
+
+            return inputObservable.flatMap(new Func1<Void, Observable<?>>() {
+                @Override
+                public Observable<?> call(Void blah) {
+
+
+                    if (_repeatCount >= _repeatLimit) {
+                        // terminate the sequence cause we reached the limit
+                        _log("Completing sequence");
+                        return Observable.empty();
                     }
-                })
-                .take(limit)
-                .subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        continueIncreasinglyDelayedPolling(delay + 1000, limit - 1);
-                        Timber.d("delay of %d", delay);
-                        _log(String.format("String polling - %s", s));
-                    }
-                });
+
+                    // since we don't get an input
+                    // we store state in this handler to tell us the point of time we're firing
+                    _repeatCount++;
+
+                    return Observable.timer(_repeatCount * _pollingInterval,
+                          TimeUnit.MILLISECONDS);
+                }
+            });
+        }
     }
+
     // -----------------------------------------------------------------------------------
     // Method that help wiring up the example (irrelevant to RxJava)
-
-    private static CompositeSubscription _unsubscribeAndGetNewCompositeSub(CompositeSubscription subscription){
-        RxUtils.unsubscribeIfNotNull(subscription);
-        return  RxUtils.getNewCompositeSubIfUnsubscribed(subscription);
-    }
 
     private String _doNetworkCallAndGetStringResult() {
 
@@ -148,6 +185,12 @@ public class PollingFragment
         _counter++;
 
         return String.valueOf(_counter);
+    }
+
+    private int _getSecondHand() {
+        long millis = System.currentTimeMillis();
+        return (int) (TimeUnit.MILLISECONDS.toSeconds(millis) -
+                      TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
     }
 
     private void _log(String logMsg) {
@@ -174,7 +217,6 @@ public class PollingFragment
         _logs = new ArrayList<>();
         _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
         _logsList.setAdapter(_adapter);
-        _subscriptions = _unsubscribeAndGetNewCompositeSub(_subscriptions);
         _counter = 0;
     }
 
@@ -183,7 +225,7 @@ public class PollingFragment
     }
 
     private class LogAdapter
-            extends ArrayAdapter<String> {
+          extends ArrayAdapter<String> {
 
         public LogAdapter(Context context, List<String> logs) {
             super(context, R.layout.item_log, R.id.item_log, logs);
