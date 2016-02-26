@@ -1,48 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
-    android:orientation="vertical"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     >
 
     <TextView
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:padding="10dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="10dp"
         android:text="@string/msg_demo_polling"
         />
 
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         >
 
         <Button
             android:id="@+id/btn_start_simple_polling"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:textSize="16sp"
             android:text="Start simple polling"
+            android:textSize="16sp"
             />
 
         <Button
             android:id="@+id/btn_start_increasingly_delayed_polling"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:textSize="16sp"
             android:text="Start increasingly delayed polling"
+            android:textSize="16sp"
             />
     </LinearLayout>
 
     <ListView
         android:id="@+id/list_threading_log"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         />
 </LinearLayout>

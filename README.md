@@ -70,6 +70,17 @@ While the example here is pretty rudimentary, the technique used to achieve the 
 
 This is an example of polling using RxJava Schedulers. This is useful in cases, where you want to constantly poll a server and possibly get new data. The network call is "simulated" so it forces a delay before return a resultant string.
 
+There are two variants for this:
+
+1. Simple Polling: say when you want to execute a certain task every 5 seconds
+2. Increasing Delayed Polling: say when you want to execute a task first in 1 second, then in 2 seconds, then 3 and so on.
+
+The second example is basically a variant of [Exponential Backoff](https://github.com/kaushikgopal/RxJava-Android-Samples#exponential-backoff).
+
+Instead of using a RetryWithDelay, we use a RepeatWithDelay here. To understand the difference between Retry(When) and Repeat(When) I wouuld suggest Dan's [fantastic post on the subject](http://blog.danlew.net/2016/01/25/rxjavas-repeatwhen-and-retrywhen-explained/).
+
+An alternative approach to delayed polling without the use of `repeatWhen` would be using chained nested delay observables. See [startExecutingWithExponentialBackoffDelay in the ExponentialBackOffFragment example](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/app/src/main/java/com/morihacky/android/rxjava/fragments/ExponentialBackoffFragment.java#L111).
+
 ### RxBus - An event bus using RxJava + DebouncedBuffer
 
 Have a look at the accompanying blog posts for details on this demo:
@@ -131,6 +142,8 @@ We simulate this behaviour using RxJava with the [`retryWhen` operator](http://r
 
 * http://stackoverflow.com/a/25292833/159825
 * Another excellent implementation via @[sddamico](https://github.com/sddamico) : https://gist.github.com/sddamico/c45d7cdabc41e663bea1
+
+Also look at the [Polling example](https://github.com/kaushikgopal/RxJava-Android-Samples#polling-with-schedulers) where we use a very similar Exponential backoff mechanism.
 
 #### "Repeat" with exponential backoff
 

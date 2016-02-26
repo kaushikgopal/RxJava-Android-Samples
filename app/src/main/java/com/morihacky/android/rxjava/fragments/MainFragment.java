@@ -53,6 +53,11 @@ public class MainFragment
         clickedOn(new RetrofitFragment());
     }
 
+    @OnClick(R.id.btn_demo_polling)
+    void demoPolling() {
+        clickedOn(new PollingFragment());
+    }
+
     @OnClick(R.id.btn_demo_double_binding_textview)
     void demoDoubleBindingWithPublishSubject() {
         clickedOn(new DoubleBindingTextViewFragment());
