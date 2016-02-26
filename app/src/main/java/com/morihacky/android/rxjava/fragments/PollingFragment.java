@@ -70,14 +70,15 @@ public class PollingFragment
 
         final int pollCount = POLL_COUNT;
 
-        _subscriptions.add(//
+        _subscriptions.add(
               Observable.interval(INITIAL_DELAY, POLLING_INTERVAL, TimeUnit.MILLISECONDS)
-                    .map(new Func1<Long, String>() {
+                    .flatMap(new Func1<Long, Observable<String>>() {
                         @Override
-                        public String call(Long heartBeat) {
+                        public Observable<String> call(Long heartBeat) {
                             return _doNetworkCallAndGetStringResult(heartBeat);
                         }
-                    }).take(pollCount)
+                    })
+                    .take(pollCount)
                     .doOnSubscribe(new Action0() {
                         @Override
                         public void call() {
@@ -104,7 +105,7 @@ public class PollingFragment
         _log(String.format(Locale.US, "Start increasingly delayed polling now time: [xx:%02d]",
               _getSecondHand()));
 
-        _subscriptions.add(//
+        _subscriptions.add(
               Observable.just(1)
                     .repeatWhen(new RepeatWithDelay(pollCount, pollingInterval))
                     .subscribe(new Action1<Object>() {
@@ -180,22 +181,19 @@ public class PollingFragment
     // -----------------------------------------------------------------------------------
     // Method that help wiring up the example (irrelevant to RxJava)
 
-    private String _doNetworkCallAndGetStringResult(long attempt) {
-        try {
-            if (attempt == 4) {
-                // randomly make one event super long so we test that the repeat logic waits
-                // and accounts for this.
-                Thread.sleep(9000);
-            } else {
-                Thread.sleep(3000);
-            }
-
-        } catch (InterruptedException e) {
-            Timber.d("Operation was interrupted");
-        }
-        _counter++;
-
-        return String.valueOf(_counter);
+    private Observable<String> _doNetworkCallAndGetStringResult(final long attempt) {
+        // randomly make one event super long so we test that the repeat logic waits
+        // and accounts for this.
+        final boolean longEvent = ((int) (Math.random() * 100)) % 2 == 0;
+        return Observable.timer(longEvent ? 8 : 4, TimeUnit.SECONDS)
+              .map(new Func1<Long, String>() {
+                  @Override
+                  public String call(Long aLong) {
+                      Timber.i("Task: %s, WaitTime: %s", attempt, longEvent ? "8sec" : "4sec");
+                      _counter++;
+                      return String.valueOf(_counter);
+                  }
+              });
     }
 
     private int _getSecondHand() {
