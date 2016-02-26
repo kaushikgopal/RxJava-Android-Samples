@@ -27,6 +27,7 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action0;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -35,7 +36,7 @@ public class PollingFragment
       extends BaseFragment {
 
     public static final int INITIAL_DELAY = 0;
-    public static final int POLLING_INTERVAL = 1000;
+    public static final int POLLING_INTERVAL = 500;
     @Bind(R.id.list_threading_log) ListView _logsList;
 
     private LogAdapter _adapter;
@@ -72,28 +73,27 @@ public class PollingFragment
     @OnClick(R.id.btn_start_simple_polling)
     public void onStartSimplePollingClicked() {
         _setupLogger();
-        _log(String.format("Simple String polling - %s", _counter));
-        _subscriptions.add(Observable.create(
-                        new Observable.OnSubscribe<String>() {
-                            @Override
-                            public void call(final Subscriber<? super String> subscriber) {
-                                Subscription subscription = _worker
-                                        .schedulePeriodically(new Action0() {
-                                            @Override
-                                            public void call() {
-                                                subscriber.onNext(_doNetworkCallAndGetStringResult());
-                                            }
-                                        }, INITIAL_DELAY, POLLING_INTERVAL, TimeUnit.MILLISECONDS);
-                                subscriber.add(subscription);
-                            }
-                        })
-                        .take(10)
-                        .subscribe(new Action1<String>() {
-                            @Override
-                            public void call(String s) {
-                                _log(String.format("String polling - %s", s));
-                            }
-                        })
+
+        _subscriptions.add(//
+              Observable.interval(INITIAL_DELAY, POLLING_INTERVAL, TimeUnit.MILLISECONDS)
+                    .map(new Func1<Long, String>() {
+                        @Override
+                        public String call(Long heartBeat) {
+                            return _doNetworkCallAndGetStringResult();
+                        }
+                    }).take(5)
+                    .doOnSubscribe(new Action0() {
+                        @Override
+                        public void call() {
+                            _log(String.format("Simple String polling - %s", _counter));
+                        }
+                    })
+                    .subscribe(new Action1<String>() {
+                        @Override
+                        public void call(String s) {
+                            _log(String.format("Start simple polling - %s", s));
+                        }
+                    })
         );
     }
 
