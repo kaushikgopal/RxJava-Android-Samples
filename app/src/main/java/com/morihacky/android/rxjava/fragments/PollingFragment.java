@@ -34,6 +34,7 @@ public class PollingFragment
 
     private static final int INITIAL_DELAY = 0;
     private static final int POLLING_INTERVAL = 1000;
+    private static final int POLL_COUNT = 8;
 
     @Bind(R.id.list_threading_log) ListView _logsList;
 
@@ -66,24 +67,28 @@ public class PollingFragment
 
     @OnClick(R.id.btn_start_simple_polling)
     public void onStartSimplePollingClicked() {
+
+        final int pollCount = POLL_COUNT;
+
         _subscriptions.add(//
               Observable.interval(INITIAL_DELAY, POLLING_INTERVAL, TimeUnit.MILLISECONDS)
                     .map(new Func1<Long, String>() {
                         @Override
                         public String call(Long heartBeat) {
-                            return _doNetworkCallAndGetStringResult();
+                            return _doNetworkCallAndGetStringResult(heartBeat);
                         }
-                    }).take(5)
+                    }).take(pollCount)
                     .doOnSubscribe(new Action0() {
                         @Override
                         public void call() {
-                            _log(String.format("Simple String polling - %s", _counter));
+                            _log(String.format("Start simple polling - %s", _counter));
                         }
                     })
                     .subscribe(new Action1<String>() {
                         @Override
-                        public void call(String s) {
-                            _log(String.format("Start simple polling - %s", s));
+                        public void call(String taskName) {
+                            _log(String.format(Locale.US, "Executing polled task [%s] now time : [xx:%02d]",
+                                  taskName, _getSecondHand()));
                         }
                     })
         );
@@ -94,14 +99,14 @@ public class PollingFragment
         _setupLogger();
 
         final int pollingInterval = POLLING_INTERVAL;
-        final int repeatLimit = 5;
+        final int pollCount = POLL_COUNT;
 
         _log(String.format(Locale.US, "Start increasingly delayed polling now time: [xx:%02d]",
               _getSecondHand()));
 
         _subscriptions.add(//
               Observable.just(1)
-                    .repeatWhen(new RepeatWithDelay(repeatLimit, pollingInterval))
+                    .repeatWhen(new RepeatWithDelay(pollCount, pollingInterval))
                     .subscribe(new Action1<Object>() {
                         @Override
                         public void call(Object o) {
@@ -175,10 +180,16 @@ public class PollingFragment
     // -----------------------------------------------------------------------------------
     // Method that help wiring up the example (irrelevant to RxJava)
 
-    private String _doNetworkCallAndGetStringResult() {
-
+    private String _doNetworkCallAndGetStringResult(long attempt) {
         try {
-            Thread.sleep(3000);
+            if (attempt == 4) {
+                // randomly make one event super long so we test that the repeat logic waits
+                // and accounts for this.
+                Thread.sleep(9000);
+            } else {
+                Thread.sleep(3000);
+            }
+
         } catch (InterruptedException e) {
             Timber.d("Operation was interrupted");
         }
