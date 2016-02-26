@@ -82,7 +82,7 @@ public class ExponentialBackoffFragment
         _subscriptions.add(//
               Observable//
                     .error(new RuntimeException("testing")) // always fails
-                    .retryWhen(new RetryWithDelay(5, 1000))//
+                    .retryWhen(new RetryWithDelay(5, 1000)) // notice this is called only onError (onNext values sent are ignored)
                     .doOnSubscribe(new Action0() {
                         @Override
                         public void call() {
@@ -196,7 +196,7 @@ public class ExponentialBackoffFragment
 
     // CAUTION:
     // --------------------------------------
-    // THIS class HAS NO BUSINESS BEING non-static
+    // THIS notificationHandler class HAS NO BUSINESS BEING non-static
     // I ONLY did this cause i wanted access to the `_log` method from inside here
     // for the purpose of demonstration. In the real world, make it static and LET IT BE!!
 
@@ -216,14 +216,24 @@ public class ExponentialBackoffFragment
             _retryCount = 0;
         }
 
+        // this is a notificationhandler, all that is cared about here
+        // is the emission "type" not emission "content"
+        // only onNext triggers a re-subscription (onError + onComplete kills it)
+
         @Override
-        public Observable<?> call(Observable<? extends Throwable> attempts) {
-            return attempts.flatMap(new Func1<Throwable, Observable<?>>() {
+        public Observable<?> call(Observable<? extends Throwable> inputObservable) {
+
+            // it is critical to use inputObservable in the chain for the result
+            // ignoring it and doing your own thing will break the sequence
+
+            return inputObservable.flatMap(new Func1<Throwable, Observable<?>>() {
                 @Override
                 public Observable<?> call(Throwable throwable) {
                     if (++_retryCount < _maxRetries) {
+
                         // When this Observable calls onNext, the original
-                        // Observable will be retried (i.e. re-subscribed).
+                        // Observable will be retried (i.e. re-subscribed)
+
                         Timber.d("Retrying in %d ms", _retryCount * _retryDelayMillis);
                         _log(String.format("Retrying in %d ms", _retryCount * _retryDelayMillis));
 
@@ -232,7 +242,9 @@ public class ExponentialBackoffFragment
                     }
 
                     Timber.d("Argh! i give up");
-                    // Max retries hit. Just pass the error along.
+
+                    // Max retries hit. Pass an error so the chain is forcibly completed
+                    // only onNext triggers a re-subscription (onError + onComplete kills it)
                     return Observable.error(throwable);
                 }
             });
