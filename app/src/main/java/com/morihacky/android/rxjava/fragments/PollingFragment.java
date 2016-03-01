@@ -26,6 +26,7 @@ import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -71,11 +72,14 @@ public class PollingFragment
         final int pollCount = POLL_COUNT;
 
         _subscriptions.add(
-              Observable.interval(INITIAL_DELAY, POLLING_INTERVAL, TimeUnit.MILLISECONDS)
-                    .flatMap(new Func1<Long, Observable<String>>() {
+              Observable.interval(INITIAL_DELAY, POLLING_INTERVAL, TimeUnit.MILLISECONDS, Schedulers.newThread())
+                    .onBackpressureDrop()
+                    .map(new Func1<Long, String>() {
                         @Override
-                        public Observable<String> call(Long heartBeat) {
-                            return _doNetworkCallAndGetStringResult(heartBeat);
+                        public String call(Long heartBeat) {
+                            return _doNetworkCallAndGetStringResult(heartBeat)
+                                  .toBlocking()
+                                  .first();
                         }
                     })
                     .take(pollCount)
@@ -189,7 +193,7 @@ public class PollingFragment
               .map(new Func1<Long, String>() {
                   @Override
                   public String call(Long aLong) {
-                      Timber.i("Task: %s, WaitTime: %s", attempt, longEvent ? "8sec" : "4sec");
+                      Timber.d("Task: %s, WaitTime: %s", attempt, longEvent ? "8sec" : "4sec");
                       _counter++;
                       return String.valueOf(_counter);
                   }
