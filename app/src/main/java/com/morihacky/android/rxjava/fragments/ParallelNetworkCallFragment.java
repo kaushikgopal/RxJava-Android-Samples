@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -32,6 +33,9 @@ import rx.functions.Func3;
 
 import static android.os.Looper.getMainLooper;
 
+/**
+ *
+ */
 public class ParallelNetworkCallFragment extends BaseFragment {
 
     @Bind(R.id.list_threading_log)
@@ -48,13 +52,24 @@ public class ParallelNetworkCallFragment extends BaseFragment {
         return layout;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        _setupLogger();
+        EventBus.getDefault().register(this);
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(String log) {
+        _log(log);
+    }
 
     @OnClick(R.id.btn_orchectrate_1)
     public void orchectrate_1() {
         try {
             long start = System.currentTimeMillis();
             orchestration_1();
-            System.out.println("Finished in: " + (System.currentTimeMillis() - start) + "ms");
+            _log("Finished in: " + (System.currentTimeMillis() - start) + "ms");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,7 +87,7 @@ public class ParallelNetworkCallFragment extends BaseFragment {
                     .flatMap(new Func1<String, Observable<String>>() {
                         @Override
                         public Observable<String> call(String s) {
-                            System.out.println("Observed from f1: " + s);
+                            _log("Observed from f1: " + s);
                             Future<String> f3 = executor.submit(new CallToRemoteServiceC(s));
                             return Observable.from(f3);
                         }
@@ -84,7 +99,7 @@ public class ParallelNetworkCallFragment extends BaseFragment {
                     .flatMap(new Func1<Integer, Observable<Integer>>() {
                         @Override
                         public Observable<Integer> call(Integer integer) {
-                            System.out.println("Observed from f2: " + integer);
+                            _log("Observed from f2: " + integer);
                             Future<Integer> f4 = executor.submit(new CallToRemoteServiceD(integer));
                             return Observable.from(f4);
                         }
@@ -94,7 +109,7 @@ public class ParallelNetworkCallFragment extends BaseFragment {
                     .flatMap(new Func1<Integer, Observable<Integer>>() {
                         @Override
                         public Observable<Integer> call(Integer integer) {
-                            System.out.println("Observed from f2: " + integer);
+                            _log("Observed from f2: " + integer);
                             Future<Integer> f5 = executor.submit(new CallToRemoteServiceE(integer));
                             return Observable.from(f5);
                         }
@@ -112,7 +127,7 @@ public class ParallelNetworkCallFragment extends BaseFragment {
             }).subscribe(new Action1<Map<String, String>>() {
                 @Override
                 public void call(Map<String, String> map) {
-                    System.out.println(map.get("f3") + " => " + (Integer.valueOf(map.get("f4")) * Integer.valueOf(map.get("f5"))));
+                    _log(map.get("f3") + " => " + (Integer.valueOf(map.get("f4")) * Integer.valueOf(map.get("f5"))));
                 }
             });
 
@@ -127,7 +142,7 @@ public class ParallelNetworkCallFragment extends BaseFragment {
     private static final class CallToRemoteServiceA implements Callable<String> {
         @Override
         public String call() throws Exception {
-            System.out.println("A called");
+            EventBus.getDefault().post("A called");
             // simulate fetching data from remote service
             Thread.sleep(100);
             return "responseA";
@@ -137,7 +152,7 @@ public class ParallelNetworkCallFragment extends BaseFragment {
     private static final class CallToRemoteServiceB implements Callable<Integer> {
         @Override
         public Integer call() throws Exception {
-            System.out.println("B called");
+            EventBus.getDefault().post("B called");
             // simulate fetching data from remote service
             Thread.sleep(40);
             return 100;
@@ -154,7 +169,7 @@ public class ParallelNetworkCallFragment extends BaseFragment {
 
         @Override
         public String call() throws Exception {
-            System.out.println("C called");
+            EventBus.getDefault().post("C called");
             // simulate fetching data from remote service
             Thread.sleep(60);
             return "responseB_" + dependencyFromA;
@@ -171,7 +186,7 @@ public class ParallelNetworkCallFragment extends BaseFragment {
 
         @Override
         public Integer call() throws Exception {
-            System.out.println("D called");
+            EventBus.getDefault().post("D called");
             // simulate fetching data from remote service
             Thread.sleep(140);
             return 40 + dependencyFromB;
@@ -188,7 +203,7 @@ public class ParallelNetworkCallFragment extends BaseFragment {
 
         @Override
         public Integer call() throws Exception {
-            System.out.println("E called");
+            EventBus.getDefault().post("E called");
             // simulate fetching data from remote service
             Thread.sleep(55);
             return 5000 + dependencyFromB;
