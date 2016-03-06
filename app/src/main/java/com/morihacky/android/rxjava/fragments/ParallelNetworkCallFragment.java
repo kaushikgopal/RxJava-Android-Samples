@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -30,6 +31,7 @@ import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.functions.Func3;
+import rx.schedulers.Schedulers;
 
 import static android.os.Looper.getMainLooper;
 
@@ -77,6 +79,37 @@ public class ParallelNetworkCallFragment extends BaseFragment {
 
     }
 
+    @SuppressWarnings("unused")
+    @OnClick(R.id.btn_orchectrate_2)
+    public void orchestration_2() {
+        Observable<Integer> vals = Observable.range(1, 10);
+
+        vals
+              .flatMap(new Func1<Integer, Observable<Integer>>() {
+                  @Override
+                  public Observable<Integer> call(Integer integer) {
+                      return Observable.just(integer)
+                            .subscribeOn(Schedulers.computation())
+                            .map(new Func1<Integer, Integer>() {
+                                @Override
+                                public Integer call(Integer integer) {
+                                    return intenseCalculation(integer);
+                                }
+                            });
+                  }
+              })
+              .subscribe(new Action1<Integer>() {
+                  @Override
+                  public void call(Integer o) {
+                      _log("Subscriber received "
+                           + o + " on "
+                           + Thread.currentThread().getName());
+                  }
+              })
+        ;
+    }
+
+
     private void orchestration_1() {
         final ExecutorService executor = new ThreadPoolExecutor(4, 4, 1, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>());
         try {
@@ -84,36 +117,36 @@ public class ParallelNetworkCallFragment extends BaseFragment {
             Future<String> f1 = executor.submit(new CallToRemoteServiceA());
             Observable<String> f1Observable = Observable.from(f1);
             Observable<String> f3Observable = f1Observable
-                    .flatMap(new Func1<String, Observable<String>>() {
-                        @Override
-                        public Observable<String> call(String s) {
-                            _log("Observed from f1: " + s);
-                            Future<String> f3 = executor.submit(new CallToRemoteServiceC(s));
-                            return Observable.from(f3);
-                        }
-                    });
+                  .flatMap(new Func1<String, Observable<String>>() {
+                      @Override
+                      public Observable<String> call(String s) {
+                          _log("Observed from f1: " + s);
+                          Future<String> f3 = executor.submit(new CallToRemoteServiceC(s));
+                          return Observable.from(f3);
+                      }
+                  });
 
             Future<Integer> f2 = executor.submit(new CallToRemoteServiceB());
             Observable<Integer> f2Observable = Observable.from(f2);
             Observable<Integer> f4Observable = f2Observable
-                    .flatMap(new Func1<Integer, Observable<Integer>>() {
-                        @Override
-                        public Observable<Integer> call(Integer integer) {
-                            _log("Observed from f2: " + integer);
-                            Future<Integer> f4 = executor.submit(new CallToRemoteServiceD(integer));
-                            return Observable.from(f4);
-                        }
-                    });
+                  .flatMap(new Func1<Integer, Observable<Integer>>() {
+                      @Override
+                      public Observable<Integer> call(Integer integer) {
+                          _log("Observed from f2: " + integer);
+                          Future<Integer> f4 = executor.submit(new CallToRemoteServiceD(integer));
+                          return Observable.from(f4);
+                      }
+                  });
 
             Observable<Integer> f5Observable = f2Observable
-                    .flatMap(new Func1<Integer, Observable<Integer>>() {
-                        @Override
-                        public Observable<Integer> call(Integer integer) {
-                            _log("Observed from f2: " + integer);
-                            Future<Integer> f5 = executor.submit(new CallToRemoteServiceE(integer));
-                            return Observable.from(f5);
-                        }
-                    });
+                  .flatMap(new Func1<Integer, Observable<Integer>>() {
+                      @Override
+                      public Observable<Integer> call(Integer integer) {
+                          _log("Observed from f2: " + integer);
+                          Future<Integer> f5 = executor.submit(new CallToRemoteServiceE(integer));
+                          return Observable.from(f5);
+                      }
+                  });
 
             Observable.zip(f3Observable, f4Observable, f5Observable, new Func3<String, Integer, Integer, Map<String, String>>() {
                 @Override
@@ -142,7 +175,7 @@ public class ParallelNetworkCallFragment extends BaseFragment {
     private static final class CallToRemoteServiceA implements Callable<String> {
         @Override
         public String call() throws Exception {
-            EventBus.getDefault().post("A called");
+            print("A called");
             // simulate fetching data from remote service
             Thread.sleep(100);
             return "responseA";
@@ -152,7 +185,7 @@ public class ParallelNetworkCallFragment extends BaseFragment {
     private static final class CallToRemoteServiceB implements Callable<Integer> {
         @Override
         public Integer call() throws Exception {
-            EventBus.getDefault().post("B called");
+            print("B called");
             // simulate fetching data from remote service
             Thread.sleep(40);
             return 100;
@@ -169,7 +202,7 @@ public class ParallelNetworkCallFragment extends BaseFragment {
 
         @Override
         public String call() throws Exception {
-            EventBus.getDefault().post("C called");
+            print("C called");
             // simulate fetching data from remote service
             Thread.sleep(60);
             return "responseB_" + dependencyFromA;
@@ -186,7 +219,7 @@ public class ParallelNetworkCallFragment extends BaseFragment {
 
         @Override
         public Integer call() throws Exception {
-            EventBus.getDefault().post("D called");
+            print("D called");
             // simulate fetching data from remote service
             Thread.sleep(140);
             return 40 + dependencyFromB;
@@ -203,12 +236,39 @@ public class ParallelNetworkCallFragment extends BaseFragment {
 
         @Override
         public Integer call() throws Exception {
-            EventBus.getDefault().post("E called");
+            print("E called");
             // simulate fetching data from remote service
             Thread.sleep(55);
             return 5000 + dependencyFromB;
         }
     }
+
+    // -----------------------------------------------------------------------------------
+    private static final Random rand = new Random();
+
+    public static void waitSleep() {
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int intenseCalculation(int i) {
+        try {
+            int time = randInt(1, 5);
+            _log("Calculating " + i + " during " + time + "s on " + Thread.currentThread().getName());
+            Thread.sleep(time * 1000);
+            return i;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static int randInt(int min, int max) {
+        return rand.nextInt((max - min) + 1) + min;
+    }
+
     // -----------------------------------------------------------------------------------
 
     private void _setupLogger() {
@@ -219,6 +279,7 @@ public class ParallelNetworkCallFragment extends BaseFragment {
 
     private void _log(String logMsg) {
         _logs.add(logMsg);
+        System.out.println(logMsg);
 
         // You can only do below stuff on main thread.
         new Handler(getMainLooper()).post(new Runnable() {
@@ -229,6 +290,10 @@ public class ParallelNetworkCallFragment extends BaseFragment {
                 _adapter.addAll(_logs);
             }
         });
+    }
+
+    private static void print(String event) {
+        EventBus.getDefault().post(event);
     }
 
 
