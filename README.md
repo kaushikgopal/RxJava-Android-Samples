@@ -48,7 +48,7 @@ Since it was a presentation, Jake only put up the most important code snippets i
 
 ### Orchestrating Observables. Make parallel network calls, then combine the result into a single data point  (flatmap + zip)
 
-The below ascii diagram expresses the intention of our next example with panache. f1,f2,3,f4,f5 are essentially network calls that when made, give back a result that's needed for a future calculation.
+The below ascii diagram expresses the intention of our next example with panache. f1,f2,f3,f4,f5 are essentially network calls that when made, give back a result that's needed for a future calculation.
 
 
              (flatmap)
