@@ -1,7 +1,9 @@
 package com.morihacky.android.rxjava.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,8 @@ import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
+import rx.functions.Func0;
+import rx.functions.Func1;
 import rx.functions.Func3;
 import timber.log.Timber;
 
@@ -30,11 +34,10 @@ public class FormValidationCombineLatestFragment
     @Bind(R.id.demo_combl_password) EditText _password;
     @Bind(R.id.demo_combl_num) EditText _number;
 
-    private Observable<CharSequence> _emailChangeObservable;
-    private Observable<CharSequence> _passwordChangeObservable;
-    private Observable<CharSequence> _numberChangeObservable;
-
     private Subscription _subscription = null;
+    private Observable<CharSequence> _numberChangeObservable;
+    private Observable<CharSequence> _passwordChangeObservable;
+    private Observable<CharSequence> _emailChangeObservable;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -45,13 +48,16 @@ public class FormValidationCombineLatestFragment
               false);
         ButterKnife.bind(this, layout);
 
-        _emailChangeObservable = RxTextView.textChanges(_email).skip(1);
-        _passwordChangeObservable = RxTextView.textChanges(_password).skip(1);
-        _numberChangeObservable = RxTextView.textChanges(_number).skip(1);
-
-        _combineLatestEvents();
-
         return layout;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        _emailChangeObservable = RxTextView.textChanges(_email);
+        _passwordChangeObservable = RxTextView.textChanges(_password);
+        _numberChangeObservable = RxTextView.textChanges(_number);
+        _combineLatestEvents();
     }
 
     @Override
@@ -62,39 +68,68 @@ public class FormValidationCombineLatestFragment
     }
 
     private void _combineLatestEvents() {
-        _subscription = Observable.combineLatest(_emailChangeObservable,
-              _passwordChangeObservable,
+        final Observable<Boolean> isDirtyObservable = Observable.combineLatest(
+              _emailChangeObservable,
               _numberChangeObservable,
+              _passwordChangeObservable,
               new Func3<CharSequence, CharSequence, CharSequence, Boolean>() {
                   @Override
-                  public Boolean call(CharSequence newEmail,
-                                      CharSequence newPassword,
-                                      CharSequence newNumber) {
-
-                      boolean emailValid = !isEmpty(newEmail) &&
-                                           EMAIL_ADDRESS.matcher(newEmail).matches();
-                      if (!emailValid) {
-                          _email.setError("Invalid Email!");
-                      }
-
-                      boolean passValid = !isEmpty(newPassword) && newPassword.length() > 8;
-                      if (!passValid) {
-                          _password.setError("Invalid Password!");
-                      }
-
-                      boolean numValid = !isEmpty(newNumber);
-                      if (numValid) {
-                          int num = Integer.parseInt(newNumber.toString());
-                          numValid = num > 0 && num <= 100;
-                      }
-                      if (!numValid) {
-                          _number.setError("Invalid Number!");
-                      }
-
-                      return emailValid && passValid && numValid;
-
+                  public Boolean call(CharSequence email, CharSequence number, CharSequence password) {
+                      return !isEmpty(email) && !isEmpty(number) && !isEmpty(password);
                   }
-              })//
+              }
+        ).filter(new Func1<Boolean, Boolean>() {
+            @Override
+            public Boolean call(Boolean isDirty) {
+                return isDirty;
+            }
+        });
+
+        _subscription = Observable
+              .defer(new Func0<Observable<Boolean>>() {
+                  @Override
+                  public Observable<Boolean> call() {
+                      return isDirtyObservable;
+                  }
+              }).flatMap(new Func1<Boolean, Observable<Boolean>>() {
+                  @Override
+                  public Observable<Boolean> call(Boolean aBoolean) {
+                      return Observable.combineLatest(
+                            _emailChangeObservable,
+                            _passwordChangeObservable,
+                            _numberChangeObservable,
+                            new Func3<CharSequence, CharSequence, CharSequence, Boolean>() {
+                                @Override
+                                public Boolean call(CharSequence newEmail,
+                                                    CharSequence newPassword,
+                                                    CharSequence newNumber) {
+
+                                    boolean emailValid = !isEmpty(newEmail) &&
+                                                         EMAIL_ADDRESS.matcher(newEmail).matches();
+                                    if (!emailValid) {
+                                        _email.setError("Invalid Email!");
+                                    }
+
+                                    boolean passValid = !isEmpty(newPassword) && newPassword.length() > 8;
+                                    if (!passValid) {
+                                        _password.setError("Invalid Password!");
+                                    }
+
+                                    boolean numValid = !isEmpty(newNumber);
+                                    if (numValid) {
+                                        int num = Integer.parseInt(newNumber.toString());
+                                        numValid = num > 0 && num <= 100;
+                                    }
+                                    if (!numValid) {
+                                        _number.setError("Invalid Number!");
+                                    }
+
+                                    return emailValid && passValid && numValid;
+
+                                }
+                            });
+                  }
+              })
               .subscribe(new Observer<Boolean>() {
                   @Override
                   public void onCompleted() {
@@ -108,12 +143,14 @@ public class FormValidationCombineLatestFragment
 
                   @Override
                   public void onNext(Boolean formValid) {
-                      if (formValid) {
-                          _btnValidIndicator.setBackgroundColor(getResources().getColor(R.color.blue));
-                      } else {
-                          _btnValidIndicator.setBackgroundColor(getResources().getColor(R.color.gray));
-                      }
+                      _flipButton(formValid);
                   }
               });
+    }
+
+    private void _flipButton(final Boolean formValid) {
+        @ColorInt
+        final int colorId = ContextCompat.getColor(this.getActivity(), formValid ? R.color.blue : R.color.gray);
+        _btnValidIndicator.setBackgroundColor(colorId);
     }
 }
