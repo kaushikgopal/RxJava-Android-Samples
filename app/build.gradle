@@ -26,20 +26,27 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    compileSdkVersion 'android-N'
+    buildToolsVersion '24.0.0-rc1'
 
     defaultConfig {
         applicationId "com.morihacky.android.rxjava"
-        minSdkVersion 15
-        targetSdkVersion 22
+        minSdkVersion 'N'
+        targetSdkVersion 'N'
         versionCode 1
         versionName "1.0"
+        jackOptions {
+            enabled true
+        }
     }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
