@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.morihacky.android.rxjava.R;
-import com.morihacky.android.rxjava.RxUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -56,15 +55,10 @@ public class FormValidationCombineLatestFragment
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        RxUtils.unsubscribeIfNotNull(_subscription);
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        _subscription.unsubscribe();
     }
 
     private void _combineLatestEvents() {

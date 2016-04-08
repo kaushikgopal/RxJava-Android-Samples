@@ -79,7 +79,7 @@ public class RxBusDemo_Bottom2Fragment
     @Override
     public void onStop() {
         super.onStop();
-        _subscriptions.unsubscribe();
+        _subscriptions.clear();
     }
 
     // -----------------------------------------------------------------------------------

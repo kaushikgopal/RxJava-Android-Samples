@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.morihacky.android.rxjava.R;
-import com.morihacky.android.rxjava.RxUtils;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.GithubService;
@@ -24,7 +23,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -34,25 +32,19 @@ public class PseudoCacheMergeFragment
       extends BaseFragment {
 
     @Bind(R.id.log_list) ListView _resultList;
+
     private ArrayAdapter<String> _adapter;
     private HashMap<String, Long> _contributionMap = null;
     private HashMap<Contributor, Long> _resultAgeMap = new HashMap<>();
-    private Subscription _subscription = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
-          @Nullable ViewGroup container,
-          @Nullable Bundle savedInstanceState) {
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_pseudo_cache_concat, container, false);
         ButterKnife.bind(this, layout);
         _initializeCache();
         return layout;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        RxUtils.unsubscribeIfNotNull(_subscription);
     }
 
     @Override

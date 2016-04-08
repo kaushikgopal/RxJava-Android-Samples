@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.RxUtils;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 
 import java.text.SimpleDateFormat;
@@ -58,9 +59,11 @@ public class TimingDemoFragment
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-    }
 
-    // -----------------------------------------------------------------------------------
+        RxUtils.unsubscribeIfNotNull(_subscription1);
+        RxUtils.unsubscribeIfNotNull(_subscription2);
+    }
+// -----------------------------------------------------------------------------------
 
     @OnClick(R.id.btn_demo_timing_1)
     public void Btn1_RunSingleTaskAfter2s() {

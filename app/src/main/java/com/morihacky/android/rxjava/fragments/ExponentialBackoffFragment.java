@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.morihacky.android.rxjava.R;
-import com.morihacky.android.rxjava.RxUtils;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 
 import java.util.ArrayList;
@@ -39,12 +38,6 @@ public class ExponentialBackoffFragment
     private CompositeSubscription _subscriptions = new CompositeSubscription();
 
     @Override
-    public void onResume() {
-        super.onResume();
-        _subscriptions = RxUtils.getNewCompositeSubIfUnsubscribed(_subscriptions);
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         _setupLogger();
@@ -63,7 +56,7 @@ public class ExponentialBackoffFragment
     public void onPause() {
         super.onPause();
 
-        RxUtils.unsubscribeIfNotNull(_subscriptions);
+        _subscriptions.clear();
     }
 
     @Override

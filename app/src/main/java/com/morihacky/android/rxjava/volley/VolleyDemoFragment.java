@@ -9,9 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -19,11 +17,17 @@ import com.android.volley.toolbox.RequestFuture;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.fragments.BaseFragment;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
+
+import org.json.JSONObject;
+
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import org.json.JSONObject;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -62,7 +66,7 @@ public class VolleyDemoFragment
     @Override
     public void onPause() {
         super.onPause();
-        _compositeSubscription.unsubscribe();
+        _compositeSubscription.clear();
     }
 
     @Override

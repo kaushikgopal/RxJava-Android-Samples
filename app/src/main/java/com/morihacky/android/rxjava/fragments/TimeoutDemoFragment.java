@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.RxUtils;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class TimeoutDemoFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        _subscription.unsubscribe();
+        RxUtils.unsubscribeIfNotNull(_subscription);
     }
 
     @Override
