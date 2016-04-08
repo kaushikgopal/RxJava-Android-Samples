@@ -72,6 +72,12 @@ public class DebounceSearchEmitterFragment
 
         _subscription = RxTextView.textChangeEvents(_inputSearchText)//
               .debounce(400, TimeUnit.MILLISECONDS)// default Scheduler is Computation
+              .filter(new Func1<TextViewTextChangeEvent, Boolean>() {
+                  @Override
+                  public Boolean call(TextViewTextChangeEvent changes) {
+                      return CoreNullnessUtils.isNotNullOrEmpty(_inputSearchText.getText().toString());
+                  }
+              })
               .observeOn(AndroidSchedulers.mainThread())//
               .subscribe(_getSearchObserver());
     }
