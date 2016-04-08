@@ -22,9 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import timber.log.Timber;
 
 public class PseudoCacheConcatFragment
@@ -56,7 +54,7 @@ public class PseudoCacheConcatFragment
         _adapter = new ArrayAdapter<>(getActivity(),
               R.layout.item_log,
               R.id.item_log,
-              new ArrayList<String>());
+              new ArrayList<>());
 
         _resultList.setAdapter(_adapter);
         _initializeCache();
@@ -112,12 +110,7 @@ public class PseudoCacheConcatFragment
         String githubToken = getResources().getString(R.string.github_oauth_token);
         GithubApi githubService = GithubService.createGithubService(githubToken);
         return githubService.contributors("square", "retrofit")
-              .flatMap(new Func1<List<Contributor>, Observable<Contributor>>() {
-                  @Override
-                  public Observable<Contributor> call(List<Contributor> contributors) {
-                      return Observable.from(contributors);
-                  }
-              });
+              .flatMap(Observable::from);
     }
 
     private void _initializeCache() {

@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.jakewharton.rxbinding.view.RxView;
-import com.jakewharton.rxbinding.view.ViewClickEvent;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 
@@ -24,7 +23,6 @@ import butterknife.ButterKnife;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import timber.log.Timber;
 
 /**
@@ -89,13 +87,10 @@ public class BufferDemoFragment
 
     private Subscription _getBufferedSubscription() {
         return RxView.clickEvents(_tapBtn)
-              .map(new Func1<ViewClickEvent, Integer>() {
-                  @Override
-                  public Integer call(ViewClickEvent onClickEvent) {
-                      Timber.d("--------- GOT A TAP");
-                      _log("GOT A TAP");
-                      return 1;
-                  }
+              .map(onClickEvent -> {
+                  Timber.d("--------- GOT A TAP");
+                  _log("GOT A TAP");
+                  return 1;
               })
               .buffer(2, TimeUnit.SECONDS)
               .observeOn(AndroidSchedulers.mainThread())
@@ -130,7 +125,7 @@ public class BufferDemoFragment
 
     private void _setupLogger() {
         _logs = new ArrayList<>();
-        _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
+        _adapter = new LogAdapter(getActivity(), new ArrayList<>());
         _logsList.setAdapter(_adapter);
     }
 
@@ -144,13 +139,9 @@ public class BufferDemoFragment
             _logs.add(0, logMsg + " (NOT main thread) ");
 
             // You can only do below stuff on main thread.
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-
-                @Override
-                public void run() {
-                    _adapter.clear();
-                    _adapter.addAll(_logs);
-                }
+            new Handler(Looper.getMainLooper()).post(() -> {
+                _adapter.clear();
+                _adapter.addAll(_logs);
             });
         }
     }

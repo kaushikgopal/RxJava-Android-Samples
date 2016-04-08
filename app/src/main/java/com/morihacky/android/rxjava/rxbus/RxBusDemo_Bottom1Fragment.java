@@ -14,7 +14,6 @@ import com.morihacky.android.rxjava.fragments.BaseFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
 public class RxBusDemo_Bottom1Fragment
@@ -46,12 +45,9 @@ public class RxBusDemo_Bottom1Fragment
 
         _subscriptions//
               .add(_rxBus.toObserverable()//
-                    .subscribe(new Action1<Object>() {
-                        @Override
-                        public void call(Object event) {
-                            if (event instanceof RxBusDemoFragment.TapEvent) {
-                                _showTapText();
-                            }
+                    .subscribe(event -> {
+                        if (event instanceof RxBusDemoFragment.TapEvent) {
+                            _showTapText();
                         }
                     }));
     }

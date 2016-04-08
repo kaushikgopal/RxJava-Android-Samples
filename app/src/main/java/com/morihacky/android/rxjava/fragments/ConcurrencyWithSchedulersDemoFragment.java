@@ -25,7 +25,6 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -74,13 +73,10 @@ public class ConcurrencyWithSchedulersDemoFragment
     }
 
     private Observable<Boolean> _getObservable() {
-        return Observable.just(true).map(new Func1<Boolean, Boolean>() {
-            @Override
-            public Boolean call(Boolean aBoolean) {
-                _log("Within Observable");
-                _doSomeLongOperation_thatBlocksCurrentThread();
-                return aBoolean;
-            }
+        return Observable.just(true).map(aBoolean -> {
+            _log("Within Observable");
+            _doSomeLongOperation_thatBlocksCurrentThread();
+            return aBoolean;
         });
     }
 
@@ -137,20 +133,16 @@ public class ConcurrencyWithSchedulersDemoFragment
             _logs.add(0, logMsg + " (NOT main thread) ");
 
             // You can only do below stuff on main thread.
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-
-                @Override
-                public void run() {
-                    _adapter.clear();
-                    _adapter.addAll(_logs);
-                }
+            new Handler(Looper.getMainLooper()).post(() -> {
+                _adapter.clear();
+                _adapter.addAll(_logs);
             });
         }
     }
 
     private void _setupLogger() {
-        _logs = new ArrayList<String>();
-        _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
+        _logs = new ArrayList<>();
+        _adapter = new LogAdapter(getActivity(), new ArrayList<>());
         _logsList.setAdapter(_adapter);
     }
 

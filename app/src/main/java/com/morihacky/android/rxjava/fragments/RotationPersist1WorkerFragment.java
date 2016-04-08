@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Subscription;
-import rx.functions.Func1;
 import rx.observables.ConnectableObservable;
 
 public class RotationPersist1WorkerFragment
@@ -58,12 +57,7 @@ public class RotationPersist1WorkerFragment
 
         Observable<Integer> intsObservable =//
               Observable.interval(1, TimeUnit.SECONDS)//
-                    .map(new Func1<Long, Integer>() {
-                        @Override
-                        public Integer call(Long aLong) {
-                            return aLong.intValue();
-                        }
-                    })//
+                    .map(Long::intValue)//
                     .take(20);
 
         // -----------------------------------------------------------------------------------
