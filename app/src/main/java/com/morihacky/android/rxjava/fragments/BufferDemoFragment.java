@@ -53,8 +53,8 @@ public class BufferDemoFragment
     private Subscription _subscription;
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         _subscription = _getBufferedSubscription();
     }
 

@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.morihacky.android.rxjava.R;
-import com.morihacky.android.rxjava.RxUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,7 +69,7 @@ public class DoubleBindingTextViewFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        RxUtils.unsubscribeIfNotNull(_subscription);
+        _subscription.unsubscribe();
         ButterKnife.unbind(this);
     }
 }

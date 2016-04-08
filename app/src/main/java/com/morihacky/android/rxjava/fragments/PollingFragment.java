@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.morihacky.android.rxjava.R;
-import com.morihacky.android.rxjava.RxUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +39,17 @@ public class PollingFragment
 
     private LogAdapter _adapter;
     private List<String> _logs;
-    private CompositeSubscription _subscriptions = new CompositeSubscription();
+
+    private CompositeSubscription _subscriptions;
     private int _counter = 0;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        _subscriptions = new CompositeSubscription();
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -61,7 +69,7 @@ public class PollingFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RxUtils.unsubscribeIfNotNull(_subscriptions);
+        _subscriptions.unsubscribe();
         ButterKnife.unbind(this);
     }
 

@@ -10,17 +10,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.morihacky.android.rxjava.R;
-import com.morihacky.android.rxjava.RxUtils;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.GithubService;
 import com.morihacky.android.rxjava.retrofit.User;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -42,13 +44,15 @@ public class RetrofitFragment
 
     private ArrayAdapter<String> _adapter;
     private GithubApi _githubService;
-    private CompositeSubscription _subscriptions = new CompositeSubscription();
+    private CompositeSubscription _subscriptions;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String githubToken = getResources().getString(R.string.github_oauth_token);
         _githubService = GithubService.createGithubService(githubToken);
+
+        _subscriptions = new CompositeSubscription();
     }
 
     @Override
@@ -67,21 +71,15 @@ public class RetrofitFragment
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        _subscriptions = RxUtils.getNewCompositeSubIfUnsubscribed(_subscriptions);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        RxUtils.unsubscribeIfNotNull(_subscriptions);
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        _subscriptions.unsubscribe();
     }
 
     @OnClick(R.id.btn_demo_retrofit_contributors)

@@ -42,8 +42,8 @@ public class ConcurrencyWithSchedulersDemoFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RxUtils.unsubscribeIfNotNull(_subscription);
         ButterKnife.unbind(this);
+        RxUtils.unsubscribeIfNotNull(_subscription);
     }
 
     @Override

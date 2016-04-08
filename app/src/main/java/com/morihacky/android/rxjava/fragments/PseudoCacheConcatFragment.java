@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.morihacky.android.rxjava.R;
-import com.morihacky.android.rxjava.RxUtils;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.GithubService;
@@ -33,7 +32,6 @@ public class PseudoCacheConcatFragment
 
     @Bind(R.id.log_list) ListView _resultList;
 
-    private Subscription _subscription = null;
     private HashMap<String, Long> _contributionMap = null;
     private ArrayAdapter<String> _adapter;
 
@@ -45,12 +43,6 @@ public class PseudoCacheConcatFragment
         ButterKnife.bind(this, layout);
         _initializeCache();
         return layout;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        RxUtils.unsubscribeIfNotNull(_subscription);
     }
 
     @Override

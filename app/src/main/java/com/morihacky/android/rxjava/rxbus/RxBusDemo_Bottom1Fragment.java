@@ -59,7 +59,7 @@ public class RxBusDemo_Bottom1Fragment
     @Override
     public void onStop() {
         super.onStop();
-        _subscriptions.unsubscribe();
+        _subscriptions.clear();
     }
 
     private void _showTapText() {
