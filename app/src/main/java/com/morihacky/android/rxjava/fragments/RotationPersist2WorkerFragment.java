@@ -1,11 +1,14 @@
 package com.morihacky.android.rxjava.fragments;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+
 import com.morihacky.android.rxjava.MainActivity;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Func1;
@@ -26,10 +29,10 @@ public class RotationPersist2WorkerFragment
      * See {@link MainActivity#onBackPressed()}
      */
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
-        List<Fragment> frags = ((MainActivity) activity).getSupportFragmentManager().getFragments();
+        List<Fragment> frags = ((MainActivity) context).getSupportFragmentManager().getFragments();
         for (Fragment f : frags) {
             if (f instanceof IAmYourMaster) {
                 _masterFrag = (IAmYourMaster) f;

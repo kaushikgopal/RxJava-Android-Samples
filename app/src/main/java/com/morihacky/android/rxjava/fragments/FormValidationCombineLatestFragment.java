@@ -1,7 +1,9 @@
 package com.morihacky.android.rxjava.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,11 +110,10 @@ public class FormValidationCombineLatestFragment
 
                   @Override
                   public void onNext(Boolean formValid) {
-                      if (formValid) {
-                          _btnValidIndicator.setBackgroundColor(getResources().getColor(R.color.blue));
-                      } else {
-                          _btnValidIndicator.setBackgroundColor(getResources().getColor(R.color.gray));
-                      }
+                      @ColorInt final int colorInt = ContextCompat.getColor(
+                            getActivity(), formValid ? R.color.blue : R.color.gray
+                      );
+                      _btnValidIndicator.setBackgroundColor(colorInt);
                   }
               });
     }
