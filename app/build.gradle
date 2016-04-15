@@ -1,8 +1,12 @@
 apply plugin: 'com.android.application'
 
+buildscript {
+    ext.android_support = '23.3.0'
+}
+
 dependencies {
-    compile 'com.android.support:support-v13:23.2.1'
-    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile "com.android.support:support-v13:$android_support"
+    compile "com.android.support:appcompat-v7:$android_support"
 
     compile 'io.reactivex:rxandroid:1.0.1'
     // Because RxAndroid releases are few and far between, it is recommended you also
@@ -27,12 +31,12 @@ dependencies {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    buildToolsVersion '23.0.3'
 
     defaultConfig {
         applicationId "com.morihacky.android.rxjava"
         minSdkVersion 15
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
