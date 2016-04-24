@@ -127,7 +127,6 @@ public class VolleyDemoFragment
     private JSONObject getRouteData() throws ExecutionException, InterruptedException {
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         String url = "http://www.weather.com.cn/adat/sk/101010100.html";
-        final Request.Priority priority = Request.Priority.IMMEDIATE;
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, future, future);
         MyVolley.getRequestQueue().add(req);
         return future.get();
