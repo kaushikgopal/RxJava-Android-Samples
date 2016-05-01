@@ -52,7 +52,7 @@ public class RxBusDemo_Bottom3Fragment
         super.onStart();
         _subscriptions = new CompositeSubscription();
 
-        ConnectableObservable<Object> tapEventEmitter = _rxBus.toObserverable().publish();
+        ConnectableObservable<Object> tapEventEmitter = _rxBus.toObservable().publish();
 
         _subscriptions//
               .add(tapEventEmitter.subscribe(new Action1<Object>() {

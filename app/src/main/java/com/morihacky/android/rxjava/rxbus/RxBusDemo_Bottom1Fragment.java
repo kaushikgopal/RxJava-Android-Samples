@@ -45,7 +45,7 @@ public class RxBusDemo_Bottom1Fragment
         _subscriptions = new CompositeSubscription();
 
         _subscriptions//
-              .add(_rxBus.toObserverable()//
+              .add(_rxBus.toObservable()//
                     .subscribe(new Action1<Object>() {
                         @Override
                         public void call(Object event) {
