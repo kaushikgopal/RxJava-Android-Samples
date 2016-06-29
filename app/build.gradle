@@ -1,19 +1,20 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-    compile 'com.android.support:support-v13:23.2.1'
-    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:support-v13:24.0.0'
+    compile 'com.android.support:appcompat-v7:24.0.0'
+    compile "com.android.support:support-v4:24.0.0"
 
-    compile 'io.reactivex:rxandroid:1.0.1'
+    compile 'io.reactivex:rxandroid:1.2.1'
     // Because RxAndroid releases are few and far between, it is recommended you also
     // explicitly depend on RxJava's latest version for bug fixes and new features.
-    compile 'io.reactivex:rxjava:1.0.14'
+    compile 'io.reactivex:rxjava:1.1.6'
     compile 'io.reactivex:rxjava-math:1.0.0'
-    compile 'io.reactivex:rxjava-math:1.0.0'
-    compile 'com.github.kaushikgopal:CoreTextUtils:c703fa12b6'
-    compile 'com.jakewharton.rxbinding:rxbinding:0.2.0'
+
+    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jakewharton.timber:timber:2.4.2'
+
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta3'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
@@ -26,13 +27,13 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    compileSdkVersion 24
+    buildToolsVersion '23.0.3'
 
     defaultConfig {
         applicationId "com.morihacky.android.rxjava"
         minSdkVersion 15
-        targetSdkVersion 22
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }

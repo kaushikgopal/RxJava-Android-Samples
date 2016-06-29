@@ -5,9 +5,11 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.ButterKnife;
+
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.fragments.BaseFragment;
+
+import butterknife.ButterKnife;
 
 public class RxBusDemoFragment
       extends BaseFragment {
@@ -27,9 +29,8 @@ public class RxBusDemoFragment
 
         getActivity().getSupportFragmentManager()
               .beginTransaction()
-              .replace(R.id.demo_rxbus_frag_1,
-                    new RxBusDemo_TopFragment()).replace(R.id.demo_rxbus_frag_2,
-              new RxBusDemo_Bottom3Fragment())
+              .replace(R.id.demo_rxbus_frag_1, new RxBusDemo_TopFragment())
+              .replace(R.id.demo_rxbus_frag_2, new RxBusDemo_Bottom3Fragment())
               //.replace(R.id.demo_rxbus_frag_2, new RxBusDemo_Bottom2Fragment())
               //.replace(R.id.demo_rxbus_frag_2, new RxBusDemo_Bottom1Fragment())
               .commit();
