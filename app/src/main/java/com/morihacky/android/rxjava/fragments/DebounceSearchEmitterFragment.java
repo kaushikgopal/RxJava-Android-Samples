@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,6 @@ import java.util.concurrent.TimeUnit;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import co.kaush.core.util.CoreNullnessUtils;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -73,12 +73,19 @@ public class DebounceSearchEmitterFragment
 
         _subscription = RxTextView.textChangeEvents(_inputSearchText)//
               .debounce(400, TimeUnit.MILLISECONDS)// default Scheduler is Computation
-              .filter(new Func1<TextViewTextChangeEvent, Boolean>() {
+              .map(new Func1<TextViewTextChangeEvent, String>() {
                   @Override
-                  public Boolean call(TextViewTextChangeEvent changes) {
-                      return CoreNullnessUtils.isNotNullOrEmpty(_inputSearchText.getText().toString());
+                  public String call(TextViewTextChangeEvent textViewTextChangeEvent) {
+                      return textViewTextChangeEvent.text().toString();
                   }
               })
+              .filter(new Func1<String, Boolean>() {
+                  @Override
+                  public Boolean call(String changes) {
+                      return !TextUtils.isEmpty(changes);
+                  }
+              })
+              .distinct()
               .observeOn(AndroidSchedulers.mainThread())//
               .subscribe(_getSearchObserver());
     }
@@ -86,8 +93,8 @@ public class DebounceSearchEmitterFragment
     // -----------------------------------------------------------------------------------
     // Main Rx entities
 
-    private Observer<TextViewTextChangeEvent> _getSearchObserver() {
-        return new Observer<TextViewTextChangeEvent>() {
+    private Observer<String> _getSearchObserver() {
+        return new Observer<String>() {
             @Override
             public void onCompleted() {
                 Timber.d("--------- onComplete");
@@ -100,8 +107,8 @@ public class DebounceSearchEmitterFragment
             }
 
             @Override
-            public void onNext(TextViewTextChangeEvent onTextChangeEvent) {
-                _log(format("Searching for %s", onTextChangeEvent.text().toString()));
+            public void onNext(String changes) {
+                _log(format("Searching for %s", changes));
             }
         };
     }
@@ -134,10 +141,6 @@ public class DebounceSearchEmitterFragment
                 }
             });
         }
-    }
-
-    private boolean _isCurrentlyOnMainThread() {
-        return Looper.myLooper() == Looper.getMainLooper();
     }
 
     private class LogAdapter
