@@ -64,6 +64,10 @@ public class ConcurrencyWithSchedulersDemoFragment
     @OnClick(R.id.btn_start_operation)
     public void startLongOperation() {
 
+        if(_subscription!=null){
+            _subscription.unsubscribe();
+        }
+
         _progress.setVisibility(View.VISIBLE);
         _log("Button Clicked");
 
@@ -86,7 +90,7 @@ public class ConcurrencyWithSchedulersDemoFragment
 
     /**
      * Observer that handles the result through the 3 important actions:
-     *
+     * <p/>
      * 1. onCompleted
      * 2. onError
      * 3. onNext
@@ -152,10 +156,6 @@ public class ConcurrencyWithSchedulersDemoFragment
         _logs = new ArrayList<String>();
         _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
         _logsList.setAdapter(_adapter);
-    }
-
-    private boolean _isCurrentlyOnMainThread() {
-        return Looper.myLooper() == Looper.getMainLooper();
     }
 
     private class LogAdapter
