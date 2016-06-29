@@ -239,10 +239,6 @@ public class PollingFragment
         _counter = 0;
     }
 
-    private boolean _isCurrentlyOnMainThread() {
-        return Looper.myLooper() == Looper.getMainLooper();
-    }
-
     private class LogAdapter
           extends ArrayAdapter<String> {
 

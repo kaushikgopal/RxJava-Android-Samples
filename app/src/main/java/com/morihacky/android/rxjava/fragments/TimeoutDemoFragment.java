@@ -174,8 +174,4 @@ public class TimeoutDemoFragment
             });
         }
     }
-
-    private boolean _isCurrentlyOnMainThread() {
-        return Looper.myLooper() == Looper.getMainLooper();
-    }
 }

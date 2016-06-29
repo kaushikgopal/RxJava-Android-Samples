@@ -54,28 +54,32 @@ public class RxBusDemo_Bottom3Fragment
 
         ConnectableObservable<Object> tapEventEmitter = _rxBus.toObserverable().publish();
 
-        _subscriptions//
-              .add(tapEventEmitter.subscribe(new Action1<Object>() {
-                  @Override
-                  public void call(Object event) {
-                      if (event instanceof RxBusDemoFragment.TapEvent) {
-                          _showTapText();
-                      }
-                  }
-              }));
+        _subscriptions
+              .add(tapEventEmitter
+                    .subscribe(new Action1<Object>() {
+                        @Override
+                        public void call(Object event) {
+                            if (event instanceof RxBusDemoFragment.TapEvent) {
+                                _showTapText();
+                            }
+                        }
+                    }));
 
-        _subscriptions//
-              .add(tapEventEmitter.publish(new Func1<Observable<Object>, Observable<List<Object>>>() {
-                  @Override
-                  public Observable<List<Object>> call(Observable<Object> stream) {
-                      return stream.buffer(stream.debounce(1, TimeUnit.SECONDS));
-                  }
-              }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<List<Object>>() {
-                  @Override
-                  public void call(List<Object> taps) {
-                      _showTapCount(taps.size());
-                  }
-              }));
+        _subscriptions
+              .add(tapEventEmitter
+                    .publish(new Func1<Observable<Object>, Observable<List<Object>>>() {
+                        @Override
+                        public Observable<List<Object>> call(Observable<Object> stream) {
+                            return stream.buffer(stream.debounce(1, TimeUnit.SECONDS));
+                        }
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<List<Object>>() {
+                        @Override
+                        public void call(List<Object> taps) {
+                            _showTapCount(taps.size());
+                        }
+                    }));
 
         _subscriptions.add(tapEventEmitter.connect());
 
