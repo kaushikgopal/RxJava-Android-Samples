@@ -4,10 +4,10 @@ dependencies {
     compile 'com.android.support:support-v13:23.2.1'
     compile 'com.android.support:appcompat-v7:23.2.1'
 
-    compile 'io.reactivex:rxandroid:1.0.1'
+    compile 'io.reactivex:rxandroid:1.2.0'
     // Because RxAndroid releases are few and far between, it is recommended you also
     // explicitly depend on RxJava's latest version for bug fixes and new features.
-    compile 'io.reactivex:rxjava:1.0.14'
+    compile 'io.reactivex:rxjava:1.1.4'
     compile 'io.reactivex:rxjava-math:1.0.0'
     compile 'io.reactivex:rxjava-math:1.0.0'
     compile 'com.github.kaushikgopal:CoreTextUtils:c703fa12b6'
