@@ -25,7 +25,6 @@
                 android:gravity="left"
                 android:text="@string/msg_demo_timing"
                 android:layout_span="2"
-
                 />
         </TableRow>
 
@@ -72,6 +71,29 @@
                 android:text="BTN 4"
                 />
         </TableRow>
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            >
+
+            <Button
+                android:id="@+id/btn_demo_timing_5"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="BTN 5"
+                />
+
+            <Button
+                android:id="@+id/btn_clr"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="CLEAR LOG"
+                />
+        </TableRow>
     </TableLayout>
 
 
@@ -86,13 +108,6 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_width="0dp"
-            />
-
-        <ImageButton
-            android:id="@+id/btn_clr"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
             />
     </LinearLayout>
 

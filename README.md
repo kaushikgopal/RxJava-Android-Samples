@@ -125,6 +125,7 @@ Cases demonstrated here:
 2. run a task constantly every 1s (there's a delay of 1s before the first task fires off)
 3. run a task constantly every 1s (same as above but there's no delay before the first task fires off)
 4. run a task constantly every 3s, but after running it 5 times, terminate automatically
+5. run a task A, pause for sometime, then execute Task B, then terminate
 
 ### Exponential backoff
 

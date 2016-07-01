@@ -24,6 +24,7 @@ import butterknife.OnClick;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
+import rx.functions.Action1;
 import timber.log.Timber;
 
 import static android.os.Looper.getMainLooper;
@@ -66,7 +67,7 @@ public class TimingDemoFragment
 // -----------------------------------------------------------------------------------
 
     @OnClick(R.id.btn_demo_timing_1)
-    public void Btn1_RunSingleTaskAfter2s() {
+    public void btn1_RunSingleTaskAfter2s() {
         _log(String.format("A1 [%s] --- BTN click", _getCurrentTimestamp()));
 
         Observable.timer(2, TimeUnit.SECONDS)//
@@ -90,7 +91,7 @@ public class TimingDemoFragment
     }
 
     @OnClick(R.id.btn_demo_timing_2)
-    public void Btn2_RunTask_IntervalOf1s() {
+    public void btn2_RunTask_IntervalOf1s() {
         if (_subscription1 != null && !_subscription1.isUnsubscribed()) {
             _subscription1.unsubscribe();
             _log(String.format("B2 [%s] XXX BTN KILLED", _getCurrentTimestamp()));
@@ -120,7 +121,7 @@ public class TimingDemoFragment
     }
 
     @OnClick(R.id.btn_demo_timing_3)
-    public void Btn3_RunTask_IntervalOf1s_StartImmediately() {
+    public void btn3_RunTask_IntervalOf1s_StartImmediately() {
         if (_subscription2 != null && !_subscription2.isUnsubscribed()) {
             _subscription2.unsubscribe();
             _log(String.format("C3 [%s] XXX BTN KILLED", _getCurrentTimestamp()));
@@ -150,7 +151,7 @@ public class TimingDemoFragment
     }
 
     @OnClick(R.id.btn_demo_timing_4)
-    public void Btn4_RunTask5Times_IntervalOf3s() {
+    public void btn4_RunTask5Times_IntervalOf3s() {
         _log(String.format("D4 [%s] --- BTN click", _getCurrentTimestamp()));
 
         Observable//
@@ -169,6 +170,42 @@ public class TimingDemoFragment
                   @Override
                   public void onNext(Long number) {
                       _log(String.format("D4 [%s]     NEXT", _getCurrentTimestamp()));
+                  }
+              });
+    }
+
+    @OnClick(R.id.btn_demo_timing_5)
+    public void btn5_RunTask5Times_IntervalOf3s() {
+        _log(String.format("D5 [%s] --- BTN click", _getCurrentTimestamp()));
+
+        Observable.just("Do task A right away")
+              .doOnNext(new Action1<String>() {
+                  @Override
+                  public void call(String input) {
+                      _log(String.format("D5 %s [%s]", input, _getCurrentTimestamp()));
+                  }
+              })
+              .delay(1, TimeUnit.SECONDS)
+              .doOnNext(new Action1<String>() {
+                  @Override
+                  public void call(String oldInput) {
+                      _log(String.format("D5 %s [%s]", "Doing Task B after a delay", _getCurrentTimestamp()));
+                  }
+              })
+              .subscribe(new Observer<String>() {
+                  @Override
+                  public void onCompleted() {
+                      _log(String.format("D5 [%s] XXX COMPLETE", _getCurrentTimestamp()));
+                  }
+
+                  @Override
+                  public void onError(Throwable e) {
+                      Timber.e(e, "something went wrong in TimingDemoFragment example");
+                  }
+
+                  @Override
+                  public void onNext(String number) {
+                      _log(String.format("D5 [%s]     NEXT", _getCurrentTimestamp()));
                   }
               });
     }
