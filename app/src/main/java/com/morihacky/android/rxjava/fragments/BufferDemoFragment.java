@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.jakewharton.rxbinding.view.RxView;
-import com.jakewharton.rxbinding.view.ViewClickEvent;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 
@@ -88,10 +87,10 @@ public class BufferDemoFragment
     // Main Rx entities
 
     private Subscription _getBufferedSubscription() {
-        return RxView.clickEvents(_tapBtn)
-              .map(new Func1<ViewClickEvent, Integer>() {
+        return RxView.clicks(_tapBtn)
+              .map(new Func1<Void, Integer>() {
                   @Override
-                  public Integer call(ViewClickEvent onClickEvent) {
+                  public Integer call(Void ignored) {
                       Timber.d("--------- GOT A TAP");
                       _log("GOT A TAP");
                       return 1;
