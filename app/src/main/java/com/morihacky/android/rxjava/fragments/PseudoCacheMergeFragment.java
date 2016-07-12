@@ -86,21 +86,10 @@ public class PseudoCacheMergeFragment
                       _contributionMap.put(contributor.login, contributor.contributions);
                       _resultAgeMap.put(contributor, contributorAgePair.second);
 
-                      _adapter.clear();
-                      _adapter.addAll(getListStringFromMap());
+                      String rowLog = String.format("%s [%d]", contributor.login, contributor.contributions);
+                      _adapter.add(rowLog);
                   }
               });
-    }
-
-    private List<String> getListStringFromMap() {
-        List<String> list = new ArrayList<>();
-
-        for (String username : _contributionMap.keySet()) {
-            String rowLog = String.format("%s [%d]", username, _contributionMap.get(username));
-            list.add(rowLog);
-        }
-
-        return list;
     }
 
     private Observable<Pair<Contributor, Long>> _getCachedData() {
