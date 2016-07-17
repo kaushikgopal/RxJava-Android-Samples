@@ -25,6 +25,7 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class PseudoCacheConcatFragment
@@ -112,6 +113,7 @@ public class PseudoCacheConcatFragment
         String githubToken = getResources().getString(R.string.github_oauth_token);
         GithubApi githubService = GithubService.createGithubService(githubToken);
         return githubService.contributors("square", "retrofit")
+              .subscribeOn(Schedulers.io())
               .flatMap(new Func1<List<Contributor>, Observable<Contributor>>() {
                   @Override
                   public Observable<Contributor> call(List<Contributor> contributors) {
