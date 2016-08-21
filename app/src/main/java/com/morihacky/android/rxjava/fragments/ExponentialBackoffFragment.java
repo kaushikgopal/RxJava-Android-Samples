@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.functions.Func1;
 import rx.observables.MathObservable;
 import rx.subscriptions.CompositeSubscription;
@@ -75,8 +76,7 @@ public class ExponentialBackoffFragment
               Observable//
                     .error(new RuntimeException("testing")) // always fails
                     .retryWhen(new RetryWithDelay(5, 1000)) // notice this is called only onError (onNext values sent are ignored)
-                    .doOnSubscribe(() ->
-                          _log("Attempting the impossible 5 times in intervals of 1s"))//
+                    .doOnSubscribe(() -> _log("Attempting the impossible 5 times in intervals of 1s"))//
                     .subscribe(new Observer<Object>() {
                         @Override
                         public void onCompleted() {
@@ -114,7 +114,7 @@ public class ExponentialBackoffFragment
                     .doOnSubscribe(() ->
                           _log(String.format("Execute 4 tasks with delay - time now: [xx:%02d]",
                                 _getSecondHand())))//
-                    .subscribe(new Observer<Integer>() {
+                    .subscribe(new Subscriber<Integer>() {
                         @Override
                         public void onCompleted() {
                             Timber.d("onCompleted");

@@ -1,4 +1,21 @@
+buildscript {
+    repositories {
+//        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+        // can be removed with android-gradle plugin is upgraded to 2.2
+        // https://twitter.com/JakeWharton/status/760836175586267136
+        classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
+    }
+
+    // Exclude the lombok version that the android plugin depends on.
+    configurations.classpath.exclude group: 'com.android.tools.external.lombok'
+}
+
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 
 dependencies {
     compile 'com.android.support:support-v13:23.2.1'
@@ -27,17 +44,14 @@ dependencies {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion  '24rc4'
+    buildToolsVersion '23.0.3'
 
     defaultConfig {
         applicationId "com.morihacky.android.rxjava"
         minSdkVersion 15
-        targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
-        jackOptions {
-            enabled true
-        }
+        targetSdkVersion 23
+        versionCode 2
+        versionName "1.2"
     }
     buildTypes {
         release {
