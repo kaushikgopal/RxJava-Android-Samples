@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -132,7 +133,7 @@ public class RetrofitFragment
               })
               .subscribeOn(Schedulers.newThread())
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(new Observer<Pair<User, Contributor>>() {
+              .subscribe(new Subscriber<Pair>() {
                   @Override
                   public void onCompleted() {
                       Timber.d("Retrofit call 2 completed ");
@@ -144,9 +145,9 @@ public class RetrofitFragment
                   }
 
                   @Override
-                  public void onNext(Pair<User, Contributor> pair) {
-                      User user = pair.first;
-                      Contributor contributor = pair.second;
+                  public void onNext(Pair pair) {
+                      User user = ((Pair<User, Contributor>)pair).first;
+                      Contributor contributor = ((Pair<User, Contributor>)pair).second;
 
                       _adapter.add(format("%s(%s) has made %d contributions to %s",
                             user.name,
