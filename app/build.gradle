@@ -26,13 +26,13 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 'android-N'
-    buildToolsVersion '24.0.0-rc1'
+    compileSdkVersion 23
+    buildToolsVersion  '24rc4'
 
     defaultConfig {
         applicationId "com.morihacky.android.rxjava"
-        minSdkVersion 'N'
-        targetSdkVersion 'N'
+        minSdkVersion 15
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
         jackOptions {
