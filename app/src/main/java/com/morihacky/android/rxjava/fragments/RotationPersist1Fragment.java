@@ -120,7 +120,7 @@ public class RotationPersist1Fragment
 
     private void _setupLogger() {
         _logs = new ArrayList<>();
-        _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
+        _adapter = new LogAdapter(getActivity(), new ArrayList<>());
         _logList.setAdapter(_adapter);
     }
 
@@ -128,13 +128,9 @@ public class RotationPersist1Fragment
         _logs.add(0, logMsg);
 
         // You can only do below stuff on main thread.
-        new Handler(getMainLooper()).post(new Runnable() {
-
-            @Override
-            public void run() {
-                _adapter.clear();
-                _adapter.addAll(_logs);
-            }
+        new Handler(getMainLooper()).post(() -> {
+            _adapter.clear();
+            _adapter.addAll(_logs);
         });
     }
 

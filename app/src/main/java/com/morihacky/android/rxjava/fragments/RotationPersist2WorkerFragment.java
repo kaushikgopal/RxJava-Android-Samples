@@ -3,12 +3,14 @@ package com.morihacky.android.rxjava.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+
 import com.morihacky.android.rxjava.MainActivity;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import rx.Observable;
 import rx.Subscription;
-import rx.functions.Func1;
 import rx.subjects.PublishSubject;
 import rx.subjects.Subject;
 
@@ -22,7 +24,7 @@ public class RotationPersist2WorkerFragment
     /**
      * Since we're holding a reference to the Master a.k.a Activity/Master Frag
      * remember to explicitly remove the worker fragment or you'll have a mem leak in your hands.
-     *
+     * <p>
      * See {@link MainActivity#onBackPressed()}
      */
     @Override
@@ -51,15 +53,10 @@ public class RotationPersist2WorkerFragment
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
 
-        _storedIntsSubscription =//
-              Observable.interval(1, TimeUnit.SECONDS)//
-                    .map(new Func1<Long, Integer>() {
-                        @Override
-                        public Integer call(Long aLong) {
-                            return aLong.intValue();
-                        }
-                    })//
-                    .take(20)//
+        _storedIntsSubscription =
+              Observable.interval(1, TimeUnit.SECONDS)
+                    .map(Long::intValue)
+                    .take(20)
                     .subscribe(_intStream);
     }
 

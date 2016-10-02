@@ -16,7 +16,6 @@ import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
-import rx.functions.Func3;
 import timber.log.Timber;
 
 import static android.text.TextUtils.isEmpty;
@@ -65,35 +64,30 @@ public class FormValidationCombineLatestFragment
         _subscription = Observable.combineLatest(_emailChangeObservable,
               _passwordChangeObservable,
               _numberChangeObservable,
-              new Func3<CharSequence, CharSequence, CharSequence, Boolean>() {
-                  @Override
-                  public Boolean call(CharSequence newEmail,
-                                      CharSequence newPassword,
-                                      CharSequence newNumber) {
+              (newEmail, newPassword, newNumber) -> {
 
-                      boolean emailValid = !isEmpty(newEmail) &&
-                                           EMAIL_ADDRESS.matcher(newEmail).matches();
-                      if (!emailValid) {
-                          _email.setError("Invalid Email!");
-                      }
-
-                      boolean passValid = !isEmpty(newPassword) && newPassword.length() > 8;
-                      if (!passValid) {
-                          _password.setError("Invalid Password!");
-                      }
-
-                      boolean numValid = !isEmpty(newNumber);
-                      if (numValid) {
-                          int num = Integer.parseInt(newNumber.toString());
-                          numValid = num > 0 && num <= 100;
-                      }
-                      if (!numValid) {
-                          _number.setError("Invalid Number!");
-                      }
-
-                      return emailValid && passValid && numValid;
-
+                  boolean emailValid = !isEmpty(newEmail) &&
+                                       EMAIL_ADDRESS.matcher(newEmail).matches();
+                  if (!emailValid) {
+                      _email.setError("Invalid Email!");
                   }
+
+                  boolean passValid = !isEmpty(newPassword) && newPassword.length() > 8;
+                  if (!passValid) {
+                      _password.setError("Invalid Password!");
+                  }
+
+                  boolean numValid = !isEmpty(newNumber);
+                  if (numValid) {
+                      int num = Integer.parseInt(newNumber.toString());
+                      numValid = num > 0 && num <= 100;
+                  }
+                  if (!numValid) {
+                      _number.setError("Invalid Number!");
+                  }
+
+                  return emailValid && passValid && numValid;
+
               })//
               .subscribe(new Observer<Boolean>() {
                   @Override

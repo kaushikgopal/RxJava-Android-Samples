@@ -221,7 +221,7 @@ public class TimingDemoFragment
 
     private void _setupLogger() {
         _logs = new ArrayList<>();
-        _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
+        _adapter = new LogAdapter(getActivity(), new ArrayList<>());
         _logsList.setAdapter(_adapter);
     }
 
@@ -229,13 +229,9 @@ public class TimingDemoFragment
         _logs.add(0, String.format(logMsg + " [MainThread: %b]", getMainLooper() == myLooper()));
 
         // You can only do below stuff on main thread.
-        new Handler(getMainLooper()).post(new Runnable() {
-
-            @Override
-            public void run() {
-                _adapter.clear();
-                _adapter.addAll(_logs);
-            }
+        new Handler(getMainLooper()).post(() -> {
+            _adapter.clear();
+            _adapter.addAll(_logs);
         });
     }
 

@@ -25,9 +25,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -57,13 +56,13 @@ public class RetrofitFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater,
-          @Nullable ViewGroup container,
-          @Nullable Bundle savedInstanceState) {
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
         View layout = inflater.inflate(R.layout.fragment_retrofit, container, false);
         ButterKnife.bind(this, layout);
 
-        _adapter = new ArrayAdapter<>(getActivity(), R.layout.item_log, R.id.item_log, new ArrayList<String>());
+        _adapter = new ArrayAdapter<>(getActivity(), R.layout.item_log, R.id.item_log, new ArrayList<>());
         //_adapter.setNotifyOnChange(true);
         _resultList.setAdapter(_adapter);
 
@@ -123,36 +122,18 @@ public class RetrofitFragment
         _adapter.clear();
 
         _subscriptions.add(_githubService.contributors(_username.getText().toString(), _repo.getText().toString())
-              .flatMap(new Func1<List<Contributor>, Observable<Contributor>>() {
-                  @Override
-                  public Observable<Contributor> call(List<Contributor> contributors) {
-                      return Observable.from(contributors);
-                  }
-              })
-              .flatMap(new Func1<Contributor, Observable<Pair<User, Contributor>>>() {
-                  @Override
-                  public Observable<Pair<User, Contributor>> call(Contributor contributor) {
-                      Observable<User> _userObservable = _githubService.user(contributor.login)
-                            .filter(new Func1<User, Boolean>() {
-                                @Override
-                                public Boolean call(User user) {
-                                    return !isEmpty(user.name) && !isEmpty(user.email);
-                                }
-                            });
+              .flatMap(Observable::from)
+              .flatMap(contributor -> {
+                  Observable<User> _userObservable = _githubService.user(contributor.login)
+                        .filter(user -> !isEmpty(user.name) && !isEmpty(user.email));
 
-                      return Observable.zip(_userObservable,
-                            Observable.just(contributor),
-                            new Func2<User, Contributor, Pair<User, Contributor>>() {
-                                @Override
-                                public Pair<User, Contributor> call(User user, Contributor contributor) {
-                                    return new Pair<>(user, contributor);
-                                }
-                            });
-                  }
+                  return Observable.zip(_userObservable,
+                        Observable.just(contributor),
+                        Pair::new);
               })
               .subscribeOn(Schedulers.newThread())
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(new Observer<Pair<User, Contributor>>() {
+              .subscribe(new Subscriber<Pair>() {
                   @Override
                   public void onCompleted() {
                       Timber.d("Retrofit call 2 completed ");
@@ -164,9 +145,9 @@ public class RetrofitFragment
                   }
 
                   @Override
-                  public void onNext(Pair<User, Contributor> pair) {
-                      User user = pair.first;
-                      Contributor contributor = pair.second;
+                  public void onNext(Pair pair) {
+                      User user = ((Pair<User, Contributor>)pair).first;
+                      Contributor contributor = ((Pair<User, Contributor>)pair).second;
 
                       _adapter.add(format("%s(%s) has made %d contributions to %s",
                             user.name,

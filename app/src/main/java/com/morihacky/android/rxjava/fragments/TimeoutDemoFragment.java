@@ -150,7 +150,7 @@ public class TimeoutDemoFragment
 
     private void _setupLogger() {
         _logs = new ArrayList<>();
-        _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
+        _adapter = new LogAdapter(getActivity(), new ArrayList<>());
         _logsList.setAdapter(_adapter);
     }
 
@@ -164,13 +164,9 @@ public class TimeoutDemoFragment
             _logs.add(0, logMsg + " (NOT main thread) ");
 
             // You can only do below stuff on main thread.
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-
-                @Override
-                public void run() {
-                    _adapter.clear();
-                    _adapter.addAll(_logs);
-                }
+            new Handler(Looper.getMainLooper()).post(() -> {
+                _adapter.clear();
+                _adapter.addAll(_logs);
             });
         }
     }

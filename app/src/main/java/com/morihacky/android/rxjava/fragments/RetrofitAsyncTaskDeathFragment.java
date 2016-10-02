@@ -57,7 +57,7 @@ public class RetrofitAsyncTaskDeathFragment
         _adapter = new ArrayAdapter<>(getActivity(),
               R.layout.item_log,
               R.id.item_log,
-              new ArrayList<String>());
+              new ArrayList<>());
         //_adapter.setNotifyOnChange(true);
         _resultList.setAdapter(_adapter);
 

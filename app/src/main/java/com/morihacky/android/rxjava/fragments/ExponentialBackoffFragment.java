@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.Observer;
-import rx.functions.Action0;
+import rx.Subscriber;
 import rx.functions.Func1;
 import rx.observables.MathObservable;
 import rx.subscriptions.CompositeSubscription;
@@ -76,12 +76,7 @@ public class ExponentialBackoffFragment
               Observable//
                     .error(new RuntimeException("testing")) // always fails
                     .retryWhen(new RetryWithDelay(5, 1000)) // notice this is called only onError (onNext values sent are ignored)
-                    .doOnSubscribe(new Action0() {
-                        @Override
-                        public void call() {
-                            _log("Attempting the impossible 5 times in intervals of 1s");
-                        }
-                    })//
+                    .doOnSubscribe(() -> _log("Attempting the impossible 5 times in intervals of 1s"))//
                     .subscribe(new Observer<Object>() {
                         @Override
                         public void onCompleted() {
@@ -109,29 +104,17 @@ public class ExponentialBackoffFragment
         _subscriptions.add(//
 
               Observable.range(1, 4)//
-                    .delay(new Func1<Integer, Observable<Integer>>() {
-                        @Override
-                        public Observable<Integer> call(final Integer integer) {
-                            // Rx-y way of doing the Fibonnaci :P
-                            return MathObservable//
-                                  .sumInteger(Observable.range(1, integer))
-                                  .flatMap(new Func1<Integer, Observable<Integer>>() {
-                                      @Override
-                                      public Observable<Integer> call(Integer targetSecondDelay) {
-                                          return Observable.just(integer)
-                                                .delay(targetSecondDelay, TimeUnit.SECONDS);
-                                      }
-                                  });
-                        }
+                    .delay(integer -> {
+                        // Rx-y way of doing the Fibonnaci :P
+                        return MathObservable//
+                              .sumInteger(Observable.range(1, integer))
+                              .flatMap(targetSecondDelay -> Observable.just(integer)
+                                    .delay(targetSecondDelay, TimeUnit.SECONDS));
                     })//
-                    .doOnSubscribe(new Action0() {
-                        @Override
-                        public void call() {
-                            _log(String.format("Execute 4 tasks with delay - time now: [xx:%02d]",
-                                  _getSecondHand()));
-                        }
-                    })//
-                    .subscribe(new Observer<Integer>() {
+                    .doOnSubscribe(() ->
+                          _log(String.format("Execute 4 tasks with delay - time now: [xx:%02d]",
+                                _getSecondHand())))//
+                    .subscribe(new Subscriber<Integer>() {
                         @Override
                         public void onCompleted() {
                             Timber.d("onCompleted");
@@ -167,7 +150,7 @@ public class ExponentialBackoffFragment
 
     private void _setupLogger() {
         _logs = new ArrayList<>();
-        _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
+        _adapter = new LogAdapter(getActivity(), new ArrayList<>());
         _logList.setAdapter(_adapter);
     }
 
@@ -175,13 +158,9 @@ public class ExponentialBackoffFragment
         _logs.add(logMsg);
 
         // You can only do below stuff on main thread.
-        new Handler(getMainLooper()).post(new Runnable() {
-
-            @Override
-            public void run() {
-                _adapter.clear();
-                _adapter.addAll(_logs);
-            }
+        new Handler(getMainLooper()).post(() -> {
+            _adapter.clear();
+            _adapter.addAll(_logs);
         });
     }
 

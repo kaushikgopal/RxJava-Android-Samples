@@ -22,8 +22,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
-import rx.functions.Action0;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -80,24 +78,13 @@ public class PollingFragment
 
         _subscriptions.add(//
               Observable.interval(INITIAL_DELAY, POLLING_INTERVAL, TimeUnit.MILLISECONDS)
-                    .map(new Func1<Long, String>() {
-                        @Override
-                        public String call(Long heartBeat) {
-                            return _doNetworkCallAndGetStringResult(heartBeat);
-                        }
-                    }).take(pollCount)
-                    .doOnSubscribe(new Action0() {
-                        @Override
-                        public void call() {
-                            _log(String.format("Start simple polling - %s", _counter));
-                        }
-                    })
-                    .subscribe(new Action1<String>() {
-                        @Override
-                        public void call(String taskName) {
-                            _log(String.format(Locale.US, "Executing polled task [%s] now time : [xx:%02d]",
-                                  taskName, _getSecondHand()));
-                        }
+                    .map(this::_doNetworkCallAndGetStringResult)//
+                    .take(pollCount)
+                    .doOnSubscribe(() ->
+                          _log(String.format("Start simple polling - %s", _counter)))
+                    .subscribe(taskName -> {
+                        _log(String.format(Locale.US, "Executing polled task [%s] now time : [xx:%02d]",
+                              taskName, _getSecondHand()));
                     })
         );
     }
@@ -115,17 +102,11 @@ public class PollingFragment
         _subscriptions.add(//
               Observable.just(1)
                     .repeatWhen(new RepeatWithDelay(pollCount, pollingInterval))
-                    .subscribe(new Action1<Object>() {
-                        @Override
-                        public void call(Object o) {
-                            _log(String.format(Locale.US, "Executing polled task now time : [xx:%02d]",
-                                  _getSecondHand()));
-                        }
-                    }, new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable e) {
-                            Timber.d(e, "arrrr. Error");
-                        }
+                    .subscribe(o -> {
+                        _log(String.format(Locale.US, "Executing polled task now time : [xx:%02d]",
+                              _getSecondHand()));
+                    }, e -> {
+                        Timber.d(e, "arrrr. Error");
                     })
         );
     }
@@ -139,6 +120,60 @@ public class PollingFragment
     // for the purpose of demonstration. In the real world, make it static and LET IT BE!!
 
     // It's 12am in the morning and i feel lazy dammit !!!
+
+    private String _doNetworkCallAndGetStringResult(long attempt) {
+        try {
+            if (attempt == 4) {
+                // randomly make one event super long so we test that the repeat logic waits
+                // and accounts for this.
+                Thread.sleep(9000);
+            } else {
+                Thread.sleep(3000);
+            }
+
+        } catch (InterruptedException e) {
+            Timber.d("Operation was interrupted");
+        }
+        _counter++;
+
+        return String.valueOf(_counter);
+    }
+
+    // -----------------------------------------------------------------------------------
+    // Method that help wiring up the example (irrelevant to RxJava)
+
+    private int _getSecondHand() {
+        long millis = System.currentTimeMillis();
+        return (int) (TimeUnit.MILLISECONDS.toSeconds(millis) -
+                      TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+    }
+
+    private void _log(String logMsg) {
+        if (_isCurrentlyOnMainThread()) {
+            _logs.add(0, logMsg + " (main thread) ");
+            _adapter.clear();
+            _adapter.addAll(_logs);
+        } else {
+            _logs.add(0, logMsg + " (NOT main thread) ");
+
+            // You can only do below stuff on main thread.
+            new Handler(Looper.getMainLooper()).post(() -> {
+                _adapter.clear();
+                _adapter.addAll(_logs);
+            });
+        }
+    }
+
+    private void _setupLogger() {
+        _logs = new ArrayList<>();
+        _adapter = new LogAdapter(getActivity(), new ArrayList<>());
+        _logsList.setAdapter(_adapter);
+        _counter = 0;
+    }
+
+    private boolean _isCurrentlyOnMainThread() {
+        return Looper.myLooper() == Looper.getMainLooper();
+    }
 
     //public static class RepeatWithDelay
     public class RepeatWithDelay
@@ -183,64 +218,6 @@ public class PollingFragment
                 }
             });
         }
-    }
-
-    // -----------------------------------------------------------------------------------
-    // Method that help wiring up the example (irrelevant to RxJava)
-
-    private String _doNetworkCallAndGetStringResult(long attempt) {
-        try {
-            if (attempt == 4) {
-                // randomly make one event super long so we test that the repeat logic waits
-                // and accounts for this.
-                Thread.sleep(9000);
-            } else {
-                Thread.sleep(3000);
-            }
-
-        } catch (InterruptedException e) {
-            Timber.d("Operation was interrupted");
-        }
-        _counter++;
-
-        return String.valueOf(_counter);
-    }
-
-    private int _getSecondHand() {
-        long millis = System.currentTimeMillis();
-        return (int) (TimeUnit.MILLISECONDS.toSeconds(millis) -
-                      TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-    }
-
-    private void _log(String logMsg) {
-        if (_isCurrentlyOnMainThread()) {
-            _logs.add(0, logMsg + " (main thread) ");
-            _adapter.clear();
-            _adapter.addAll(_logs);
-        } else {
-            _logs.add(0, logMsg + " (NOT main thread) ");
-
-            // You can only do below stuff on main thread.
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-
-                @Override
-                public void run() {
-                    _adapter.clear();
-                    _adapter.addAll(_logs);
-                }
-            });
-        }
-    }
-
-    private void _setupLogger() {
-        _logs = new ArrayList<>();
-        _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
-        _logsList.setAdapter(_adapter);
-        _counter = 0;
-    }
-
-    private boolean _isCurrentlyOnMainThread() {
-        return Looper.myLooper() == Looper.getMainLooper();
     }
 
     private class LogAdapter

@@ -19,7 +19,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
 public class RxBusDemo_Bottom2Fragment
@@ -53,12 +52,9 @@ public class RxBusDemo_Bottom2Fragment
         Observable<Object> tapEventEmitter = _rxBus.toObserverable().share();
 
         _subscriptions//
-              .add(tapEventEmitter.subscribe(new Action1<Object>() {
-                  @Override
-                  public void call(Object event) {
-                      if (event instanceof RxBusDemoFragment.TapEvent) {
-                          _showTapText();
-                      }
+              .add(tapEventEmitter.subscribe(event -> {
+                  if (event instanceof RxBusDemoFragment.TapEvent) {
+                      _showTapText();
                   }
               }));
 
@@ -68,11 +64,8 @@ public class RxBusDemo_Bottom2Fragment
         _subscriptions//
               .add(debouncedBufferEmitter//
                     .observeOn(AndroidSchedulers.mainThread())//
-                    .subscribe(new Action1<List<Object>>() {
-                        @Override
-                        public void call(List<Object> taps) {
-                            _showTapCount(taps.size());
-                        }
+                    .subscribe(taps -> {
+                        _showTapCount(taps.size());
                     }));
     }
 

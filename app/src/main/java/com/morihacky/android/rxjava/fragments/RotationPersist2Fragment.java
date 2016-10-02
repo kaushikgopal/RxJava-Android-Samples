@@ -20,7 +20,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.Observer;
-import rx.functions.Action0;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -62,28 +61,24 @@ public class RotationPersist2Fragment
     public void setStream(Observable<Integer> intStream) {
 
         _subscriptions.add(//
-              intStream.doOnSubscribe(new Action0() {
-                  @Override
-                  public void call() {
-                      _log("Subscribing to intsObservable");
-                  }
-              }).subscribe(new Observer<Integer>() {
-                  @Override
-                  public void onCompleted() {
-                      _log("Observable is complete");
-                  }
+              intStream.doOnSubscribe(() -> _log("Subscribing to intsObservable"))
+                    .subscribe(new Observer<Integer>() {
+                        @Override
+                        public void onCompleted() {
+                            _log("Observable is complete");
+                        }
 
-                  @Override
-                  public void onError(Throwable e) {
-                      Timber.e(e, "Error in worker demo frag observable");
-                      _log("Dang! something went wrong.");
-                  }
+                        @Override
+                        public void onError(Throwable e) {
+                            Timber.e(e, "Error in worker demo frag observable");
+                            _log("Dang! something went wrong.");
+                        }
 
-                  @Override
-                  public void onNext(Integer integer) {
-                      _log(String.format("Worker frag spits out - %d", integer));
-                  }
-              }));
+                        @Override
+                        public void onNext(Integer integer) {
+                            _log(String.format("Worker frag spits out - %d", integer));
+                        }
+                    }));
     }
 
     // -----------------------------------------------------------------------------------
@@ -113,7 +108,7 @@ public class RotationPersist2Fragment
 
     private void _setupLogger() {
         _logs = new ArrayList<>();
-        _adapter = new LogAdapter(getActivity(), new ArrayList<String>());
+        _adapter = new LogAdapter(getActivity(), new ArrayList<>());
         _logList.setAdapter(_adapter);
     }
 
@@ -121,13 +116,9 @@ public class RotationPersist2Fragment
         _logs.add(0, logMsg);
 
         // You can only do below stuff on main thread.
-        new Handler(getMainLooper()).post(new Runnable() {
-
-            @Override
-            public void run() {
-                _adapter.clear();
-                _adapter.addAll(_logs);
-            }
+        new Handler(getMainLooper()).post(() -> {
+            _adapter.clear();
+            _adapter.addAll(_logs);
         });
     }
 }

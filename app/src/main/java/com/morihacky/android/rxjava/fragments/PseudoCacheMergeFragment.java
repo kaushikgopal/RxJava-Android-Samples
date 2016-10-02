@@ -24,7 +24,6 @@ import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -55,7 +54,7 @@ public class PseudoCacheMergeFragment
 
     @OnClick(R.id.btn_start_pseudo_cache)
     public void onDemoPseudoCacheClicked() {
-        _adapter = new ArrayAdapter<>(getActivity(), R.layout.item_log, R.id.item_log, new ArrayList<String>());
+        _adapter = new ArrayAdapter<>(getActivity(), R.layout.item_log, R.id.item_log, new ArrayList<>());
 
         _resultList.setAdapter(_adapter);
         _initializeCache();
@@ -126,18 +125,8 @@ public class PseudoCacheMergeFragment
         GithubApi githubService = GithubService.createGithubService(githubToken);
 
         return githubService.contributors("square", "retrofit")
-              .flatMap(new Func1<List<Contributor>, Observable<Contributor>>() {
-                  @Override
-                  public Observable<Contributor> call(List<Contributor> contributors) {
-                      return Observable.from(contributors);
-                  }
-              })
-              .map(new Func1<Contributor, Pair<Contributor, Long>>() {
-                  @Override
-                  public Pair<Contributor, Long> call(Contributor contributor) {
-                      return new Pair<>(contributor, System.currentTimeMillis());
-                  }
-              });
+              .flatMap(Observable::from)
+              .map(contributor -> new Pair<>(contributor, System.currentTimeMillis()));
     }
 
     private void _initializeCache() {
