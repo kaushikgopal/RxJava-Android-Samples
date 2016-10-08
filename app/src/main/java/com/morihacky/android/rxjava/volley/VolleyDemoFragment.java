@@ -74,6 +74,12 @@ public class VolleyDemoFragment
         ButterKnife.unbind(this);
     }
 
+    /**
+     * Creates and returns an observable generated from the Future returned from 
+     * {@code getRouteData()}. The observable can then be subscribed to as shown in
+     * {@code startVolleyRequest()}
+     * @return Observable<JSONObject>
+     */
     public Observable<JSONObject> newGetRouteData() {
         return Observable.defer(() -> {
             try {
@@ -119,11 +125,16 @@ public class VolleyDemoFragment
                   }
               }));
     }
-
+    /**
+     * Converts the Asynchronous Request into a Synchronous Future that can be used to
+     * block via {@code Future.get()}. Observables require blocking/synchronous functions
+     * @return JSONObject 
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
     private JSONObject getRouteData() throws ExecutionException, InterruptedException {
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         String url = "http://www.weather.com.cn/adat/sk/101010100.html";
-        final Request.Priority priority = Request.Priority.IMMEDIATE;
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, future, future);
         MyVolley.getRequestQueue().add(req);
         return future.get();
