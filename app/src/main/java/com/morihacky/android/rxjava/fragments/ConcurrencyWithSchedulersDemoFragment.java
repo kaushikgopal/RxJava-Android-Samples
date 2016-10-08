@@ -11,21 +11,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-
-import com.morihacky.android.rxjava.R;
-import com.morihacky.android.rxjava.RxUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.morihacky.android.rxjava.R;
+import java.util.ArrayList;
+import java.util.List;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 public class ConcurrencyWithSchedulersDemoFragment
@@ -36,13 +33,13 @@ public class ConcurrencyWithSchedulersDemoFragment
 
     private LogAdapter _adapter;
     private List<String> _logs;
-    private Subscription _subscription;
+    private CompositeSubscription _subscriptions = new CompositeSubscription();
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
-        RxUtils.unsubscribeIfNotNull(_subscription);
+        _subscriptions.clear();
     }
 
     @Override
@@ -66,10 +63,12 @@ public class ConcurrencyWithSchedulersDemoFragment
         _progress.setVisibility(View.VISIBLE);
         _log("Button Clicked");
 
-        _subscription = _getObservable()//
+        Subscription s = _getObservable()//
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(_getObserver());                             // Observer
+              .subscribe(_getObserver()); // Observer
+
+        _subscriptions.add(s);
     }
 
     private Observable<Boolean> _getObservable() {
