@@ -29,7 +29,7 @@ public class PaginationAutoFragment
     @Bind(R.id.list_paging) RecyclerView _pagingList;
     @Bind(R.id.progress_paging) ProgressBar _progressBar;
 
-    private PaginationAdapter _adapter;
+    private PaginationAutoAdapter _adapter;
     private RxBus _bus;
     private PublishSubject<Integer> _paginator;
     private boolean _requestUnderWay = false;
@@ -54,7 +54,7 @@ public class PaginationAutoFragment
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         _pagingList.setLayoutManager(layoutManager);
 
-        _adapter = new PaginationAdapter(_bus);
+        _adapter = new PaginationAutoAdapter(_bus);
         _pagingList.setAdapter(_adapter);
 
         _paginator = PublishSubject.create();
@@ -116,7 +116,7 @@ public class PaginationAutoFragment
     private Observable<List<String>> _itemsFromNetworkCall(int start, int count) {
         return Observable.just(true)//
               .observeOn(AndroidSchedulers.mainThread())//
-              .delay(2, TimeUnit.SECONDS)//
+              .delay(2, TimeUnit.SECONDS)
               .map(dummy -> {
                   List<String> items = new ArrayList<>();
                   for (int i = 0; i < count; i++) {
