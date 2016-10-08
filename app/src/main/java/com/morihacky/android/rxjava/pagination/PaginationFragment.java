@@ -7,9 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.R;
@@ -34,7 +32,7 @@ public class PaginationFragment extends BaseFragment {
     @Bind(R.id.progress_paging) ProgressBar _progressBar;
 
     private CompositeSubscription _subscriptions;
-    private TestAdapter _adapter;
+    private PaginationAdapter _adapter;
     private RxBus _bus;
     private PublishSubject<Integer> _paginator;
 
@@ -48,7 +46,7 @@ public class PaginationFragment extends BaseFragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         _pagingList.setLayoutManager(layoutManager);
 
-        _adapter = new TestAdapter(_bus);
+        _adapter = new PaginationAdapter(_bus);
         _pagingList.setAdapter(_adapter);
 
         _paginator = PublishSubject.create();
@@ -77,7 +75,7 @@ public class PaginationFragment extends BaseFragment {
         // I'm using an Rxbus purely to hear from a nested button click
         // we don't really need Rx for this part. it's just easy ¯\_(ツ)_/¯
         Subscription s1 = _bus.asObservable().subscribe(event -> {
-            if (event instanceof ItemBtnViewHolder.PageEvent) {
+            if (event instanceof PaginationAdapter.ItemBtnViewHolder.PageEvent) {
 
                 // trigger the paginator for the next event
                 int nextPage = _adapter.getItemCount() - 1;
@@ -127,89 +125,4 @@ public class PaginationFragment extends BaseFragment {
     }
 
 
-    private static class TestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-        static final int ITEM_LOG = 0;
-        static final int ITEM_BTN = 1;
-
-        final List<String> _items = new ArrayList<>();
-        final RxBus _bus;
-
-        TestAdapter(RxBus bus) {
-            _bus = bus;
-        }
-
-        void addItems(List<String> items) {
-            _items.addAll(items);
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            if (position == _items.size()) {
-                return ITEM_BTN;
-            }
-
-            return ITEM_LOG;
-        }
-
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            switch (viewType) {
-                case ITEM_BTN:
-                    return ItemBtnViewHolder.create(parent);
-                default:
-                    return ItemLogViewHolder.create(parent);
-            }
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            switch (getItemViewType(position)) {
-                case ITEM_LOG:
-                    ((ItemLogViewHolder) holder).bindContent(_items.get(position));
-                    return;
-                case ITEM_BTN:
-                    ((ItemBtnViewHolder) holder).bindContent(_bus);
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return _items.size() + 1; // add 1 for paging button
-        }
-    }
-
-    private static class ItemLogViewHolder extends RecyclerView.ViewHolder {
-        ItemLogViewHolder(View itemView) {
-            super(itemView);
-        }
-
-        static ItemLogViewHolder create(ViewGroup parent) {
-            return new ItemLogViewHolder(LayoutInflater.from(parent.getContext())
-                  .inflate(R.layout.item_log, parent, false));
-        }
-
-        void bindContent(String content) {
-            ((TextView) itemView).setText(content);
-        }
-    }
-
-    private static class ItemBtnViewHolder extends RecyclerView.ViewHolder {
-        ItemBtnViewHolder(View itemView) {
-            super(itemView);
-        }
-
-        static ItemBtnViewHolder create(ViewGroup parent) {
-            return new ItemBtnViewHolder(LayoutInflater.from(parent.getContext())
-                  .inflate(R.layout.item_btn, parent, false));
-        }
-
-        void bindContent(RxBus bus) {
-            ((Button) itemView).setText(R.string.btn_demo_pagination_more);
-            itemView.setOnClickListener(v -> bus.send(new PageEvent()));
-        }
-
-        static class PageEvent {
-        }
-    }
 }
