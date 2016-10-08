@@ -38,12 +38,6 @@ public class ConcurrencyWithSchedulersDemoFragment
     private List<String> _logs;
     private Subscription _subscription;
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        ButterKnife.unbind(this);
-        RxUtils.unsubscribeIfNotNull(_subscription);
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -60,9 +54,22 @@ public class ConcurrencyWithSchedulersDemoFragment
         return layout;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        RxUtils.unsubscribeIfNotNull(_subscription);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+    }
+
     @OnClick(R.id.btn_start_operation)
     public void startLongOperation() {
 
+        RxUtils.unsubscribeIfNotNull(_subscription);
         _progress.setVisibility(View.VISIBLE);
         _log("Button Clicked");
 
