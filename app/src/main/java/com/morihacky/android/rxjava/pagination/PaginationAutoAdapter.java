@@ -30,6 +30,11 @@ class PaginationAutoAdapter
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ((ItemLogViewHolder) holder).bindContent(_items.get(position));
+
+        boolean lastPositionReached = position == _items.size() - 1;
+        if (lastPositionReached) {
+            _bus.send(new PageEvent());
+        }
     }
 
     @Override
@@ -61,4 +66,6 @@ class PaginationAutoAdapter
             ((TextView) itemView).setText(content);
         }
     }
+
+    static class PageEvent { }
 }
