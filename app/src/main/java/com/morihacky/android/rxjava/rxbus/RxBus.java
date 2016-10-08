@@ -16,7 +16,7 @@ public class RxBus {
         _bus.call(o);
     }
 
-    public Observable<Object> asObserverable() {
+    public Observable<Object> asObservable() {
         return _bus.asObservable();
     }
 
