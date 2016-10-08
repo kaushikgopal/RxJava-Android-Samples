@@ -76,7 +76,7 @@ public class PaginationFragment extends BaseFragment {
 
         // I'm using an Rxbus purely to hear from a nested button click
         // we don't really need Rx for this part. it's just easy ¯\_(ツ)_/¯
-        Subscription s1 = _bus.toObserverable().subscribe(event -> {
+        Subscription s1 = _bus.asObserverable().subscribe(event -> {
             if (event instanceof ItemBtnViewHolder.PageEvent) {
 
                 // trigger the paginator for the next event
