@@ -44,10 +44,13 @@ public class RxBusDemo_Bottom1Fragment
         _subscriptions = new CompositeSubscription();
 
         _subscriptions//
-              .add(_rxBus.asObserverable()//
-                    .subscribe(event -> {
-                        if (event instanceof RxBusDemoFragment.TapEvent) {
-                            _showTapText();
+              .add(_rxBus.toObserverable()//
+                    .subscribe(new Action1<Object>() {
+                        @Override
+                        public void call(Object event) {
+                            if (event instanceof RxBusDemoFragment.TapEvent) {
+                                _showTapText();
+                            }
                         }
                     }));
     }
