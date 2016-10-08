@@ -35,6 +35,7 @@ public class PaginationAutoFragment extends BaseFragment {
     private PaginationAdapter _adapter;
     private RxBus _bus;
     private PublishSubject<Integer> _paginator;
+    private boolean _requestUnderWay = false;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -58,8 +59,10 @@ public class PaginationAutoFragment extends BaseFragment {
         _subscriptions = new CompositeSubscription();
 
         Subscription s2 =//
-              _paginator//
-                    .concatMap(nextPage -> _itemsFromNetworkCall(nextPage + 1, 10))//
+              _paginator
+                    .onBackpressureDrop()
+                    .doOnNext(i -> _requestUnderWay = true)
+                    .concatMap(nextPage -> _itemsFromNetworkCall(nextPage + 1, 10))
                     .observeOn(AndroidSchedulers.mainThread())
                     .map(items -> {
                         int start = _adapter.getItemCount() - 1;
@@ -67,22 +70,25 @@ public class PaginationAutoFragment extends BaseFragment {
                         _adapter.addItems(items);
                         _adapter.notifyItemRangeInserted(start, 10);
 
+                        _requestUnderWay = false;
                         _progressBar.setVisibility(View.INVISIBLE);
                         return null;
-                    })//
+                    })
                     .subscribe();
 
         // I'm using an Rxbus purely to hear from a nested button click
         // we don't really need Rx for this part. it's just easy ¯\_(ツ)_/¯
-        Subscription s1 = _bus.asObservable().subscribe(event -> {
-            if (event instanceof PaginationAdapter.ItemBtnViewHolder.PageEvent) {
+        Subscription s1 =//
+              _bus.asObservable()
+                    .filter(o -> !_requestUnderWay)
+                    .subscribe(event -> {
+                        if (event instanceof PaginationAdapter.ItemBtnViewHolder.PageEvent) {
 
-                // trigger the paginator for the next event
-                int nextPage = _adapter.getItemCount() - 1;
-                _paginator.onNext(nextPage);
-
-            }
-        });
+                            // trigger the paginator for the next event
+                            int nextPage = _adapter.getItemCount() - 1;
+                            _paginator.onNext(nextPage);
+                        }
+                    });
 
         _subscriptions.add(s1);
         _subscriptions.add(s2);
