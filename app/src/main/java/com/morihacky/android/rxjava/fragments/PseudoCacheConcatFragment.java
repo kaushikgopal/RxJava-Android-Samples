@@ -7,22 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.GithubService;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class PseudoCacheConcatFragment

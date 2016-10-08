@@ -19,6 +19,7 @@ apply plugin: 'me.tatarka.retrolambda'
 
 ext {
     supportLibVersion = "24.2.1"
+    sdkVersion = 24
 }
 
 dependencies {
@@ -48,13 +49,13 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion sdkVersion
     buildToolsVersion '23.0.3'
 
     defaultConfig {
         applicationId "com.morihacky.android.rxjava"
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion sdkVersion
         versionCode 2
         versionName "1.2"
     }
