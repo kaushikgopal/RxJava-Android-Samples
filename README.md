@@ -168,6 +168,8 @@ I leverage the simple use of a Subject here. Honestly, if you don't have your it
 
 This example basically sends the page number to a Subject, and the subject handles adding the items. Notice the use of `concatMap` and the return of an `Observable<List>` from `_itemsFromNetworkCall`.
 
+For kicks, I've also included a `PaginationAutoFragment` example, this "auto-paginates" without us requiring to hit a button. It should be simple to follow if you got how the previous example works.
+
 Here are some other fancy implementations (while i enjoyed reading them, i didn't land up using them for my real world app cause personally i don't think it's necessary):
 
 * [Matthias example of an Rx based pager](https://gist.github.com/mttkay/24881a0ce986f6ec4b4d)
