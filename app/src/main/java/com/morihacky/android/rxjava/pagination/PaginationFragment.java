@@ -61,7 +61,7 @@ public class PaginationFragment extends BaseFragment {
 
         Subscription s2 =//
               _paginator//
-                    .flatMap(nextPage -> _itemsFromNetworkCall(nextPage + 1, 10))//
+                    .concatMap(nextPage -> _itemsFromNetworkCall(nextPage + 1, 10))//
                     .observeOn(AndroidSchedulers.mainThread())
                     .map(items -> {
                         int start = _adapter.getItemCount() - 1;
