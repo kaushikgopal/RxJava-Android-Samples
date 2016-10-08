@@ -2,9 +2,14 @@
 
 <TextView
     android:id="@+id/item_log"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:textSize="12sp"
-    android:text="Item Log goes here"
     xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:text="Item Log goes here"
+    android:textSize="@dimen/text_medium"
     />

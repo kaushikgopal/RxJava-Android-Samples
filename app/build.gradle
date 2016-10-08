@@ -17,9 +17,14 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
+ext {
+    supportLibVersion = "24.2.1"
+}
+
 dependencies {
-    compile 'com.android.support:support-v13:23.2.1'
-    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile "com.android.support:support-v13:${supportLibVersion}"
+    compile "com.android.support:appcompat-v7:${supportLibVersion}"
+    compile "com.android.support:recyclerview-v7:${supportLibVersion}"
 
     compile 'io.reactivex:rxandroid:1.2.0'
     // Because RxAndroid releases are few and far between, it is recommended you also

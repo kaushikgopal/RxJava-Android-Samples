@@ -7,13 +7,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.pagination.PaginationFragment;
 import com.morihacky.android.rxjava.rxbus.RxBusDemoFragment;
+import com.morihacky.android.rxjava.volley.VolleyDemoFragment;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import com.morihacky.android.rxjava.volley.VolleyDemoFragment;
 
 public class MainFragment
       extends BaseFragment {
@@ -92,6 +93,11 @@ public class MainFragment
     void demoRotationPersist() {
         clickedOn(new RotationPersist2Fragment());
         //clickedOn(new RotationPersist1Fragment());
+    }
+
+    @OnClick(R.id.btn_demo_pagination)
+    void demoPaging() {
+        clickedOn(new PaginationFragment());
     }
 
     @OnClick(R.id.btn_demo_volley)

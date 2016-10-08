@@ -162,16 +162,20 @@ Hit the start button and rotate the screen to your heart's content; you'll see t
 
 *There are certain quirks about the "hotness" of the source observable used in this example. Check [my blog post](http://blog.kaush.co/2015/07/11/a-note-about-the-warmth-share-operator/) out where I explain the specifics.*
 
+### Pagination
+
+I leverage the simple use of a Subject here. Honestly, if you don't have your items coming down via an `Observable` already (like through Retrofit or a network request), there's no good reason to use Rx and complicate things.
+
+This example basically sends the page number to a Subject, and the subject handles adding the items. Notice the use of `concatMap` and the return of an `Observable<List>` from `_itemsFromNetworkCall`.
+
+Here are some other fancy implementations (while i enjoyed reading them, i didn't land up using them for my real world app cause personally i don't think it's necessary):
+
+* [Matthias example of an Rx based pager](https://gist.github.com/mttkay/24881a0ce986f6ec4b4d)
+* [Recursive Paging example](http://stackoverflow.com/questions/28047272/handle-paging-with-rxjava)
+
 ## Work in Progress:
 
 Examples that I would like to have here, but haven't found the time yet to flush out.
-
-
-### Pagination
-
-a. Simple pagination
-b. Optimized pagination
-
 
 ## Contributing:
 
