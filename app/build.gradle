@@ -31,7 +31,6 @@ dependencies {
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     compile 'io.reactivex:rxjava:1.1.4'
     compile 'io.reactivex:rxjava-math:1.0.0'
-    compile 'io.reactivex:rxjava-math:1.0.0'
     compile 'com.github.kaushikgopal:CoreTextUtils:c703fa12b6'
     compile 'com.jakewharton.rxbinding:rxbinding:0.2.0'
     compile 'com.jakewharton:butterknife:7.0.1'
