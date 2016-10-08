@@ -18,8 +18,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
 ext {
-    supportLibVersion = "24.2.1"
+    okhttpVersion = "3.0.1"
+    retrofitVersion = "2.0.0"
     sdkVersion = 24
+    supportLibVersion = "24.2.1"
 }
 
 dependencies {
@@ -37,11 +39,11 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jakewharton.rxrelay:rxrelay:1.2.0'
     compile 'com.jakewharton.timber:timber:2.4.2'
-    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta3'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
-    compile 'com.squareup.okhttp3:okhttp:3.0.1'
-    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.0.1'
+    compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${retrofitVersion}"
+    compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+    compile "com.squareup.okhttp3:okhttp:${okhttpVersion}"
+    compile "com.squareup.okhttp3:okhttp-urlconnection:${okhttpVersion}"
     compile 'com.mcxiaoke.volley:library:1.0.19'
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
