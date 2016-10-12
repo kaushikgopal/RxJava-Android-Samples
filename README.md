@@ -173,7 +173,9 @@ For kicks, I've also included a `PaginationAutoFragment` example, this "auto-pag
 Here are some other fancy implementations (while i enjoyed reading them, i didn't land up using them for my real world app cause personally i don't think it's necessary):
 
 * [Matthias example of an Rx based pager](https://gist.github.com/mttkay/24881a0ce986f6ec4b4d)
+* [Eugene's very comprehensive Pagination sample](https://github.com/matzuk/PaginationSample)
 * [Recursive Paging example](http://stackoverflow.com/questions/28047272/handle-paging-with-rxjava)
+
 
 ## Work in Progress:
 
