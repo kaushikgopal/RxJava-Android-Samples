@@ -13,6 +13,10 @@ import com.morihacky.android.rxjava.rxbus.RxBus;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * There isn't anything specific to Pagination here.
+ * Just wiring for the example
+ */
 class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int ITEM_LOG = 0;
