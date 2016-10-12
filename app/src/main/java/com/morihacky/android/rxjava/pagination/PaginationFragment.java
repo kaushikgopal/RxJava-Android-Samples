@@ -59,17 +59,17 @@ public class PaginationFragment extends BaseFragment {
 
         Subscription s2 =//
               _paginator//
+                    .onBackpressureDrop()//
                     .concatMap(nextPage -> _itemsFromNetworkCall(nextPage + 1, 10))//
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .map(items -> {
-                        int start = _adapter.getItemCount() - 1;
+                    .observeOn(AndroidSchedulers.mainThread()).map(items -> {
+                  int start = _adapter.getItemCount() - 1;
 
-                        _adapter.addItems(items);
-                        _adapter.notifyItemRangeInserted(start, 10);
+                  _adapter.addItems(items);
+                  _adapter.notifyItemRangeInserted(start, 10);
 
-                        _progressBar.setVisibility(View.INVISIBLE);
-                        return null;
-                    })//
+                  _progressBar.setVisibility(View.INVISIBLE);
+                  return null;
+              })//
                     .subscribe();
 
         // I'm using an Rxbus purely to hear from a nested button click
