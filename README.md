@@ -103,9 +103,11 @@ The value of this technique becomes more apparent when you have more number of i
 
 ### Retrieve data first from a cache, then a network call - using [`.concat`](http://reactivex.io/documentation/operators/concat.html)
 
-Using concat, you can retrieve information from an observable first (presumably this one is fast like retrieveing from a disk cache) and show preliminary data to a user. Subsequently, when the longer running 2nd observable is complete (say a network call), you can update the results on the interface using the latest information.
+Using concat, you can retrieve information from an observable first (presumably this one is fast like retrieving from a disk cache) and show preliminary data to a user. Subsequently, when the longer running 2nd observable is complete (say a network call), you can update the results on the interface using the latest information.
 
 For the purposes of illustration i use an in-memory `List` (not an actual disk cache), then shoot out a real network call to the github api so it gives you a feel of how this can really be applied in production apps.
+
+Note the use of `concatEager` here over the traditional `concat` operator. Both show the results from the `Observables` in a sequential manner (so disk first and then network). The `concat` operator however would not even begin the subscription on subsequent Observables unless the first one is complete whereas `concatEager` kicks off all Observables at the time of Subscription in parallel, but still preserves order.
 
 **Update:**
 

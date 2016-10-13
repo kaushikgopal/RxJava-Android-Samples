@@ -57,7 +57,7 @@ public class PseudoCacheConcatFragment
         _resultList.setAdapter(_adapter);
         _initializeCache();
 
-        Observable.concat(_getCachedData(), _getFreshData())
+        Observable.concatEager(_getCachedData(), _getFreshData())
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(new Subscriber<Contributor>() {
