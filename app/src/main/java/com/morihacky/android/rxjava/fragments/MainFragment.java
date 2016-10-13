@@ -74,6 +74,7 @@ public class MainFragment
 
     @OnClick(R.id.btn_demo_pseudo_cache)
     void pseudoCacheDemo() {
+        //clickedOn(new PseudoCacheConcatFragment());
         clickedOn(new PseudoCacheMergeFragment());
     }
 
