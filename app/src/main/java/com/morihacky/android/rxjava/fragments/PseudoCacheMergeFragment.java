@@ -8,20 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.GithubService;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -60,10 +56,7 @@ public class PseudoCacheMergeFragment
         _resultList.setAdapter(_adapter);
         _initializeCache();
 
-
-        _getFreshData()//
-              .publish(fd -> Observable.merge(fd, _getCachedData().takeUntil(fd)))
-              //Observable.merge(_getCachedData(), _getFreshData())
+        Observable.merge(_getCachedData(), _getFreshData())
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(new Subscriber<Pair<Contributor, Long>>() {
@@ -81,13 +74,13 @@ public class PseudoCacheMergeFragment
                   public void onNext(Pair<Contributor, Long> contributorAgePair) {
                       Contributor contributor = contributorAgePair.first;
 
-                      //if (_resultAgeMap.containsKey(contributor) &&
-                      //    _resultAgeMap.get(contributor) > contributorAgePair.second) {
-                      //    return;
-                      //}
+                      if (_resultAgeMap.containsKey(contributor) &&
+                          _resultAgeMap.get(contributor) > contributorAgePair.second) {
+                          return;
+                      }
 
                       _contributionMap.put(contributor.login, contributor.contributions);
-                      //_resultAgeMap.put(contributor, contributorAgePair.second);
+                      _resultAgeMap.put(contributor, contributorAgePair.second);
 
                       _adapter.clear();
                       _adapter.addAll(getListStringFromMap());
@@ -121,7 +114,7 @@ public class PseudoCacheMergeFragment
             list.add(dataWithAgePair);
         }
 
-        return Observable.from(list).delay(5, TimeUnit.SECONDS);
+        return Observable.from(list);
     }
 
     private Observable<Pair<Contributor, Long>> _getFreshData() {
