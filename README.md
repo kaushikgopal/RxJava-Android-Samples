@@ -9,7 +9,7 @@ I also gave a talk at a local meetup about warming up to RxJava here. Here's a l
 
 ### Concurrency using schedulers
 
-A common requirement is to offload lengthy heavy I/O intensive operationsacc to a background thread (non-UI thread) and feed the results back to the UI/main thread, on completion. This is a demo of how long-running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava! Think of this as a replacement to AsyncTasks.
+A common requirement is to offload lengthy heavy I/O intensive operations to a background thread (non-UI thread) and feed the results back to the UI/main thread, on completion. This is a demo of how long-running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava! Think of this as a replacement to AsyncTasks.
 
 The long operation is simulated by a blocking Thread.sleep call (since this is done in a background thread, our UI is never interrupted).
 
@@ -101,21 +101,30 @@ Note that the `Func3` function that checks for validity, kicks in only after ALL
 
 The value of this technique becomes more apparent when you have more number of input fields in a form. Handling it otherwise with a bunch of booleans makes the code cluttered and kind of difficult to follow. But using `.combineLatest` all that logic is concentrated in a nice compact block of code (I still use booleans but that was to make the example more readable).
 
-### Retrieve data first from a cache, then a network call - using [`.concat`](http://reactivex.io/documentation/operators/concat.html)
+### Retrieve data first from a cache, then a network call
 
-Using concat, you can retrieve information from an observable first (presumably this one is fast like retrieving from a disk cache) and show preliminary data to a user. Subsequently, when the longer running 2nd observable is complete (say a network call), you can update the results on the interface using the latest information.
+We have two source (Observables): a disk (fast) cache and a network (fresh) call. The disk cache is much faster than the network Observable. But in order to demonstrate the working, I've also used a "slower" fake disk cache in order to demonstrate the working of the operators.
 
-For the purposes of illustration i use an in-memory `List` (not an actual disk cache), then shoot out a real network call to the github api so it gives you a feel of how this can really be applied in production apps.
+This is demonstrated using 4 techniques:
 
-Note the use of `concatEager` here over the traditional `concat` operator. Both show the results from the `Observables` in a sequential manner (so disk first and then network). The `concat` operator however would not even begin the subscription on subsequent Observables unless the first one is complete whereas `concatEager` kicks off all Observables at the time of Subscription in parallel, but still preserves order.
+1. [`.concat`](http://reactivex.io/documentation/operators/concat.html)
+2. [`.concatEager`](http://reactivex.io/RxJava/javadoc/rx/Observable.html#concatEager(java.lang.Iterable))
+3. [`.merge`](http://reactivex.io/documentation/operators/merge.html)
+4. [`.publish`](http://reactivex.io/RxJava/javadoc/rx/Observable.html#publish(rx.functions.Func1)) selector + merge + takeUntil
 
-**Update:**
+The 4th technique [courtesy Jedi JW](https://twitter.com/JakeWharton/status/786363146990649345) is probably what you want to use. But in order to understand why it's interested to go through the progression of techniques.
 
-After a [conversation I had with @artem_zin](https://twitter.com/kaushikgopal/status/591271805211451392), we arrived at an alternative solution to the same problem. One that used the [`.merge`](http://reactivex.io/documentation/operators/merge.html) operator instead.
+`concat` is great. It retrieves information from the first Observable (disk cache in our case) and then the subsequent network Observable. Since the disk cache is presumably faster, all appears well and the disk cache is loaded up fast, and once the network call finishes we swap out the "fresh" results.
 
-The `concat` (and the equivalent [`startWith`](http://reactivex.io/documentation/operators/startwith.html)) opeartor is strictly sequential, meaning all of the items emitted by the first Observable are emitted strictly before any of the items from the second Observable are emitted. So assuming the first observable (for some strange reason) takes really long to run through all its items, even if the first few items from the second observable have come down the wire it will forcibly be queued.
+The problem with `concat` is that the subsequent observable doesn't even start until the first Observable completes. That can be a problem. We want all observables to start simultaneously but produce the results in a way we expect. Thankfully RxJava introduced `concatEager` which does exactly that. It starts both observables but buffers the result from the latter one until the former Observable finishes. This is a completely viable option.
 
-The `merge` operator on the other hand interleaves items as they are emitted. The problem here though is if for some strange reason an item is emitted by the cache or slower observable *after* the newer/fresher observable, it will overwrite the newer content. To account for this you have to monitor the "resultAge" somehow. This is demonstrated in the updated solution `PseudoCacheMergeFragment`.
+Sometimes though, you just want to start showing the results immediately. Assuming the first observable (for some strange reason) takes really long to run through all its items, even if the first few items from the second observable have come down the wire it will forcibly be queued. You don't necessarily want to "wait" on any Observable. In these situations, we could use the `merge` operator. It interleaves items as they are emitted. This works great and starts to spit out the results as soon as they're shown.
+
+Similar to the `concat` operator, if your first Observable is always faster than the second Observable you won't run into any problems. However the problem with `merge` is: if for some strange reason an item is emitted by the cache or slower observable *after* the newer/fresher observable, it will overwrite the newer content. Click the "MERGE (SLOWER DISK)" button in the example to see this problem in action. @JakeWharton and @swankjesse contributions go to 0! In the real world this could be bad, as it would mean the fresh data would get overridden by stale disk data.
+
+To solve this problem you can use merge in combination with the super nifty `publish` operator which takes in a "selector". I wrote about this usage in a [blog post](http://blog.kaush.co/2015/01/21/rxjava-tip-for-the-day-share-publish-refcount-and-all-that-jazz/) but I have [Jedi JW](https://twitter.com/JakeWharton/status/786363146990649345) to thank for reminding of this technique. We `publish` the network observable and provide it a selector which starts emitting from the disk cache, up until the point that the network observable starts emitting. Once the network observable starts emitting, it ignores all results from the disk observable. This is perfect and handles any problems we might have.
+
+Previously, I was using the `merge` operator but overcoming the problem of results being overwritten by monitoring the "resultAge". See the old `PseudoCacheMergeFragment` example if you're curious to see this.
 
 ### Simple Timing demos using timer/interval/delay
 
