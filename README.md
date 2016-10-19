@@ -103,7 +103,7 @@ The value of this technique becomes more apparent when you have more number of i
 
 ### Retrieve data first from a cache, then a network call
 
-We have two source (Observables): a disk (fast) cache and a network (fresh) call. The disk cache is much faster than the network Observable. But in order to demonstrate the working, I've also used a "slower" fake disk cache in order to demonstrate the working of the operators.
+We have two source Observables: a disk (fast) cache and a network (fresh) call. Typically the disk Observable is much faster than the network Observable. But in order to demonstrate the working, we've also used a fake "slower" disk cache just to see how the operators behave.
 
 This is demonstrated using 4 techniques:
 
@@ -112,7 +112,7 @@ This is demonstrated using 4 techniques:
 3. [`.merge`](http://reactivex.io/documentation/operators/merge.html)
 4. [`.publish`](http://reactivex.io/RxJava/javadoc/rx/Observable.html#publish(rx.functions.Func1)) selector + merge + takeUntil
 
-The 4th technique [courtesy Jedi JW](https://twitter.com/JakeWharton/status/786363146990649345) is probably what you want to use. But in order to understand why it's interested to go through the progression of techniques.
+The 4th technique is probably what you want to use eventually but it's interesting to go through the progression of techniques, to understand why.
 
 `concat` is great. It retrieves information from the first Observable (disk cache in our case) and then the subsequent network Observable. Since the disk cache is presumably faster, all appears well and the disk cache is loaded up fast, and once the network call finishes we swap out the "fresh" results.
 
@@ -124,7 +124,7 @@ Similar to the `concat` operator, if your first Observable is always faster than
 
 To solve this problem you can use merge in combination with the super nifty `publish` operator which takes in a "selector". I wrote about this usage in a [blog post](http://blog.kaush.co/2015/01/21/rxjava-tip-for-the-day-share-publish-refcount-and-all-that-jazz/) but I have [Jedi JW](https://twitter.com/JakeWharton/status/786363146990649345) to thank for reminding of this technique. We `publish` the network observable and provide it a selector which starts emitting from the disk cache, up until the point that the network observable starts emitting. Once the network observable starts emitting, it ignores all results from the disk observable. This is perfect and handles any problems we might have.
 
-Previously, I was using the `merge` operator but overcoming the problem of results being overwritten by monitoring the "resultAge". See the old `PseudoCacheMergeFragment` example if you're curious to see this.
+Previously, I was using the `merge` operator but overcoming the problem of results being overwritten by monitoring the "resultAge". See the old `PseudoCacheMergeFragment` example if you're curious to see this old implementation.
 
 ### Simple Timing demos using timer/interval/delay
 
