@@ -109,6 +109,11 @@ public class MainFragment
         clickedOn(new VolleyDemoFragment());
     }
 
+    @OnClick(R.id.btn_demo_networkDetector)
+    void demoNetworkDetector() {
+        clickedOn(new NetworkDetectorFragment());
+    }
+
     private void clickedOn(@NonNull Fragment fragment) {
         final String tag = fragment.getClass().toString();
         getActivity().getSupportFragmentManager()

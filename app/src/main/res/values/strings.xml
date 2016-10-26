@@ -22,6 +22,7 @@
     <string name="btn_demo_volley">Volley request demo</string>
     <string name="btn_demo_pagination">Paging example</string>
     <string name="btn_demo_pagination_more">MOAR</string>
+    <string name="btn_demo_networkDetector">Network Detector (Subject)</string>
 
     <string name="msg_demo_pagination">This is a demo of how you can do a list pagination with Rx. We page 10 items at a time and there are 55 items altogether</string>
     <string name="msg_demo_volley">This is a Volley request demo</string>
@@ -38,6 +39,7 @@
     <string name="msg_demo_form_comb_latest">Monitor the state of multiple observables with the combineLatest operator. Only after all the 3 inputs contain valid entries will the submit button light up</string>
     <string name="msg_demo_timing">BTN 1: run single task once (after 2s complete)\nBTN 2: run task every 1s (start delay of 1s) toggle \nBTN 3: run task every 1s (start immediately) toggle \nBTN 4: run task 5 times every 3s (then complete) \nBTN 5: run task A, pause for sometime, then proceed with Task B</string>
     <string name="msg_demo_rotation_persist">This is an example of starting an Observable and using the result across rotations. There are many ways to do this, we use a retained fragment in this example</string>
+    <string name="msg_demo_network_detector">This is a demo of how to use Subjects to detect Network connectivity\nToggle your Wifi/Network on or off and notice the logs</string>
 
     <string name="msg_pseudoCache_demoInfo_concat">Concat merges the results sequentially. But notice that the latter subscription starts only AFTER the first one completes. Some unnecessary waiting there.</string>
     <string name="msg_pseudoCache_demoInfo_concatEager">Concat eager is cooler. Both subscriptions start at the same time (parallely) but the order of emission is respected.</string>
