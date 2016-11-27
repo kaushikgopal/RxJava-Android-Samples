@@ -23,9 +23,10 @@ import java.util.concurrent.TimeUnit;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import timber.log.Timber;
 
 import static co.kaush.core.util.CoreNullnessUtils.isNotNullOrEmpty;
@@ -40,12 +41,12 @@ public class DebounceSearchEmitterFragment
     private LogAdapter _adapter;
     private List<String> _logs;
 
-    private Subscription _subscription;
+    private Disposable _disposable;
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        _subscription.unsubscribe();
+        _disposable.dispose();
         ButterKnife.unbind(this);
     }
 
@@ -70,20 +71,20 @@ public class DebounceSearchEmitterFragment
         super.onActivityCreated(savedInstanceState);
         _setupLogger();
 
-        _subscription = RxTextView.textChangeEvents(_inputSearchText)
+        _disposable = RxJavaInterop.toV2Observable(RxTextView.textChangeEvents(_inputSearchText))
               .debounce(400, TimeUnit.MILLISECONDS)// default Scheduler is Computation
               .filter(changes -> isNotNullOrEmpty(_inputSearchText.getText().toString()))
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(_getSearchObserver());
+              .subscribeWith(_getSearchObserver());
     }
 
     // -----------------------------------------------------------------------------------
     // Main Rx entities
 
-    private Observer<TextViewTextChangeEvent> _getSearchObserver() {
-        return new Observer<TextViewTextChangeEvent>() {
+    private DisposableObserver<TextViewTextChangeEvent> _getSearchObserver() {
+        return new DisposableObserver<TextViewTextChangeEvent>() {
             @Override
-            public void onCompleted() {
+            public void onComplete() {
                 Timber.d("--------- onComplete");
             }
 
