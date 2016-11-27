@@ -54,7 +54,7 @@ dependencies {
     compile 'io.reactivex:rxjava-math:1.0.0'
     compile 'com.jakewharton.rxrelay:rxrelay:1.2.0'
     compile 'com.jakewharton.rxbinding:rxbinding:0.2.0'
-    compile "com.squareup.retrofit2:adapter-rxjava:${retrofitVersion}"
+    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
 
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
