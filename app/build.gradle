@@ -41,12 +41,12 @@ dependencies {
     // ----------- Rx dependencies
 
     compile 'io.reactivex:rxjava:1.1.4'
-    compile 'io.reactivex.rxjava2:rxjava:2.0.0'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.1'
 
     // Because RxAndroid releases are few and far between, it is recommended you also
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     compile 'io.reactivex:rxandroid:1.2.0'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.0'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     // libs like rxbinding + rxjava-math haven't been ported to RxJava 2.x yet, so this helps
     compile "com.github.akarnokd:rxjava2-interop:0.6.1"
