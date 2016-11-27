@@ -11,21 +11,21 @@ I've also been giving talks about Learning Rx using many of the examples listed 
 
 ## Examples:
 
-1. [Background work & concurrency (using Schedulers)]()
-2. [Accumulate calls (using buffer)]()
-3. [Instant/Auto searching text listeners (using Subjects & debounce)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/app/src/main/java/com/morihacky/android/rxjava/fragments/DebounceSearchEmitterFragment.java)
-4. [Networking with Retrofit & RxJava (using zip, flatmap)]()
-5. [Two-way data binding for TextViews (using PublishSubject)]()
-6. [Simple and Advanced polling (using interval and repeatWhen)]()
-7. [Simple and Advanced exponential backoff (using delay and retryWhen)]()
-8. [Form validation (using combineLatest)]()
-9. [Pseudo caching : retrieve data first from a cache, then a network call (using concat, concatEager, merge or publish)]()
-10. [Simple timing demos (using timer, interval or delay)]()
-11. [RxBus : event bus using RxJava (using RxRelay (never terminating Subjects) and debouncedBuffer)]()
-12. [Persist data on Activity rotations (using Subjects and retained Fragments)]()
-13. [Networking with Volley]()
-14. [Pagination with Rx (using Subjects)]()
-
+1. [Background work & concurrency (using Schedulers)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#1-background-work--concurrency-using-schedulers)
+2. [Accumulate calls (using buffer)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#2-accumulate-calls-using-buffer)
+3. [Instant/Auto searching text listeners (using Subjects & debounce)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#3-instantauto-searching-text-listeners-using-subjects--debounce)
+4. [Networking with Retrofit & RxJava (using zip, flatmap)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#4-networking-with-retrofit--rxjava-using-zip-flatmap)
+5. [Two-way data binding for TextViews (using PublishSubject)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#5-two-way-data-binding-for-textviews-using-publishsubject)
+6. [Simple and Advanced polling (using interval and repeatWhen)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#6-simple-and-advanced-polling-using-interval-and-repeatwhen)
+7. [Simple and Advanced exponential backoff (using delay and retryWhen)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#7-simple-and-advanced-exponential-backoff-using-delay-and-retrywhen)
+8. [Form validation (using combineLatest)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#8-form-validation-using-combinelatest)
+9. [Pseudo caching : retrieve data first from a cache, then a network call (using concat, concatEager, merge or publish)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#9-pseudo-caching--retrieve-data-first-from-a-cache-then-a-network-call-using-concat-concateager-merge-or-publish)
+10. [Simple timing demos (using timer, interval or delay)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#10-simple-timing-demos-using-timer-interval-and-delay)
+11. [RxBus : event bus using RxJava (using RxRelay (never terminating Subjects) and debouncedBuffer)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#11-rxbus--event-bus-using-rxjava-using-rxrelay-never-terminating-subjects-and-debouncedbuffer)
+12. [Persist data on Activity rotations (using Subjects and retained Fragments)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#12-persist-data-on-activity-rotations-using-subjects-and-retained-fragments)
+13. [Networking with Volley](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#13-networking-with-volley)
+14. [Pagination with Rx (using Subjects)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#14-pagination-with-rx-using-subjects)
+15. [Orchestrating Observable: make parallel network calls, then combine the result into a single data point (using flatmap & zip)]()
 
 ## Description
 
@@ -187,22 +187,6 @@ I wrote [another blog post](https://tech.instacart.com/how-to-think-about-subjec
 
 [Volley](http://developer.android.com/training/volley/index.html) is another networking library introduced by [Google at IO '13](https://www.youtube.com/watch?v=yhv8l9F44qo). A kind citizen of github contributed this example so we know how to integrate Volley with RxJava.
 
-
-### Orchestrating Observables. Make parallel network calls, then combine the result into a single data point  (flatmap + zip)
-
-The below ascii diagram expresses the intention of our next example with panache. f1,f2,f3,f4,f5 are essentially network calls that when made, give back a result that's needed for a future calculation.
-
-
-             (flatmap)
-    f1 ___________________ f3 _______
-             (flatmap)               |    (zip)
-    f2 ___________________ f4 _______| ___________  final output
-            \                        |
-             \____________ f5 _______|
-
-The code for this example has already been written by one Mr.skehlet in the interwebs. Head over to [the gist](https://gist.github.com/skehlet/9418379) for the code. It's written in pure Java (6) so it's pretty comprehensible if you've understood the previous examples. I'll flush it out here again when time permits or I've run out of other compelling examples.
-
-
 ### 14. Pagination with Rx (using Subjects)
 
 I leverage the simple use of a Subject here. Honestly, if you don't have your items coming down via an `Observable` already (like through Retrofit or a network request), there's no good reason to use Rx and complicate things.
@@ -217,6 +201,19 @@ Here are some other fancy implementations (while i enjoyed reading them, i didn'
 * [Eugene's very comprehensive Pagination sample](https://github.com/matzuk/PaginationSample)
 * [Recursive Paging example](http://stackoverflow.com/questions/28047272/handle-paging-with-rxjava)
 
+### 15. Orchestrating Observable: make parallel network calls, then combine the result into a single data point (using flatmap & zip)
+
+The below ascii diagram expresses the intention of our next example with panache. f1,f2,f3,f4,f5 are essentially network calls that when made, give back a result that's needed for a future calculation.
+
+
+             (flatmap)
+    f1 ___________________ f3 _______
+             (flatmap)               |    (zip)
+    f2 ___________________ f4 _______| ___________  final output
+            \                        |
+             \____________ f5 _______|
+
+The code for this example has already been written by one Mr.skehlet in the interwebs. Head over to [the gist](https://gist.github.com/skehlet/9418379) for the code. It's written in pure Java (6) so it's pretty comprehensible if you've understood the previous examples. I'll flush it out here again when time permits or I've run out of other compelling examples.
 
 ## Work in Progress:
 
