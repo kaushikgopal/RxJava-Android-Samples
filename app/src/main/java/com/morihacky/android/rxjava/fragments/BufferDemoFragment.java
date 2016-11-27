@@ -20,9 +20,10 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import timber.log.Timber;
 
 /**
@@ -48,18 +49,18 @@ public class BufferDemoFragment
     private LogAdapter _adapter;
     private List<String> _logs;
 
-    private Subscription _subscription;
+    private Disposable _disposable;
 
     @Override
     public void onResume() {
         super.onResume();
-        _subscription = _getBufferedSubscription();
+        _disposable = _getBufferedDisposable();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        _subscription.unsubscribe();
+        _disposable.dispose();
     }
 
     @Override
@@ -85,8 +86,8 @@ public class BufferDemoFragment
     // -----------------------------------------------------------------------------------
     // Main Rx entities
 
-    private Subscription _getBufferedSubscription() {
-        return RxView.clickEvents(_tapBtn)
+    private Disposable _getBufferedDisposable() {
+        return  RxJavaInterop.toV2Observable(RxView.clickEvents(_tapBtn))
               .map(onClickEvent -> {
                   Timber.d("--------- GOT A TAP");
                   _log("GOT A TAP");
@@ -94,10 +95,10 @@ public class BufferDemoFragment
               })
               .buffer(2, TimeUnit.SECONDS)
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(new Observer<List<Integer>>() {
+              .subscribeWith(new DisposableObserver<List<Integer>>() {
 
                   @Override
-                  public void onCompleted() {
+                  public void onComplete() {
                       // fyi: you'll never reach here
                       Timber.d("----- onCompleted");
                   }
