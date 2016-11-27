@@ -65,38 +65,38 @@ public class PaginationAutoFragment
         super.onStart();
         _subscriptions = new CompositeSubscription();
 
-        Subscription s2 =//
-              _paginator.onBackpressureDrop()
-                    .doOnNext(i -> {
-                        _requestUnderWay = true;
-                        _progressBar.setVisibility(View.VISIBLE);
-                    })
-                    .concatMap(this::_itemsFromNetworkCall)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .map(items -> {
-                        _adapter.addItems(items);
-                        _adapter.notifyDataSetChanged();
-                        return null;
-                    })
-                    .doOnNext(i -> {
-                        _requestUnderWay = false;
-                        _progressBar.setVisibility(View.INVISIBLE);
-                    })
-                    .subscribe();
+        Subscription s2 = _paginator
+              .onBackpressureDrop()
+              .doOnNext(i -> {
+                  _requestUnderWay = true;
+                  _progressBar.setVisibility(View.VISIBLE);
+              })
+              .concatMap(this::_itemsFromNetworkCall)
+              .observeOn(AndroidSchedulers.mainThread())
+              .map(items -> {
+                  _adapter.addItems(items);
+                  _adapter.notifyDataSetChanged();
+                  return null;
+              })
+              .doOnNext(i -> {
+                  _requestUnderWay = false;
+                  _progressBar.setVisibility(View.INVISIBLE);
+              })
+              .subscribe();
 
         // I'm using an RxBus purely to hear from a nested button click
         // we don't really need Rx for this part. it's just easy ¯\_(ツ)_/¯
-        Subscription s1 =//
-              _bus.asObservable()//
-                    .filter(o -> !_requestUnderWay)//
-                    .subscribe(event -> {
-                        if (event instanceof PaginationAutoAdapter.PageEvent) {
+        Subscription s1 = _bus
+              .asObservable()
+              .filter(o -> !_requestUnderWay)
+              .subscribe(event -> {
+                  if (event instanceof PaginationAutoAdapter.PageEvent) {
 
-                            // trigger the paginator for the next event
-                            int nextPage = _adapter.getItemCount();
-                            _paginator.onNext(nextPage);
-                        }
-                    });
+                      // trigger the paginator for the next event
+                      int nextPage = _adapter.getItemCount();
+                      _paginator.onNext(nextPage);
+                  }
+              });
 
         _subscriptions.add(s1);
         _subscriptions.add(s2);
@@ -114,8 +114,9 @@ public class PaginationAutoFragment
      * Fake Observable that simulates a network call and then sends down a list of items
      */
     private Observable<List<String>> _itemsFromNetworkCall(int pageStart) {
-        return Observable.just(true)//
-              .observeOn(AndroidSchedulers.mainThread())//
+        return Observable
+              .just(true)
+              .observeOn(AndroidSchedulers.mainThread())
               .delay(2, TimeUnit.SECONDS)
               .map(dummy -> {
                   List<String> items = new ArrayList<>();
