@@ -23,12 +23,11 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observable;
-import rx.Observer;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static android.text.TextUtils.isEmpty;
@@ -43,7 +42,7 @@ public class RetrofitFragment
 
     private ArrayAdapter<String> _adapter;
     private GithubApi _githubService;
-    private CompositeSubscription _subscriptions;
+    private CompositeDisposable _disposables;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +50,7 @@ public class RetrofitFragment
         String githubToken = getResources().getString(R.string.github_oauth_token);
         _githubService = GithubService.createGithubService(githubToken);
 
-        _subscriptions = new CompositeSubscription();
+        _disposables = new CompositeDisposable();
     }
 
     @Override
@@ -78,20 +77,21 @@ public class RetrofitFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        _subscriptions.unsubscribe();
+        _disposables.dispose();
     }
 
     @OnClick(R.id.btn_demo_retrofit_contributors)
     public void onListContributorsClicked() {
         _adapter.clear();
 
-        _subscriptions.add(//
+        _disposables.add(//
               _githubService.contributors(_username.getText().toString(), _repo.getText().toString())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<List<Contributor>>() {
+                    .subscribeWith(new DisposableObserver<List<Contributor>>() {
+
                         @Override
-                        public void onCompleted() {
+                        public void onComplete() {
                             Timber.d("Retrofit call 1 completed");
                         }
 
@@ -121,8 +121,8 @@ public class RetrofitFragment
     public void onListContributorsWithFullUserInfoClicked() {
         _adapter.clear();
 
-        _subscriptions.add(_githubService.contributors(_username.getText().toString(), _repo.getText().toString())
-              .flatMap(Observable::from)
+        _disposables.add(_githubService.contributors(_username.getText().toString(), _repo.getText().toString())
+              .flatMap(Observable::fromIterable)
               .flatMap(contributor -> {
                   Observable<User> _userObservable = _githubService.user(contributor.login)
                         .filter(user -> !isEmpty(user.name) && !isEmpty(user.email));
@@ -133,9 +133,9 @@ public class RetrofitFragment
               })
               .subscribeOn(Schedulers.newThread())
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(new Subscriber<Pair>() {
+              .subscribeWith(new DisposableObserver<Pair<User,Contributor>>() {
                   @Override
-                  public void onCompleted() {
+                  public void onComplete() {
                       Timber.d("Retrofit call 2 completed ");
                   }
 

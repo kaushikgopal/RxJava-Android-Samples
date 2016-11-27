@@ -10,22 +10,25 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.GithubService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class PseudoCacheFragment
@@ -61,9 +64,9 @@ public class PseudoCacheFragment
         Observable.concat(getSlowCachedDiskData(), getFreshNetworkData())
               .subscribeOn(Schedulers.io()) // we want to add a list item at time of subscription
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(new Subscriber<Contributor>() {
+              .subscribe(new DisposableObserver<Contributor>() {
                   @Override
-                  public void onCompleted() {
+                  public void onComplete() {
                       Timber.d("done loading all data");
                   }
 
@@ -86,12 +89,16 @@ public class PseudoCacheFragment
         infoText.setText(R.string.msg_pseudoCache_demoInfo_concatEager);
         wireupDemo();
 
-        Observable.concatEager(getSlowCachedDiskData(), getFreshNetworkData())
+        List<Observable<Contributor>> observables = new ArrayList<>(2);
+        observables.add(getSlowCachedDiskData());
+        observables.add(getFreshNetworkData());
+
+        Observable.concatEager(observables)
               .subscribeOn(Schedulers.io()) // we want to add a list item at time of subscription
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(new Subscriber<Contributor>() {
+              .subscribe(new DisposableObserver<Contributor>() {
                   @Override
-                  public void onCompleted() {
+                  public void onComplete() {
                       Timber.d("done loading all data");
                   }
 
@@ -118,9 +125,9 @@ public class PseudoCacheFragment
         Observable.merge(getCachedDiskData(), getFreshNetworkData())
               .subscribeOn(Schedulers.io()) // we want to add a list item at time of subscription
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(new Subscriber<Contributor>() {
+              .subscribe(new DisposableObserver<Contributor>() {
                   @Override
-                  public void onCompleted() {
+                  public void onComplete() {
                       Timber.d("done loading all data");
                   }
 
@@ -146,9 +153,9 @@ public class PseudoCacheFragment
         Observable.merge(getSlowCachedDiskData(), getFreshNetworkData())
               .subscribeOn(Schedulers.io()) // we want to add a list item at time of subscription
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(new Subscriber<Contributor>() {
+              .subscribe(new DisposableObserver<Contributor>() {
                   @Override
-                  public void onCompleted() {
+                  public void onComplete() {
                       Timber.d("done loading all data");
                   }
 
@@ -177,9 +184,9 @@ public class PseudoCacheFragment
                                               getCachedDiskData().takeUntil(network)))
               .subscribeOn(Schedulers.io()) // we want to add a list item at time of subscription
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(new Subscriber<Contributor>() {
+              .subscribe(new DisposableObserver<Contributor>() {
                   @Override
-                  public void onCompleted() {
+                  public void onComplete() {
                       Timber.d("done loading all data");
                   }
 
@@ -208,9 +215,9 @@ public class PseudoCacheFragment
                                               getSlowCachedDiskData().takeUntil(network)))
               .subscribeOn(Schedulers.io()) // we want to add a list item at time of subscription
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(new Subscriber<Contributor>() {
+              .subscribe(new DisposableObserver<Contributor>() {
                   @Override
-                  public void onCompleted() {
+                  public void onComplete() {
                       Timber.d("done loading all data");
                   }
 
@@ -259,10 +266,10 @@ public class PseudoCacheFragment
             list.add(c);
         }
 
-        return Observable.from(list)//
-              .doOnSubscribe(() -> new Handler(Looper.getMainLooper())//
+        return Observable.fromIterable(list)//
+              .doOnSubscribe((data) -> new Handler(Looper.getMainLooper())//
                     .post(() -> adapterSubscriptionInfo.add("(disk) cache subscribed")))//
-              .doOnCompleted(() -> new Handler(Looper.getMainLooper())//
+              .doOnComplete(() -> new Handler(Looper.getMainLooper())//
                     .post(() -> adapterSubscriptionInfo.add("(disk) cache completed")));
     }
 
@@ -271,10 +278,10 @@ public class PseudoCacheFragment
         GithubApi githubService = GithubService.createGithubService(githubToken);
 
         return githubService.contributors("square", "retrofit")
-              .flatMap(Observable::from)
-              .doOnSubscribe(() -> new Handler(Looper.getMainLooper())//
+              .flatMap(Observable::fromIterable)
+              .doOnSubscribe((data) -> new Handler(Looper.getMainLooper())//
                     .post(() -> adapterSubscriptionInfo.add("(network) subscribed")))//
-              .doOnCompleted(() -> new Handler(Looper.getMainLooper())//
+              .doOnComplete(() -> new Handler(Looper.getMainLooper())//
                     .post(() -> adapterSubscriptionInfo.add("(network) completed")));
     }
 

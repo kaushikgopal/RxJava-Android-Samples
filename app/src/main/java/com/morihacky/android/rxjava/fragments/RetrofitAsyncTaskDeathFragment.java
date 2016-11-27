@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.String.format;
 
@@ -89,9 +89,9 @@ public class RetrofitAsyncTaskDeathFragment
         _githubService.user(_username.getText().toString())
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(new Observer<User>() {
+              .subscribe(new DisposableObserver<User>() {
                   @Override
-                  public void onCompleted() {
+                  public void onComplete() {
                   }
 
                   @Override
