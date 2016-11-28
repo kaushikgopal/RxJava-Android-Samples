@@ -8,7 +8,6 @@ I've also been giving talks about Learning Rx using many of the examples listed 
 * [Learning RxJava For Android by Example : Part 1](https://www.youtube.com/watch?v=k3D0cWyNno4) \[[slides](https://speakerdeck.com/kaushikgopal/learning-rxjava-for-android-by-example)\] (SF Android Meetup 2015)
 * [Learning Rx by Example : Part 2](https://vimeo.com/190922794) \[[slides](https://speakerdeck.com/kaushikgopal/learning-rx-by-example-2)\] (Øredev 2016)
 
-
 ## Examples:
 
 1. [Background work & concurrency (using Schedulers)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#1-background-work--concurrency-using-schedulers)
@@ -222,12 +221,14 @@ This is a simple example demonstrating the use of the `.timeout` operator. Butto
 
 Notice how we can provide a custom Observable that indicates how to react under a timeout Exception.
 
-## Work in Progress:
+## Rx 2.x
 
-_Examples that I would like to have here, but haven't found the time yet to flush out_
+All the examples here have been migrated to use RxJava 2.X.
 
-(queue is empty) 
+* Have a look at [PR #83 to see the diff of changes between RxJava 1 and 2](https://github.com/kaushikgopal/RxJava-Android-Samples/pull/83/files)
+* [What's different in Rx 2.x](https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0)
 
+We use [David Karnok's Interop library](https://github.com/akarnokd/RxJava2Interop) in some cases as certain libraries like RxBindings, RxRelays, RxJava-Math etc. have not been ported yet to 2.x.
 
 ## Contributing:
 
