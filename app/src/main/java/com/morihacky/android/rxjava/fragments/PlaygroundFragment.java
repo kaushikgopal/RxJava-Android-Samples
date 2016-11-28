@@ -15,13 +15,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.morihacky.android.rxjava.R;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class PlaygroundFragment
@@ -61,7 +61,7 @@ public class PlaygroundFragment
         _logs.clear();
         _log("Button Clicked");
 
-        Observable.from(Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"))//
+        Observable.fromIterable(Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"))//
                   .flatMap(s1 -> {
 
                       _log(s1 + "start");
