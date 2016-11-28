@@ -3,9 +3,9 @@ package com.morihacky.android.rxjava;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import com.morihacky.android.rxjava.fragments.MainFragment;
 import com.morihacky.android.rxjava.fragments.RotationPersist1WorkerFragment;
 import com.morihacky.android.rxjava.fragments.RotationPersist2WorkerFragment;
-import com.morihacky.android.rxjava.fragments.TimeoutDemoFragment;
 import com.morihacky.android.rxjava.rxbus.RxBus;
 
 public class MainActivity
@@ -25,8 +25,7 @@ public class MainActivity
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                                       //.replace(android.R.id.content, new MainFragment(), this.toString())
-                                       .replace(android.R.id.content, new TimeoutDemoFragment(), this.toString())
+                                       .replace(android.R.id.content, new MainFragment(), this.toString())
                                        .commit();
         }
     }
