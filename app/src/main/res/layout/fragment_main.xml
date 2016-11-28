@@ -87,6 +87,13 @@
             />
 
         <Button
+            android:id="@+id/btn_demo_timeout"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/btn_demo_timeout"
+            />
+
+        <Button
             android:id="@+id/btn_demo_exponential_backoff"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"

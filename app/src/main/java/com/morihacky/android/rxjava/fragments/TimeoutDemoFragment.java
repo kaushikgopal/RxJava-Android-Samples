@@ -64,6 +64,8 @@ public class TimeoutDemoFragment
         _disposable = _getEventCompletionObserver();
 
         _getObservableTask_2sToComplete()
+              .timeout(3, TimeUnit.SECONDS)
+              .subscribeOn(Schedulers.computation())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(_disposable);
     }
@@ -72,8 +74,8 @@ public class TimeoutDemoFragment
     public void onStart5sTask() {
         _disposable = _getEventCompletionObserver();
 
-        _getObservableFor5sTask()
-              .timeout(2, TimeUnit.SECONDS, _getTimeoutObservable())
+        _getObservableTask_5sToComplete()
+              .timeout(3, TimeUnit.SECONDS, _onTimeoutObservable())
               .subscribeOn(Schedulers.computation())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(_disposable);
@@ -82,14 +84,14 @@ public class TimeoutDemoFragment
     // -----------------------------------------------------------------------------------
     // Main Rx entities
 
-    private Observable<String> _getObservableFor5sTask() {
+    private Observable<String> _getObservableTask_5sToComplete() {
         return Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(ObservableEmitter<String> subscriber) throws Exception {
                 _log(String.format("Starting a 5s task"));
                 subscriber.onNext("5 s");
                 try {
-                    Thread.sleep(1200);
+                    Thread.sleep(5_000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -106,24 +108,22 @@ public class TimeoutDemoFragment
                       _log(String.format("Starting a 2s task"));
                       subscriber.onNext("2 s");
                       try {
-                          Thread.sleep(2000);
+                          Thread.sleep(2_000);
                       } catch (InterruptedException e) {
                           e.printStackTrace();
                       }
                       subscriber.onComplete();
                   }
-              })
-              .subscribeOn(Schedulers.computation())
-              .timeout(3, TimeUnit.SECONDS);
+              });
     }
 
-    private Observable<? extends String> _getTimeoutObservable() {
+    private Observable<? extends String> _onTimeoutObservable() {
         return Observable.create(new ObservableOnSubscribe<String>() {
 
             @Override
             public void subscribe(ObservableEmitter<String> subscriber) throws Exception {
                 _log("Timing out this task ...");
-                subscriber.onComplete();
+                subscriber.onError(new Throwable("Timeout Error"));
             }
         });
     }

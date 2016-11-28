@@ -9,7 +9,7 @@
     <string name="btn_demo_schedulers">bg work (schedulers &amp; concurrency)</string>
     <string name="btn_demo_buffer">accumulate calls (buffer)</string>
     <string name="btn_demo_debounce">search text listener(debounce)</string>
-    <string name="btn_demo_timeout">delayed jobs (timeout)</string>
+    <string name="btn_demo_timeout">Timeout long running jobs</string>
     <string name="btn_demo_retrofit">Retrofit + RxJava</string>
     <string name="btn_demo_double_binding_textview">Double binding (PublishSubject)</string>
     <string name="btn_demo_polling">Polling with RxJava</string>

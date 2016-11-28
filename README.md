@@ -26,6 +26,7 @@ I've also been giving talks about Learning Rx using many of the examples listed 
 13. [Networking with Volley](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#13-networking-with-volley)
 14. [Pagination with Rx (using Subjects)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#14-pagination-with-rx-using-subjects)
 15. [Orchestrating Observable: make parallel network calls, then combine the result into a single data point (using flatmap & zip)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#15-orchestrating-observable-make-parallel-network-calls-then-combine-the-result-into-a-single-data-point-using-flatmap--zip)
+16. [Simple Timeout example (using timeout)]()
 
 ## Description
 
@@ -214,6 +215,12 @@ The below ascii diagram expresses the intention of our next example with panache
              \____________ f5 _______|
 
 The code for this example has already been written by one Mr.skehlet in the interwebs. Head over to [the gist](https://gist.github.com/skehlet/9418379) for the code. It's written in pure Java (6) so it's pretty comprehensible if you've understood the previous examples. I'll flush it out here again when time permits or I've run out of other compelling examples.
+
+### 16. Simple Timeout example (using timeout)
+
+This is a simple example demonstrating the use of the `.timeout` operator. Button 1 will complete the task before the timeout constraint, while Button 2 will force a timeout error.
+
+Notice how we can provide a custom Observable that indicates how to react under a timeout Exception.
 
 ## Work in Progress:
 

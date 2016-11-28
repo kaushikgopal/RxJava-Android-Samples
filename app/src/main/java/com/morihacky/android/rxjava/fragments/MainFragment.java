@@ -82,6 +82,11 @@ public class MainFragment
         clickedOn(new TimingDemoFragment());
     }
 
+    @OnClick(R.id.btn_demo_timeout)
+    void demoTimeout() {
+        clickedOn(new TimeoutDemoFragment());
+    }
+
     @OnClick(R.id.btn_demo_exponential_backoff)
     void demoExponentialBackoff() {
         clickedOn(new ExponentialBackoffFragment());
