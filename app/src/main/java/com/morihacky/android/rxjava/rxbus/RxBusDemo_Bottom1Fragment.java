@@ -7,21 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.fragments.BaseFragment;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class RxBusDemo_Bottom1Fragment
       extends BaseFragment {
 
     @Bind(R.id.demo_rxbus_tap_txt) TextView _tapEventTxtShow;
+    private CompositeDisposable _disposables;
     private RxBus _rxBus;
-    private CompositeSubscription _subscriptions;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -41,26 +39,29 @@ public class RxBusDemo_Bottom1Fragment
     @Override
     public void onStart() {
         super.onStart();
-        _subscriptions = new CompositeSubscription();
+        _disposables = new CompositeDisposable();
 
-        _subscriptions//
-              .add(_rxBus.asObservable()//
-                    .subscribe(event -> {
-                        if (event instanceof RxBusDemoFragment.TapEvent) {
-                            _showTapText();
-                        }
-                    }));
+        _disposables.add(_rxBus
+                               .asFlowable()
+                               .subscribe(event -> {
+                                   if (event instanceof RxBusDemoFragment.TapEvent) {
+                                       _showTapText();
+                                   }
+                               }));
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        _subscriptions.clear();
+        _disposables.clear();
     }
 
     private void _showTapText() {
         _tapEventTxtShow.setVisibility(View.VISIBLE);
         _tapEventTxtShow.setAlpha(1f);
-        ViewCompat.animate(_tapEventTxtShow).alphaBy(-1f).setDuration(400);
+        ViewCompat
+              .animate(_tapEventTxtShow)
+              .alphaBy(-1f)
+              .setDuration(400);
     }
 }

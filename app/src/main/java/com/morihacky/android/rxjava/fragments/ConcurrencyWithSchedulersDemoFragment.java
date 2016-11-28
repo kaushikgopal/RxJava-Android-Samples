@@ -15,14 +15,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.morihacky.android.rxjava.R;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
-import rx.Observable;
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 public class ConcurrencyWithSchedulersDemoFragment
@@ -33,13 +32,13 @@ public class ConcurrencyWithSchedulersDemoFragment
 
     private LogAdapter _adapter;
     private List<String> _logs;
-    private CompositeSubscription _subscriptions = new CompositeSubscription();
+    private CompositeDisposable _disposables = new CompositeDisposable();
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
-        _subscriptions.clear();
+        _disposables.clear();
     }
 
     @Override
@@ -63,12 +62,14 @@ public class ConcurrencyWithSchedulersDemoFragment
         _progress.setVisibility(View.VISIBLE);
         _log("Button Clicked");
 
-        Subscription s = _getObservable()//
+        DisposableObserver<Boolean> d = _getDisposableObserver();
+
+        _getObservable()
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(_getObserver()); // Observer
+              .subscribe(d);
 
-        _subscriptions.add(s);
+        _disposables.add(d);
     }
 
     private Observable<Boolean> _getObservable() {
@@ -86,11 +87,11 @@ public class ConcurrencyWithSchedulersDemoFragment
      * 2. onError
      * 3. onNext
      */
-    private Observer<Boolean> _getObserver() {
-        return new Observer<Boolean>() {
+    private DisposableObserver<Boolean> _getDisposableObserver() {
+        return new DisposableObserver<Boolean>() {
 
             @Override
-            public void onCompleted() {
+            public void onComplete() {
                 _log("On complete");
                 _progress.setVisibility(View.INVISIBLE);
             }

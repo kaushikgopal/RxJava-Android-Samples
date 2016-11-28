@@ -8,21 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
-import com.morihacky.android.rxjava.R;
-import com.morihacky.android.rxjava.wiring.LogAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observer;
-import rx.functions.Action0;
-import rx.observables.ConnectableObservable;
-import rx.subscriptions.CompositeSubscription;
+import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.wiring.LogAdapter;
+import io.reactivex.Flowable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.subscribers.DisposableSubscriber;
+import java.util.ArrayList;
+import java.util.List;
 import timber.log.Timber;
+
 
 import static android.os.Looper.getMainLooper;
 
@@ -37,7 +34,7 @@ public class RotationPersist1Fragment
     private LogAdapter _adapter;
     private List<String> _logs;
 
-    private CompositeSubscription _subscriptions = new CompositeSubscription();
+    private CompositeDisposable _disposables = new CompositeDisposable();
 
     // -----------------------------------------------------------------------------------
 
@@ -47,7 +44,7 @@ public class RotationPersist1Fragment
         _adapter.clear();
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        RotationPersist1WorkerFragment frag =//
+        RotationPersist1WorkerFragment frag =
               (RotationPersist1WorkerFragment) fm.findFragmentByTag(FRAG_TAG);
 
         if (frag == null) {
@@ -59,32 +56,33 @@ public class RotationPersist1Fragment
     }
 
     @Override
-    public void observeResults(ConnectableObservable<Integer> intsObservable) {
+    public void observeResults(Flowable<Integer> intsFlowable) {
 
-        _subscriptions.add(//
-              intsObservable.doOnSubscribe(new Action0() {
-                  @Override
-                  public void call() {
-                      _log("Subscribing to intsObservable");
-                  }
-              }).subscribe(new Observer<Integer>() {
-                  @Override
-                  public void onCompleted() {
-                      _log("Observable is complete");
-                  }
+        DisposableSubscriber<Integer> d = new DisposableSubscriber<Integer>() {
+            @Override
+            public void onNext(Integer integer) {
+                _log(String.format("Worker frag spits out - %d", integer));
+            }
 
-                  @Override
-                  public void onError(Throwable e) {
-                      Timber.e(e, "Error in worker demo frag observable");
-                      _log("Dang! something went wrong.");
-                  }
+            @Override
+            public void onError(Throwable e) {
+                Timber.e(e, "Error in worker demo frag observable");
+                _log("Dang! something went wrong.");
+            }
 
-                  @Override
-                  public void onNext(Integer integer) {
-                      _log(String.format("Worker frag spits out - %d", integer));
-                  }
-              }));
+            @Override
+            public void onComplete() {
+                _log("Observable is complete");
+            }
+        };
 
+        intsFlowable
+              .doOnSubscribe(subscription -> {
+                  _log("Subscribing to intsObservable");
+              })
+              .subscribe(d);
+
+        _disposables.add(d);
     }
 
     // -----------------------------------------------------------------------------------
@@ -109,7 +107,7 @@ public class RotationPersist1Fragment
     @Override
     public void onPause() {
         super.onPause();
-        _subscriptions.clear();
+        _disposables.clear();
     }
 
     @Override

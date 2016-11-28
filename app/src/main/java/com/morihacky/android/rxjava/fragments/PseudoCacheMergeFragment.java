@@ -8,20 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.GithubService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class PseudoCacheMergeFragment
@@ -59,9 +62,9 @@ public class PseudoCacheMergeFragment
         Observable.merge(_getCachedData(), _getFreshData())
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(new Subscriber<Pair<Contributor, Long>>() {
+              .subscribe(new DisposableObserver<Pair<Contributor,Long>>() {
                   @Override
-                  public void onCompleted() {
+                  public void onComplete() {
                       Timber.d("done loading all data");
                   }
 
@@ -114,7 +117,7 @@ public class PseudoCacheMergeFragment
             list.add(dataWithAgePair);
         }
 
-        return Observable.from(list);
+        return Observable.fromIterable(list);
     }
 
     private Observable<Pair<Contributor, Long>> _getFreshData() {
@@ -122,7 +125,7 @@ public class PseudoCacheMergeFragment
         GithubApi githubService = GithubService.createGithubService(githubToken);
 
         return githubService.contributors("square", "retrofit")
-              .flatMap(Observable::from)
+              .flatMap(Observable::fromIterable)
               .map(contributor -> new Pair<>(contributor, System.currentTimeMillis()));
     }
 

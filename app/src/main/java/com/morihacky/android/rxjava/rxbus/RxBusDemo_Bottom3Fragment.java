@@ -7,18 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.fragments.BaseFragment;
-
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.flowables.ConnectableFlowable;
 import java.util.concurrent.TimeUnit;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.observables.ConnectableObservable;
-import rx.subscriptions.CompositeSubscription;
 
 public class RxBusDemo_Bottom3Fragment
       extends BaseFragment {
@@ -26,7 +23,7 @@ public class RxBusDemo_Bottom3Fragment
     @Bind(R.id.demo_rxbus_tap_txt) TextView _tapEventTxtShow;
     @Bind(R.id.demo_rxbus_tap_count) TextView _tapEventCountShow;
     private RxBus _rxBus;
-    private CompositeSubscription _subscriptions;
+    private CompositeDisposable _disposables;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -46,32 +43,32 @@ public class RxBusDemo_Bottom3Fragment
     @Override
     public void onStart() {
         super.onStart();
-        _subscriptions = new CompositeSubscription();
+        _disposables = new CompositeDisposable();
 
-        ConnectableObservable<Object> tapEventEmitter = _rxBus.asObservable().publish();
+        ConnectableFlowable<Object> tapEventEmitter = _rxBus.asFlowable().publish();
 
-        _subscriptions//
-              .add(tapEventEmitter.subscribe(event -> {
+        _disposables//
+                    .add(tapEventEmitter.subscribe(event -> {
                   if (event instanceof RxBusDemoFragment.TapEvent) {
                       _showTapText();
                   }
               }));
 
-        _subscriptions
+        _disposables
               .add(tapEventEmitter.publish(stream ->
                     stream.buffer(stream.debounce(1, TimeUnit.SECONDS)))
-                    .observeOn(AndroidSchedulers.mainThread()).subscribe(taps -> {
+                                  .observeOn(AndroidSchedulers.mainThread()).subscribe(taps -> {
                         _showTapCount(taps.size());
                     }));
 
-        _subscriptions.add(tapEventEmitter.connect());
+        _disposables.add(tapEventEmitter.connect());
 
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        _subscriptions.clear();
+        _disposables.clear();
     }
 
     // -----------------------------------------------------------------------------------

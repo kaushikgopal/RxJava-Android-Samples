@@ -7,14 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.morihacky.android.rxjava.R;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
-import rx.Subscription;
-import rx.subjects.PublishSubject;
+import com.morihacky.android.rxjava.R;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.processors.PublishProcessor;
+
 
 import static android.text.TextUtils.isEmpty;
 
@@ -25,8 +24,8 @@ public class DoubleBindingTextViewFragment
     @Bind(R.id.double_binding_num2) EditText _number2;
     @Bind(R.id.double_binding_result) TextView _result;
 
-    Subscription _subscription;
-    PublishSubject<Float> _resultEmitterSubject;
+    Disposable _disposable;
+    PublishProcessor<Float> _resultEmitterSubject;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -35,12 +34,11 @@ public class DoubleBindingTextViewFragment
         View layout = inflater.inflate(R.layout.fragment_double_binding_textview, container, false);
         ButterKnife.bind(this, layout);
 
-        _resultEmitterSubject = PublishSubject.create();
-        _subscription = _resultEmitterSubject//
-              .asObservable()//
-              .subscribe(aFloat -> {
-                  _result.setText(String.valueOf(aFloat));
-              });
+        _resultEmitterSubject = PublishProcessor.create();
+
+        _disposable = _resultEmitterSubject.subscribe(aFloat -> {
+            _result.setText(String.valueOf(aFloat));
+        });
 
         onNumberChanged();
         _number2.requestFocus();
@@ -67,7 +65,7 @@ public class DoubleBindingTextViewFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        _subscription.unsubscribe();
+        _disposable.dispose();
         ButterKnife.unbind(this);
     }
 }

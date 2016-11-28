@@ -13,15 +13,6 @@ public class MainActivity
 
     private RxBus _rxBus = null;
 
-    // This is better done with a DI Library like Dagger
-    public RxBus getRxBusSingleton() {
-        if (_rxBus == null) {
-            _rxBus = new RxBus();
-        }
-
-        return _rxBus;
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -34,24 +25,37 @@ public class MainActivity
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                  .replace(android.R.id.content, new MainFragment(), this.toString())
-                  .commit();
+                                       .replace(android.R.id.content, new MainFragment(), this.toString())
+                                       .commit();
         }
     }
 
-    private void _removeWorkerFragments() {
-        Fragment frag = getSupportFragmentManager()//
-              .findFragmentByTag(RotationPersist1WorkerFragment.class.getName());
-
-        if (frag != null) {
-            getSupportFragmentManager().beginTransaction().remove(frag).commit();
+    // This is better done with a DI Library like Dagger
+    public RxBus getRxBusSingleton() {
+        if (_rxBus == null) {
+            _rxBus = new RxBus();
         }
 
-        frag = getSupportFragmentManager()//
-              .findFragmentByTag(RotationPersist2WorkerFragment.class.getName());
+        return _rxBus;
+    }
+
+    private void _removeWorkerFragments() {
+        Fragment frag = getSupportFragmentManager().findFragmentByTag(RotationPersist1WorkerFragment.class.getName());
 
         if (frag != null) {
-            getSupportFragmentManager().beginTransaction().remove(frag).commit();
+            getSupportFragmentManager()
+                  .beginTransaction()
+                  .remove(frag)
+                  .commit();
+        }
+
+        frag = getSupportFragmentManager().findFragmentByTag(RotationPersist2WorkerFragment.class.getName());
+
+        if (frag != null) {
+            getSupportFragmentManager()
+                  .beginTransaction()
+                  .remove(frag)
+                  .commit();
         }
     }
 }
