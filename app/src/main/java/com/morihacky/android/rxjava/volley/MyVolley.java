@@ -6,8 +6,6 @@ import com.android.volley.toolbox.Volley;
 
 /**
  * Helper class that is used to provide references to initialized RequestQueue(s) and ImageLoader(s)
- *
- * @author Ognyan Bankov
  */
 public class MyVolley {
     private static RequestQueue mRequestQueue;
@@ -20,7 +18,7 @@ public class MyVolley {
         mRequestQueue = Volley.newRequestQueue(context);
     }
 
-    public static RequestQueue getRequestQueue() {
+    static RequestQueue getRequestQueue() {
         if (mRequestQueue != null) {
             return mRequestQueue;
         } else {
