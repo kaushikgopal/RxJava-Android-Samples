@@ -1,8 +1,9 @@
 package com.morihacky.android.rxjava.rxbus;
 
-import com.jakewharton.rxrelay.PublishRelay;
-import com.jakewharton.rxrelay.Relay;
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import com.jakewharton.rxrelay2.PublishRelay;
+import com.jakewharton.rxrelay2.Relay;
+
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 
 /**
@@ -10,15 +11,14 @@ import io.reactivex.Flowable;
  */
 public class RxBus {
 
-    private final Relay<Object, Object> _bus = PublishRelay.create().toSerialized();
+    private final Relay<Object> _bus = PublishRelay.create().toSerialized();
 
     public void send(Object o) {
-        _bus.call(o);
+        _bus.accept(o);
     }
 
     public Flowable<Object> asFlowable() {
-        // this won't be necessary after https://github.com/JakeWharton/RxRelay/pull/20 is complete
-        return RxJavaInterop.toV2Flowable(_bus.asObservable());
+        return _bus.toFlowable(BackpressureStrategy.LATEST);
     }
 
     public boolean hasObservers() {

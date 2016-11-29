@@ -51,7 +51,7 @@ dependencies {
     compile "com.github.akarnokd:rxjava2-interop:0.6.1"
 
     compile 'io.reactivex:rxjava-math:1.0.0'
-    compile 'com.jakewharton.rxrelay:rxrelay:1.2.0'
+    compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
     compile 'com.jakewharton.rxbinding:rxbinding:0.2.0'
     compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
 
