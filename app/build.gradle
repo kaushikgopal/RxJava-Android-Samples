@@ -63,7 +63,7 @@ dependencies {
 
 android {
     compileSdkVersion sdkVersion
-    buildToolsVersion '23.0.3'
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.morihacky.android.rxjava"
@@ -72,12 +72,25 @@ android {
         versionCode 2
         versionName "1.2"
     }
+
+    signingConfigs {
+        release {
+            storeFile file('../debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
-    }
+        debug {
+            signingConfig signingConfigs.release
+        }
+        }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

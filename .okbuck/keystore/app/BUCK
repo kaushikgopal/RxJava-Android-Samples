@@ -1,0 +1,11 @@
+import re
+
+for keystoreFile in glob(['*.keystore']):
+    name = 'key_store_' + re.sub(r'^.*/([^/]+)\.keystore$', r'\1', keystoreFile)
+    name = name
+    keystore(
+        name = name,
+        store = keystoreFile,
+        properties = keystoreFile + '.properties',
+        visibility = ['PUBLIC'],
+    )
