@@ -14,7 +14,7 @@ import android.widget.ListView;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.jakewharton.rxbinding.widget.TextViewTextChangeEvent;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +35,8 @@ import static java.lang.String.format;
 public class DebounceSearchEmitterFragment
       extends BaseFragment {
 
-    @Bind(R.id.list_threading_log) ListView _logsList;
-    @Bind(R.id.input_txt_debounce) EditText _inputSearchText;
+    @Bind(R2.id.list_threading_log) ListView _logsList;
+    @Bind(R2.id.input_txt_debounce) EditText _inputSearchText;
 
     private LogAdapter _adapter;
     private List<String> _logs;
@@ -59,7 +59,7 @@ public class DebounceSearchEmitterFragment
         return layout;
     }
 
-    @OnClick(R.id.clr_debounce)
+    @OnClick(R2.id.clr_debounce)
     public void onClearLog() {
         _logs = new ArrayList<>();
         _adapter.clear();

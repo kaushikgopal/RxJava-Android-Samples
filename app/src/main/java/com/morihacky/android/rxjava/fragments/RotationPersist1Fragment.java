@@ -11,7 +11,7 @@ import android.widget.ListView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -29,7 +29,7 @@ public class RotationPersist1Fragment
 
     public static final String FRAG_TAG = RotationPersist1WorkerFragment.class.getName();
 
-    @Bind(R.id.list_threading_log) ListView _logList;
+    @Bind(R2.id.list_threading_log) ListView _logList;
 
     private LogAdapter _adapter;
     private List<String> _logs;
@@ -38,7 +38,7 @@ public class RotationPersist1Fragment
 
     // -----------------------------------------------------------------------------------
 
-    @OnClick(R.id.btn_rotate_persist)
+    @OnClick(R2.id.btn_rotate_persist)
     public void startOperationFromWorkerFrag() {
         _logs = new ArrayList<>();
         _adapter.clear();

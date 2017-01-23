@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.morihacky.android.rxjava.MainActivity;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.fragments.BaseFragment;
 import com.morihacky.android.rxjava.rxbus.RxBus;
 import io.reactivex.Flowable;
@@ -26,8 +26,8 @@ import java.util.concurrent.TimeUnit;
 public class PaginationFragment
       extends BaseFragment {
 
-    @Bind(R.id.list_paging) RecyclerView _pagingList;
-    @Bind(R.id.progress_paging) ProgressBar _progressBar;
+    @Bind(R2.id.list_paging) RecyclerView _pagingList;
+    @Bind(R2.id.progress_paging) ProgressBar _progressBar;
     private PaginationAdapter _adapter;
     private RxBus _bus;
     private CompositeDisposable _disposables;

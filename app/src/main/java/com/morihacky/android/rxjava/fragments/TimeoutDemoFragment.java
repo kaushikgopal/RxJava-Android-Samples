@@ -11,7 +11,7 @@ import android.widget.ListView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -27,7 +27,7 @@ import timber.log.Timber;
 public class TimeoutDemoFragment
       extends BaseFragment {
 
-    @Bind(R.id.list_threading_log) ListView _logsList;
+    @Bind(R2.id.list_threading_log) ListView _logsList;
 
     private LogAdapter _adapter;
     private DisposableObserver<String> _disposable;
@@ -59,7 +59,7 @@ public class TimeoutDemoFragment
         _setupLogger();
     }
 
-    @OnClick(R.id.btn_demo_timeout_1_2s)
+    @OnClick(R2.id.btn_demo_timeout_1_2s)
     public void onStart2sTask() {
         _disposable = _getEventCompletionObserver();
 
@@ -70,7 +70,7 @@ public class TimeoutDemoFragment
               .subscribe(_disposable);
     }
 
-    @OnClick(R.id.btn_demo_timeout_1_5s)
+    @OnClick(R2.id.btn_demo_timeout_1_5s)
     public void onStart5sTask() {
         _disposable = _getEventCompletionObserver();
 

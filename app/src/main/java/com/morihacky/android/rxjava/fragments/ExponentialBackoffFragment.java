@@ -10,7 +10,7 @@ import android.widget.ListView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Flowable;
@@ -30,7 +30,7 @@ import static android.os.Looper.getMainLooper;
 public class ExponentialBackoffFragment
       extends BaseFragment {
 
-    @Bind(R.id.list_threading_log) ListView _logList;
+    @Bind(R2.id.list_threading_log) ListView _logList;
     private LogAdapter _adapter;
     private CompositeDisposable _disposables = new CompositeDisposable();
     private List<String> _logs;
@@ -65,7 +65,7 @@ public class ExponentialBackoffFragment
 
     // -----------------------------------------------------------------------------------
 
-    @OnClick(R.id.btn_eb_retry)
+    @OnClick(R2.id.btn_eb_retry)
     public void startRetryingWithExponentialBackoffStrategy() {
         _logs = new ArrayList<>();
         _adapter.clear();
@@ -96,7 +96,7 @@ public class ExponentialBackoffFragment
         _disposables.add(disposableSubscriber);
     }
 
-    @OnClick(R.id.btn_eb_delay)
+    @OnClick(R2.id.btn_eb_delay)
     public void startExecutingWithExponentialBackoffDelay() {
 
         _logs = new ArrayList<>();

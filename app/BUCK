@@ -54,6 +54,7 @@ android_library(
 	postprocess_classes_commands = [
 		'(read CLASSES_DIR && java -Dretrolambda.inputDir="${CLASSES_DIR}" -Dretrolambda.classpath="${COMPILATION_BOOTCLASSPATH}":"${COMPILATION_CLASSPATH}":"${CLASSES_DIR}" -jar .okbuck/cache/retrolambda/retrolambda-2.3.0.jar) <<<',
 	],
+	final_r_name = 'R2',
 	deps = [
 		'//.okbuck/cache:com.android.support.animated-vector-drawable-24.2.1.aar',
 		'//.okbuck/cache:com.android.support.appcompat-v7-24.2.1.aar',
@@ -197,6 +198,7 @@ android_library(
 	postprocess_classes_commands = [
 		'(read CLASSES_DIR && java -Dretrolambda.inputDir="${CLASSES_DIR}" -Dretrolambda.classpath="${COMPILATION_BOOTCLASSPATH}":"${COMPILATION_CLASSPATH}":"${CLASSES_DIR}" -jar .okbuck/cache/retrolambda/retrolambda-2.3.0.jar) <<<',
 	],
+	final_r_name = 'R2',
 	deps = [
 		'//.okbuck/cache:com.android.support.animated-vector-drawable-24.2.1.aar',
 		'//.okbuck/cache:com.android.support.appcompat-v7-24.2.1.aar',

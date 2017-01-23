@@ -10,7 +10,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.processors.PublishProcessor;
 
@@ -20,9 +20,9 @@ import static android.text.TextUtils.isEmpty;
 public class DoubleBindingTextViewFragment
       extends BaseFragment {
 
-    @Bind(R.id.double_binding_num1) EditText _number1;
-    @Bind(R.id.double_binding_num2) EditText _number2;
-    @Bind(R.id.double_binding_result) TextView _result;
+    @Bind(R2.id.double_binding_num1) EditText _number1;
+    @Bind(R2.id.double_binding_num2) EditText _number2;
+    @Bind(R2.id.double_binding_result) TextView _result;
 
     Disposable _disposable;
     PublishProcessor<Float> _resultEmitterSubject;
@@ -46,7 +46,7 @@ public class DoubleBindingTextViewFragment
         return layout;
     }
 
-    @OnTextChanged({R.id.double_binding_num1, R.id.double_binding_num2})
+    @OnTextChanged({R2.id.double_binding_num1, R2.id.double_binding_num2})
     public void onNumberChanged() {
         float num1 = 0;
         float num2 = 0;

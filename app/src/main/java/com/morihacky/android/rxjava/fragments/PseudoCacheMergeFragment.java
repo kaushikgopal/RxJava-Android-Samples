@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.GithubService;
@@ -30,7 +30,7 @@ import timber.log.Timber;
 public class PseudoCacheMergeFragment
       extends BaseFragment {
 
-    @Bind(R.id.log_list) ListView _resultList;
+    @Bind(R2.id.log_list) ListView _resultList;
 
     private ArrayAdapter<String> _adapter;
     private HashMap<String, Long> _contributionMap = null;
@@ -52,7 +52,7 @@ public class PseudoCacheMergeFragment
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.btn_start_pseudo_cache)
+    @OnClick(R2.id.btn_start_pseudo_cache)
     public void onDemoPseudoCacheClicked() {
         _adapter = new ArrayAdapter<>(getActivity(), R.layout.item_log, R.id.item_log, new ArrayList<>());
 

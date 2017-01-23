@@ -14,7 +14,7 @@ import android.widget.ProgressBar;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -27,8 +27,8 @@ import timber.log.Timber;
 public class PlaygroundFragment
       extends BaseFragment {
 
-    @Bind(R.id.progress_operation_running) ProgressBar _progress;
-    @Bind(R.id.list_threading_log) ListView _logsList;
+    @Bind(R2.id.progress_operation_running) ProgressBar _progress;
+    @Bind(R2.id.list_threading_log) ListView _logsList;
 
     private LogAdapter _adapter;
     private int _attempt = 0;
@@ -55,7 +55,7 @@ public class PlaygroundFragment
         _setupLogger();
     }
 
-    @OnClick(R.id.btn_start_operation)
+    @OnClick(R2.id.btn_start_operation)
     public void startOperation() {
 
         _logs.clear();

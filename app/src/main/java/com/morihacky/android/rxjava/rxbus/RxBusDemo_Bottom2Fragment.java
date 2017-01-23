@@ -10,7 +10,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.morihacky.android.rxjava.MainActivity;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.fragments.BaseFragment;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -21,8 +21,8 @@ import java.util.concurrent.TimeUnit;
 public class RxBusDemo_Bottom2Fragment
       extends BaseFragment {
 
-    @Bind(R.id.demo_rxbus_tap_txt) TextView _tapEventTxtShow;
-    @Bind(R.id.demo_rxbus_tap_count) TextView _tapEventCountShow;
+    @Bind(R2.id.demo_rxbus_tap_txt) TextView _tapEventTxtShow;
+    @Bind(R2.id.demo_rxbus_tap_count) TextView _tapEventCountShow;
 
     private RxBus _rxBus;
     private CompositeDisposable _disposables;

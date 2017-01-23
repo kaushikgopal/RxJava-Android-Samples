@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.GithubService;
 import com.morihacky.android.rxjava.retrofit.User;
@@ -30,8 +30,8 @@ import static java.lang.String.format;
 public class RetrofitAsyncTaskDeathFragment
       extends Fragment {
 
-    @Bind(R.id.btn_demo_retrofit_async_death_username) EditText _username;
-    @Bind(R.id.log_list) ListView _resultList;
+    @Bind(R2.id.btn_demo_retrofit_async_death_username) EditText _username;
+    @Bind(R2.id.log_list) ListView _resultList;
 
     private GithubApi _githubService;
     private ArrayAdapter<String> _adapter;
@@ -70,7 +70,7 @@ public class RetrofitAsyncTaskDeathFragment
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.btn_demo_retrofit_async_death)
+    @OnClick(R2.id.btn_demo_retrofit_async_death)
     public void onGetGithubUserClicked() {
         _adapter.clear();
 

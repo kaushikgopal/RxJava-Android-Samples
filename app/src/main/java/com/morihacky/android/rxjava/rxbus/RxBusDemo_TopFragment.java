@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.morihacky.android.rxjava.MainActivity;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.fragments.BaseFragment;
 
 public class RxBusDemo_TopFragment
@@ -31,7 +31,7 @@ public class RxBusDemo_TopFragment
         _rxBus = ((MainActivity) getActivity()).getRxBusSingleton();
     }
 
-    @OnClick(R.id.btn_demo_rxbus_tap)
+    @OnClick(R2.id.btn_demo_rxbus_tap)
     public void onTapButtonClicked() {
         if (_rxBus.hasObservers()) {
             _rxBus.send(new RxBusDemoFragment.TapEvent());

@@ -13,7 +13,7 @@ import android.widget.ListView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -32,7 +32,7 @@ public class PollingFragment
     private static final int POLLING_INTERVAL = 1000;
     private static final int POLL_COUNT = 8;
 
-    @Bind(R.id.list_threading_log) ListView _logsList;
+    @Bind(R2.id.list_threading_log) ListView _logsList;
 
     private LogAdapter _adapter;
     private int _counter = 0;
@@ -68,7 +68,7 @@ public class PollingFragment
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.btn_start_simple_polling)
+    @OnClick(R2.id.btn_start_simple_polling)
     public void onStartSimplePollingClicked() {
 
         final int pollCount = POLL_COUNT;
@@ -90,7 +90,7 @@ public class PollingFragment
         _disposables.add(d);
     }
 
-    @OnClick(R.id.btn_start_increasingly_delayed_polling)
+    @OnClick(R2.id.btn_start_increasingly_delayed_polling)
     public void onStartIncreasinglyDelayedPolling() {
         _setupLogger();
 

@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.GithubService;
@@ -36,9 +36,9 @@ import static java.lang.String.format;
 public class RetrofitFragment
       extends Fragment {
 
-    @Bind(R.id.demo_retrofit_contributors_username) EditText _username;
-    @Bind(R.id.demo_retrofit_contributors_repository) EditText _repo;
-    @Bind(R.id.log_list) ListView _resultList;
+    @Bind(R2.id.demo_retrofit_contributors_username) EditText _username;
+    @Bind(R2.id.demo_retrofit_contributors_repository) EditText _repo;
+    @Bind(R2.id.log_list) ListView _resultList;
 
     private ArrayAdapter<String> _adapter;
     private GithubApi _githubService;
@@ -80,7 +80,7 @@ public class RetrofitFragment
         _disposables.dispose();
     }
 
-    @OnClick(R.id.btn_demo_retrofit_contributors)
+    @OnClick(R2.id.btn_demo_retrofit_contributors)
     public void onListContributorsClicked() {
         _adapter.clear();
 
@@ -117,7 +117,7 @@ public class RetrofitFragment
                     }));
     }
 
-    @OnClick(R.id.btn_demo_retrofit_contributors_with_user_info)
+    @OnClick(R2.id.btn_demo_retrofit_contributors_with_user_info)
     public void onListContributorsWithFullUserInfoClicked() {
         _adapter.clear();
 

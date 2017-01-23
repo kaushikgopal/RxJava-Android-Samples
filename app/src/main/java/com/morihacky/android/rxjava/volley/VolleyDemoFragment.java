@@ -16,7 +16,7 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.fragments.BaseFragment;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 import io.reactivex.Flowable;
@@ -36,7 +36,7 @@ public class VolleyDemoFragment
 
     public static final String TAG = "VolleyDemoFragment";
 
-    @Bind(R.id.list_threading_log) ListView _logsList;
+    @Bind(R2.id.list_threading_log) ListView _logsList;
 
     private List<String> _logs;
     private LogAdapter _adapter;
@@ -87,7 +87,7 @@ public class VolleyDemoFragment
         });
     }
 
-    @OnClick(R.id.btn_start_operation)
+    @OnClick(R2.id.btn_start_operation)
     void startRequest() {
         startVolleyRequest();
     }

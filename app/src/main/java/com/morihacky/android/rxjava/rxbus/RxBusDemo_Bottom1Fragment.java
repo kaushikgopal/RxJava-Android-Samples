@@ -10,14 +10,14 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.morihacky.android.rxjava.MainActivity;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.fragments.BaseFragment;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class RxBusDemo_Bottom1Fragment
       extends BaseFragment {
 
-    @Bind(R.id.demo_rxbus_tap_txt) TextView _tapEventTxtShow;
+    @Bind(R2.id.demo_rxbus_tap_txt) TextView _tapEventTxtShow;
     private CompositeDisposable _disposables;
     private RxBus _rxBus;
 

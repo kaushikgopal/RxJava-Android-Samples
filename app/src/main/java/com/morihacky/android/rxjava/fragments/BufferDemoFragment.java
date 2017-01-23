@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.jakewharton.rxbinding.view.RxView;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 
 import java.util.ArrayList;
@@ -43,8 +43,8 @@ import timber.log.Timber;
 public class BufferDemoFragment
       extends BaseFragment {
 
-    @Bind(R.id.list_threading_log) ListView _logsList;
-    @Bind(R.id.btn_start_operation) Button _tapBtn;
+    @Bind(R2.id.list_threading_log) ListView _logsList;
+    @Bind(R2.id.btn_start_operation) Button _tapBtn;
 
     private LogAdapter _adapter;
     private List<String> _logs;

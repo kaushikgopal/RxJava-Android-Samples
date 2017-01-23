@@ -10,7 +10,7 @@ import android.widget.ListView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 import io.reactivex.Flowable;
 import io.reactivex.subscribers.DefaultSubscriber;
@@ -30,7 +30,7 @@ import static android.os.Looper.myLooper;
 public class TimingDemoFragment
       extends BaseFragment {
 
-    @Bind(R.id.list_threading_log) ListView _logsList;
+    @Bind(R2.id.list_threading_log) ListView _logsList;
 
     private LogAdapter _adapter;
     private List<String> _logs;
@@ -61,7 +61,7 @@ public class TimingDemoFragment
     }
 // -----------------------------------------------------------------------------------
 
-    @OnClick(R.id.btn_demo_timing_1)
+    @OnClick(R2.id.btn_demo_timing_1)
     public void btn1_RunSingleTaskAfter2s() {
         _log(String.format("A1 [%s] --- BTN click", _getCurrentTimestamp()));
 
@@ -84,7 +84,7 @@ public class TimingDemoFragment
                 });
     }
 
-    @OnClick(R.id.btn_demo_timing_2)
+    @OnClick(R2.id.btn_demo_timing_2)
     public void btn2_RunTask_IntervalOf1s() {
         if (_subscriber1 != null && !_subscriber1.isDisposed()) {
             _subscriber1.dispose();
@@ -116,7 +116,7 @@ public class TimingDemoFragment
               .subscribe(_subscriber1);
     }
 
-    @OnClick(R.id.btn_demo_timing_3)
+    @OnClick(R2.id.btn_demo_timing_3)
     public void btn3_RunTask_IntervalOf1s_StartImmediately() {
         if (_subscriber2 != null && !_subscriber2.isDisposed()) {
             _subscriber2.dispose();
@@ -149,7 +149,7 @@ public class TimingDemoFragment
               .subscribe(_subscriber2);
     }
 
-    @OnClick(R.id.btn_demo_timing_4)
+    @OnClick(R2.id.btn_demo_timing_4)
     public void btn4_RunTask5Times_IntervalOf3s() {
         _log(String.format("D4 [%s] --- BTN click", _getCurrentTimestamp()));
 
@@ -175,7 +175,7 @@ public class TimingDemoFragment
               });
     }
 
-    @OnClick(R.id.btn_demo_timing_5)
+    @OnClick(R2.id.btn_demo_timing_5)
     public void btn5_RunTask5Times_IntervalOf3s() {
         _log(String.format("D5 [%s] --- BTN click", _getCurrentTimestamp()));
 
@@ -207,7 +207,7 @@ public class TimingDemoFragment
     // -----------------------------------------------------------------------------------
     // Method that help wiring up the example (irrelevant to RxJava)
 
-    @OnClick(R.id.btn_clr)
+    @OnClick(R2.id.btn_clr)
     public void OnClearLog() {
         _logs = new ArrayList<>();
         _adapter.clear();

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.jakewharton.rxbinding.widget.RxTextView;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Flowable;
 import io.reactivex.subscribers.DisposableSubscriber;
@@ -23,10 +23,10 @@ import static android.util.Patterns.EMAIL_ADDRESS;
 public class FormValidationCombineLatestFragment
       extends BaseFragment {
 
-    @Bind(R.id.btn_demo_form_valid) TextView _btnValidIndicator;
-    @Bind(R.id.demo_combl_email) EditText _email;
-    @Bind(R.id.demo_combl_password) EditText _password;
-    @Bind(R.id.demo_combl_num) EditText _number;
+    @Bind(R2.id.btn_demo_form_valid) TextView _btnValidIndicator;
+    @Bind(R2.id.demo_combl_email) EditText _email;
+    @Bind(R2.id.demo_combl_password) EditText _password;
+    @Bind(R2.id.demo_combl_num) EditText _number;
 
     private DisposableSubscriber<Boolean> _disposableObserver = null;
     private Flowable<CharSequence> _emailChangeObservable;

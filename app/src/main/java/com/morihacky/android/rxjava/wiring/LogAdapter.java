@@ -2,7 +2,7 @@ package com.morihacky.android.rxjava.wiring;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import java.util.List;
 
 public class LogAdapter
