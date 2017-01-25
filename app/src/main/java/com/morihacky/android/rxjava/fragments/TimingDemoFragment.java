@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
+import butterknife.Unbinder;
+import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 import io.reactivex.Flowable;
 import io.reactivex.subscribers.DefaultSubscriber;
@@ -30,11 +32,12 @@ import static android.os.Looper.myLooper;
 public class TimingDemoFragment
       extends BaseFragment {
 
-    @Bind(R2.id.list_threading_log) ListView _logsList;
+    @BindView(R2.id.list_threading_log) ListView _logsList;
 
     private LogAdapter _adapter;
     private List<String> _logs;
 
+    private Unbinder _unbinder;
     private DisposableSubscriber<Long> _subscriber1;
     private DisposableSubscriber<Long> _subscriber2;
 
@@ -43,7 +46,7 @@ public class TimingDemoFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_demo_timing, container, false);
-        ButterKnife.bind(this, layout);
+        _unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 
@@ -56,7 +59,7 @@ public class TimingDemoFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        _unbinder.unbind();
 
     }
 // -----------------------------------------------------------------------------------

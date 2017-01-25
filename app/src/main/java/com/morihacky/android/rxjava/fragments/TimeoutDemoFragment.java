@@ -8,9 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 import io.reactivex.Observable;
@@ -27,9 +28,10 @@ import timber.log.Timber;
 public class TimeoutDemoFragment
       extends BaseFragment {
 
-    @Bind(R2.id.list_threading_log) ListView _logsList;
+    @BindView(R2.id.list_threading_log) ListView _logsList;
 
     private LogAdapter _adapter;
+    private Unbinder _unbinder;
     private DisposableObserver<String> _disposable;
     private List<String> _logs;
 
@@ -49,7 +51,7 @@ public class TimeoutDemoFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_subject_timeout, container, false);
-        ButterKnife.bind(this, layout);
+        _unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 

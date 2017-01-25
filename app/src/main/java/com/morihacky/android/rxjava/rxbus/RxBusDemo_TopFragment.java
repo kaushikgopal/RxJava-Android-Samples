@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.fragments.BaseFragment;
@@ -15,13 +16,14 @@ public class RxBusDemo_TopFragment
       extends BaseFragment {
 
     private RxBus _rxBus;
+    private Unbinder _unbinder;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_rxbus_top, container, false);
-        ButterKnife.bind(this, layout);
+        _unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 

@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import butterknife.Unbinder;
 import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
@@ -34,10 +35,11 @@ import timber.log.Timber;
 public class PseudoCacheFragment
       extends BaseFragment {
 
-    @Bind(R2.id.info_pseudoCache_demo) TextView infoText;
-    @Bind(R2.id.info_pseudoCache_listSubscription) ListView listSubscriptionInfo;
-    @Bind(R2.id.info_pseudoCache_listDtl) ListView listDetail;
+    @BindView(R2.id.info_pseudoCache_demo) TextView infoText;
+    @BindView(R2.id.info_pseudoCache_listSubscription) ListView listSubscriptionInfo;
+    @BindView(R2.id.info_pseudoCache_listDtl) ListView listDetail;
 
+    private Unbinder _unbinder;
     private ArrayAdapter<String> adapterDetail, adapterSubscriptionInfo;
     private HashMap<String, Long> contributionMap = null;
 
@@ -46,14 +48,14 @@ public class PseudoCacheFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_pseudo_cache, container, false);
-        ButterKnife.bind(this, layout);
+        _unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        _unbinder.unbind();
     }
 
     @OnClick(R2.id.btn_pseudoCache_concat)

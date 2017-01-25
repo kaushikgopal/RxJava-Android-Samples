@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
+import butterknife.Unbinder;
 import com.jakewharton.rxbinding.view.RxView;
 import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -43,12 +44,13 @@ import timber.log.Timber;
 public class BufferDemoFragment
       extends BaseFragment {
 
-    @Bind(R2.id.list_threading_log) ListView _logsList;
-    @Bind(R2.id.btn_start_operation) Button _tapBtn;
+    @BindView(R2.id.list_threading_log) ListView _logsList;
+    @BindView(R2.id.btn_start_operation) Button _tapBtn;
 
     private LogAdapter _adapter;
     private List<String> _logs;
 
+    private Unbinder _unbinder;
     private Disposable _disposable;
 
     @Override
@@ -74,13 +76,13 @@ public class BufferDemoFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_buffer, container, false);
-        ButterKnife.bind(this, layout);
+        _unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 
     @Override public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        _unbinder.unbind();
     }
 
     // -----------------------------------------------------------------------------------

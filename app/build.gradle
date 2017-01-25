@@ -7,7 +7,7 @@ buildscript {
         classpath 'me.tatarka:gradle-retrolambda:3.2.5'
         // can be removed with android-gradle plugin is upgraded to 2.2
         // https://twitter.com/JakeWharton/status/760836175586267136
-        classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
+//        classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
     }
 
     // Exclude the lombok version that the android plugin depends on.
@@ -31,7 +31,8 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
 
     compile 'com.github.kaushikgopal:CoreTextUtils:c703fa12b6'
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.jakewharton.timber:timber:2.4.2'
     compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"

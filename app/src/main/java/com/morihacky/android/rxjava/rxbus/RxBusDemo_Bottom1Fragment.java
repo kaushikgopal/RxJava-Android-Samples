@@ -7,8 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.fragments.BaseFragment;
@@ -17,8 +18,9 @@ import io.reactivex.disposables.CompositeDisposable;
 public class RxBusDemo_Bottom1Fragment
       extends BaseFragment {
 
-    @Bind(R2.id.demo_rxbus_tap_txt) TextView _tapEventTxtShow;
+    @BindView(R2.id.demo_rxbus_tap_txt) TextView _tapEventTxtShow;
     private CompositeDisposable _disposables;
+    private Unbinder _unbinder;
     private RxBus _rxBus;
 
     @Override
@@ -26,7 +28,7 @@ public class RxBusDemo_Bottom1Fragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_rxbus_bottom, container, false);
-        ButterKnife.bind(this, layout);
+        _unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 

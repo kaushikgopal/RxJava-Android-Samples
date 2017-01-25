@@ -7,8 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
@@ -23,11 +24,12 @@ import static android.util.Patterns.EMAIL_ADDRESS;
 public class FormValidationCombineLatestFragment
       extends BaseFragment {
 
-    @Bind(R2.id.btn_demo_form_valid) TextView _btnValidIndicator;
-    @Bind(R2.id.demo_combl_email) EditText _email;
-    @Bind(R2.id.demo_combl_password) EditText _password;
-    @Bind(R2.id.demo_combl_num) EditText _number;
+    @BindView(R2.id.btn_demo_form_valid) TextView _btnValidIndicator;
+    @BindView(R2.id.demo_combl_email) EditText _email;
+    @BindView(R2.id.demo_combl_password) EditText _password;
+    @BindView(R2.id.demo_combl_num) EditText _number;
 
+    private Unbinder _unbinder;
     private DisposableSubscriber<Boolean> _disposableObserver = null;
     private Flowable<CharSequence> _emailChangeObservable;
     private Flowable<CharSequence> _numberChangeObservable;
@@ -38,7 +40,7 @@ public class FormValidationCombineLatestFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_form_validation_comb_latest, container, false);
-        ButterKnife.bind(this, layout);
+        _unbinder = ButterKnife.bind(this, layout);
 
         _emailChangeObservable = RxJavaInterop.toV2Flowable(RxTextView
                                                                   .textChanges(_email)
@@ -58,7 +60,7 @@ public class FormValidationCombineLatestFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        _unbinder.unbind();
         _disposableObserver.dispose();
     }
 

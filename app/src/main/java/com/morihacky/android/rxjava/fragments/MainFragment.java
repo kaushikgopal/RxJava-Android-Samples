@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.pagination.PaginationAutoFragment;
 import com.morihacky.android.rxjava.rxbus.RxBusDemoFragment;
@@ -17,19 +18,21 @@ import com.morihacky.android.rxjava.volley.VolleyDemoFragment;
 public class MainFragment
       extends BaseFragment {
 
+    private Unbinder _unbinder;
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_main, container, false);
-        ButterKnife.bind(this, layout);
+        _unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        _unbinder.unbind();
     }
 
     @OnClick(R2.id.btn_demo_schedulers)
