@@ -120,5 +120,12 @@
             android:layout_width="match_parent"
             android:text="@string/btn_demo_pagination"
             />
+
+        <Button
+            android:id="@+id/btn_demo_networkDetector"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/btn_demo_networkDetector"
+            />
     </LinearLayout>
 </ScrollView>
