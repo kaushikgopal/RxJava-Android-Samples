@@ -18,10 +18,11 @@ import android.widget.ListView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.morihacky.android.rxjava.R;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.processors.PublishProcessor;
 import java.util.ArrayList;
 import java.util.List;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.subjects.PublishSubject;
 
 public class NetworkDetectorFragment
       extends BaseFragment {
@@ -31,7 +32,8 @@ public class NetworkDetectorFragment
     private LogAdapter adapter;
     private BroadcastReceiver broadcastReceiver;
     private List<String> logs;
-    private PublishSubject<Boolean> publishSubject;
+    private Disposable disposable;
+    private PublishProcessor<Boolean> publishProcessor;
 
     @Override
     public void onDestroy() {
@@ -58,9 +60,9 @@ public class NetworkDetectorFragment
     public void onStart() {
         super.onStart();
 
-        publishSubject = PublishSubject.create();
+        publishProcessor = PublishProcessor.create();
 
-        publishSubject
+        disposable = publishProcessor
               .startWith(getConnectivityStatus(getActivity()))
               .distinctUntilChanged()
               .observeOn(AndroidSchedulers.mainThread())
@@ -79,6 +81,8 @@ public class NetworkDetectorFragment
     @Override
     public void onStop() {
         super.onStop();
+
+        disposable.dispose();
         getActivity().unregisterReceiver(broadcastReceiver);
     }
 
@@ -87,7 +91,7 @@ public class NetworkDetectorFragment
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                publishSubject.onNext(getConnectivityStatus(context));
+                publishProcessor.onNext(getConnectivityStatus(context));
             }
         };
 
