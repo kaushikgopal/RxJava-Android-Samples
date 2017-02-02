@@ -11,10 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.R;
+import butterknife.Unbinder;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -27,9 +28,10 @@ import timber.log.Timber;
 public class PlaygroundFragment
       extends BaseFragment {
 
-    @Bind(R.id.progress_operation_running) ProgressBar _progress;
-    @Bind(R.id.list_threading_log) ListView _logsList;
+    @BindView(R2.id.progress_operation_running) ProgressBar _progress;
+    @BindView(R2.id.list_threading_log) ListView _logsList;
 
+    private Unbinder _unbinder;
     private LogAdapter _adapter;
     private int _attempt = 0;
     private List<String> _logs;
@@ -37,7 +39,7 @@ public class PlaygroundFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
+        _unbinder.unbind();
     }
 
     @Override
@@ -45,7 +47,7 @@ public class PlaygroundFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_concurrency_schedulers, container, false);
-        ButterKnife.bind(this, layout);
+        _unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 
@@ -55,7 +57,7 @@ public class PlaygroundFragment
         _setupLogger();
     }
 
-    @OnClick(R.id.btn_start_operation)
+    @OnClick(R2.id.btn_start_operation)
     public void startOperation() {
 
         _logs.clear();

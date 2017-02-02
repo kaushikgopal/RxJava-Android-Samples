@@ -11,7 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.morihacky.android.rxjava.R;
+import butterknife.Unbinder;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.GithubService;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
@@ -34,10 +35,11 @@ import timber.log.Timber;
 public class PseudoCacheFragment
       extends BaseFragment {
 
-    @Bind(R.id.info_pseudoCache_demo) TextView infoText;
-    @Bind(R.id.info_pseudoCache_listSubscription) ListView listSubscriptionInfo;
-    @Bind(R.id.info_pseudoCache_listDtl) ListView listDetail;
+    @BindView(R2.id.info_pseudoCache_demo) TextView infoText;
+    @BindView(R2.id.info_pseudoCache_listSubscription) ListView listSubscriptionInfo;
+    @BindView(R2.id.info_pseudoCache_listDtl) ListView listDetail;
 
+    private Unbinder _unbinder;
     private ArrayAdapter<String> adapterDetail, adapterSubscriptionInfo;
     private HashMap<String, Long> contributionMap = null;
 
@@ -46,17 +48,17 @@ public class PseudoCacheFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_pseudo_cache, container, false);
-        ButterKnife.bind(this, layout);
+        _unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        _unbinder.unbind();
     }
 
-    @OnClick(R.id.btn_pseudoCache_concat)
+    @OnClick(R2.id.btn_pseudoCache_concat)
     public void onConcatBtnClicked() {
         infoText.setText(R.string.msg_pseudoCache_demoInfo_concat);
         wireupDemo();
@@ -84,7 +86,7 @@ public class PseudoCacheFragment
               });
     }
 
-    @OnClick(R.id.btn_pseudoCache_concatEager)
+    @OnClick(R2.id.btn_pseudoCache_concatEager)
     public void onConcatEagerBtnClicked() {
         infoText.setText(R.string.msg_pseudoCache_demoInfo_concatEager);
         wireupDemo();
@@ -117,7 +119,7 @@ public class PseudoCacheFragment
 
     }
 
-    @OnClick(R.id.btn_pseudoCache_merge)
+    @OnClick(R2.id.btn_pseudoCache_merge)
     public void onMergeBtnClicked() {
         infoText.setText(R.string.msg_pseudoCache_demoInfo_merge);
         wireupDemo();
@@ -145,7 +147,7 @@ public class PseudoCacheFragment
               });
     }
 
-    @OnClick(R.id.btn_pseudoCache_mergeSlowDisk)
+    @OnClick(R2.id.btn_pseudoCache_mergeSlowDisk)
     public void onMergeSlowBtnClicked() {
         infoText.setText(R.string.msg_pseudoCache_demoInfo_mergeSlowDisk);
         wireupDemo();
@@ -173,7 +175,7 @@ public class PseudoCacheFragment
               });
     }
 
-    @OnClick(R.id.btn_pseudoCache_mergeOptimized)
+    @OnClick(R2.id.btn_pseudoCache_mergeOptimized)
     public void onMergeOptimizedBtnClicked() {
         infoText.setText(R.string.msg_pseudoCache_demoInfo_mergeOptimized);
         wireupDemo();
@@ -204,7 +206,7 @@ public class PseudoCacheFragment
               });
     }
 
-    @OnClick(R.id.btn_pseudoCache_mergeOptimizedSlowDisk)
+    @OnClick(R2.id.btn_pseudoCache_mergeOptimizedSlowDisk)
     public void onMergeOptimizedWithSlowDiskBtnClicked() {
         infoText.setText(R.string.msg_pseudoCache_demoInfo_mergeOptimizedSlowDisk);
         wireupDemo();

@@ -1,0 +1,227 @@
+#!/usr/bin/env bash
+
+#########################################################################
+##
+##  Buck wrapper script to invoke okbuck when needed, before running buck
+##
+##  Created by OkBuck Gradle Plugin on : Fri Jan 20 17:04:09 PST 2017
+##
+#########################################################################
+
+WORKING_DIR=$(pwd)
+
+red=`tput setab 1 2>/dev/null || true`
+yellow=`tput setab 3 2>/dev/null || true`
+green=`tput setab 2 2>/dev/null || true`
+blue=`tput setab 4 2>/dev/null || true`
+reset=`tput sgr0 2>/dev/null || true`
+bold=`tput bold 2>/dev/null || true`
+
+die ( ) {
+    echo
+    echo "${bold}${red} $* ${reset}"
+    echo
+    exit 1
+}
+
+info ( ) {
+    echo "${bold}${blue} $* ${reset}"
+}
+
+warn ( ) {
+    echo "${bold}${yellow} $* ${reset}"
+}
+
+success ( ) {
+    echo
+    echo "${bold}${green} $* ${reset}"
+    echo
+}
+
+ensure ( ) {
+    command -v $1 >/dev/null 2>&1 || die "ERROR: '$1' could be found in your PATH. Please install $1. $2"
+}
+
+jsonq() {
+    python -c "import sys,json; obj=json.load(sys.stdin); print($1)"
+}
+
+ensure python 'https://www.python.org'
+ensure ant 'http://ant.apache.org/'
+INSTALLED_WATCHMAN=`command -v watchman`
+
+DEFAULT_BUCK_REPO="https://github.com/facebook/buck.git"
+DEFAULT_BUCK_INSTALL_DIR="$HOME/.gradle/caches/okbuck/buck"
+CUSTOM_BUCK_REPO=""
+CUSTOM_REMOTE_NAME="custom"
+OKBUCK_SUCCESS="$WORKING_DIR/build/okbuck.success"
+OKBUCK_DIR=".okbuck"
+MAX_DISPLAY_CHANGES=10
+
+ensureWatch ( ) {
+    watchman watch-project $WORKING_DIR >/dev/null 2>&1
+}
+
+removeWatch ( ) {
+    watchman watch-del $WORKING_DIR >/dev/null 2>&1
+}
+
+getToClean ( ) {
+    ensureWatch
+
+    watchman --output-encoding=json -j 2>&1 <<-EOT
+["query", "$WORKING_DIR", {
+    "expression": ["allof",
+        ["type", "f"],
+        ["anyof",
+            ["imatch", "**/BUCK", "wholename"],
+            ["imatch", ".buckconfig.local", "wholename"]
+        ],
+        ["not",
+            ["imatch", ".okbuck/**/BUCK", "wholename"]
+        ]
+    ],
+    "fields": ["name"]
+}]
+EOT
+}
+
+getChanges ( ) {
+    ensureWatch
+
+    WATCHED_CHANGES=`watchman --output-encoding=json -j 2>&1 <<-EOT
+["query", "$WORKING_DIR", {
+    "since": "n:okbuck_trig",
+    "expression": ["allof",
+        ["type", "f"],
+        ["anyof",
+            ["imatch", "**/*.gradle", "wholename"],
+            ["imatch", "**/gradle-wrapper.properties", "wholename"],
+            ["imatch", "**/lint.xml", "wholename"],
+            ["imatch", "**/src/**/AndroidManifest.xml", "wholename"]
+        ]
+    ],
+    "fields": ["name"]
+}]
+EOT`
+    SOURCE_ROOTS=`watchman --output-encoding=json -j 2>&1 <<-EOT
+["query", ".", {
+    "since": "n:okbuck_source_roots",
+    "expression": ["allof",
+        ["type", "d"],
+        ["anyof",
+            ["imatch", "**/src/**/java", "wholename"],
+            ["imatch", "**/src/**/res", "wholename"],
+            ["imatch", "**/src/**/resources", "wholename"]
+        ]
+    ],
+    "fields": ["new", "exists", "name"]
+}]
+EOT`
+}
+
+updateOkBuckSuccess ( ) {
+    OKBUCK_SUCCESS_DIR=`dirname $OKBUCK_SUCCESS`
+    mkdir -p $OKBUCK_SUCCESS_DIR
+    touch "$OKBUCK_SUCCESS"
+}
+
+runOkBuck ( ) {
+    info "RUNNING OKBUCK..."
+    echo
+
+    if [[ ! -z "$INSTALLED_WATCHMAN" ]]; then
+        TO_CLEAN=$(getToClean | jsonq '"\n".join(obj["files"])')
+        if [[ $? -eq 0 ]]; then
+            echo $TO_CLEAN | xargs rm
+            info "DELETED OLD BUCK FILES"
+            EXTRA_OKBUCK_ARGS="-xokbuckClean $EXTRA_OKBUCK_ARGS"
+        else
+            warn "WATCHMAN FAILED. USING OKBUCKCLEAN."
+            removeWatch
+        fi
+    fi
+
+    rm -f $OKBUCK_SUCCESS
+    ( $WORKING_DIR/gradlew -p $WORKING_DIR okbuck -Dokbuck.wrapper=true $EXTRA_OKBUCK_ARGS &&
+    updateOkBuckSuccess && success "PROCEEDING WITH BUCK" ) || die "OKBUCK FAILED"
+}
+
+watchmanWorkflow ( ) {
+    # Get list of changed files since last time by querying watchman
+    getChanges
+
+    # Format list for simpler output
+    CHANGES=$(echo $WATCHED_CHANGES | jsonq '" ".join(obj["files"])')
+    NEW_OR_DELETED_SOURCE_ROOTS=$(echo $SOURCE_ROOTS | jsonq '" ".join([f["name"] for f in obj["files"] if (not f["exists"] or f["new"])])')
+    NUM_CHANGES=$(echo $CHANGES $NEW_OR_DELETED_SOURCE_ROOTS | wc -w)
+
+    if [[ $NUM_CHANGES -gt 0 ]]; then
+        info "CHANGES DETECTED IN:"
+        echo $CHANGES $NEW_OR_DELETED_SOURCE_ROOTS | tr ' ' '\n' | head -n $MAX_DISPLAY_CHANGES
+        if [[ $NUM_CHANGES -gt $MAX_DISPLAY_CHANGES ]]; then
+            DIFF=`expr $NUM_CHANGES - $MAX_DISPLAY_CHANGES`
+            echo "...and $DIFF more"
+        fi
+        echo
+        runOkBuck
+    fi
+}
+
+setupBuckBinary ( ) {
+    # If no explicit buck binary is set
+    if [[ -z "$BUCK_BINARY" ]] ; then
+        # If no buck installation directory is set
+        if [[ -z "$BUCK_HOME" ]]; then
+            BUCK_HOME=$DEFAULT_BUCK_INSTALL_DIR
+        fi
+
+        # Install buck from source if not already available
+        if [[ ! -d "$BUCK_HOME" ]]; then
+            warn "BUCK NOT FOUND IN '$BUCK_HOME'. INSTALLING BUCK..."
+            git clone $DEFAULT_BUCK_REPO $BUCK_HOME
+        fi
+
+        # Add custom buck remote
+        if [[ ! -z $CUSTOM_BUCK_REPO ]]; then
+            cd $BUCK_HOME
+            REMOTE_EXISTS=$(git remote -v | grep "$CUSTOM_REMOTE_NAME")
+            if [[ -z "$REMOTE_EXISTS" ]]; then
+                git remote add $CUSTOM_REMOTE_NAME $CUSTOM_BUCK_REPO
+            fi
+            cd $WORKING_DIR
+        fi
+
+        BUCK_BINARY="$BUCK_HOME/bin/buck"
+    fi
+}
+
+# Run tasks before buck command
+setupBuckRun ( ) {
+    if [[ ! -z "$SKIP_OKBUCK" ]]; then
+        :
+    elif [[ ! -z "$FORCE_OKBUCK" ]]; then
+        runOkBuck
+    elif [[ ! -f "$OKBUCK_SUCCESS" ]] || [[ ! -d "$OKBUCK_DIR" ]]; then
+        warn "NO PREVIOUS SUCCESSFUL OKBUCK RUN"
+        if [[ ! -z "$INSTALLED_WATCHMAN" ]]; then
+            getChanges # Prevent watchman from running after this run, since changes would already be accounted for
+        fi
+        runOkBuck
+    elif [[ ! -z "$INSTALLED_WATCHMAN" ]]; then
+        watchmanWorkflow
+    else
+        warn 'ALWAYS RUNNING OKBUCK SINCE WATCHMAN IS NOT INSTALLED'
+        warn 'INSTALL WATCHMAN FOR FASTER BUILDS'
+        warn 'https://facebook.github.io/watchman'
+        echo
+        runOkBuck
+    fi
+
+    setupBuckBinary
+}
+
+setupBuckRun
+
+# Invoke buck binary with arguments
+exec "$BUCK_BINARY" "$@"

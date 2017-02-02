@@ -8,10 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.R;
+import butterknife.Unbinder;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -29,16 +30,17 @@ public class RotationPersist2Fragment
 
     public static final String FRAG_TAG = RotationPersist2WorkerFragment.class.getName();
 
-    @Bind(R.id.list_threading_log) ListView _logList;
+    @BindView(R2.id.list_threading_log) ListView _logList;
 
     private LogAdapter _adapter;
     private List<String> _logs;
+    private Unbinder _unbinder;
 
     private CompositeDisposable _disposables = new CompositeDisposable();
 
     // -----------------------------------------------------------------------------------
 
-    @OnClick(R.id.btn_rotate_persist)
+    @OnClick(R2.id.btn_rotate_persist)
     public void startOperationFromWorkerFrag() {
         _logs = new ArrayList<>();
         _adapter.clear();
@@ -101,7 +103,7 @@ public class RotationPersist2Fragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_rotation_persist, container, false);
-        ButterKnife.bind(this, layout);
+        _unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 

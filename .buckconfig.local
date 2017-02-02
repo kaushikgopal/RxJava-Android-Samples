@@ -1,0 +1,10 @@
+[alias]
+	appDebug = //app:bin_debug
+	appRelease = //app:bin_release
+
+[android]
+	build_tools_version = 24.0.2
+	target = android-24
+
+[project]
+	ignore = .git,**/.svn

@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.morihacky.android.rxjava.R;
+import butterknife.Unbinder;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.GithubService;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
@@ -30,8 +31,9 @@ import timber.log.Timber;
 public class PseudoCacheMergeFragment
       extends BaseFragment {
 
-    @Bind(R.id.log_list) ListView _resultList;
+    @BindView(R2.id.log_list) ListView _resultList;
 
+    private Unbinder _unbinder;
     private ArrayAdapter<String> _adapter;
     private HashMap<String, Long> _contributionMap = null;
     private HashMap<Contributor, Long> _resultAgeMap = new HashMap<>();
@@ -41,7 +43,7 @@ public class PseudoCacheMergeFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_pseudo_cache_concat, container, false);
-        ButterKnife.bind(this, layout);
+        _unbinder = ButterKnife.bind(this, layout);
         _initializeCache();
         return layout;
     }
@@ -49,10 +51,10 @@ public class PseudoCacheMergeFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        _unbinder.unbind();
     }
 
-    @OnClick(R.id.btn_start_pseudo_cache)
+    @OnClick(R2.id.btn_start_pseudo_cache)
     public void onDemoPseudoCacheClicked() {
         _adapter = new ArrayAdapter<>(getActivity(), R.layout.item_log, R.id.item_log, new ArrayList<>());
 

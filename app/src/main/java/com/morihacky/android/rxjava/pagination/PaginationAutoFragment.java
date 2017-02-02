@@ -8,10 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import com.morihacky.android.rxjava.MainActivity;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.fragments.BaseFragment;
 import com.morihacky.android.rxjava.rxbus.RxBus;
 import io.reactivex.Flowable;
@@ -26,11 +27,12 @@ import java.util.concurrent.TimeUnit;
 public class PaginationAutoFragment
       extends BaseFragment {
 
-    @Bind(R.id.list_paging) RecyclerView _pagingList;
-    @Bind(R.id.progress_paging) ProgressBar _progressBar;
+    @BindView(R2.id.list_paging) RecyclerView _pagingList;
+    @BindView(R2.id.progress_paging) ProgressBar _progressBar;
 
     private PaginationAutoAdapter _adapter;
     private RxBus _bus;
+    private Unbinder _unbinder;
     private CompositeDisposable _disposables;
     private PublishProcessor<Integer> _paginator;
     private boolean _requestUnderWay = false;
@@ -40,7 +42,7 @@ public class PaginationAutoFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_pagination, container, false);
-        ButterKnife.bind(this, layout);
+        _unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 

@@ -11,7 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.morihacky.android.rxjava.R;
+import butterknife.Unbinder;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.retrofit.Contributor;
 import com.morihacky.android.rxjava.retrofit.GithubApi;
 import com.morihacky.android.rxjava.retrofit.GithubService;
@@ -20,7 +21,7 @@ import com.morihacky.android.rxjava.retrofit.User;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
@@ -36,12 +37,13 @@ import static java.lang.String.format;
 public class RetrofitFragment
       extends Fragment {
 
-    @Bind(R.id.demo_retrofit_contributors_username) EditText _username;
-    @Bind(R.id.demo_retrofit_contributors_repository) EditText _repo;
-    @Bind(R.id.log_list) ListView _resultList;
+    @BindView(R2.id.demo_retrofit_contributors_username) EditText _username;
+    @BindView(R2.id.demo_retrofit_contributors_repository) EditText _repo;
+    @BindView(R2.id.log_list) ListView _resultList;
 
     private ArrayAdapter<String> _adapter;
     private GithubApi _githubService;
+    private Unbinder _unbinder;
     private CompositeDisposable _disposables;
 
     @Override
@@ -59,7 +61,7 @@ public class RetrofitFragment
                              @Nullable Bundle savedInstanceState) {
 
         View layout = inflater.inflate(R.layout.fragment_retrofit, container, false);
-        ButterKnife.bind(this, layout);
+        _unbinder = ButterKnife.bind(this, layout);
 
         _adapter = new ArrayAdapter<>(getActivity(), R.layout.item_log, R.id.item_log, new ArrayList<>());
         //_adapter.setNotifyOnChange(true);
@@ -71,7 +73,7 @@ public class RetrofitFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        _unbinder.unbind();
     }
 
     @Override
@@ -80,7 +82,7 @@ public class RetrofitFragment
         _disposables.dispose();
     }
 
-    @OnClick(R.id.btn_demo_retrofit_contributors)
+    @OnClick(R2.id.btn_demo_retrofit_contributors)
     public void onListContributorsClicked() {
         _adapter.clear();
 
@@ -117,7 +119,7 @@ public class RetrofitFragment
                     }));
     }
 
-    @OnClick(R.id.btn_demo_retrofit_contributors_with_user_info)
+    @OnClick(R2.id.btn_demo_retrofit_contributors_with_user_info)
     public void onListContributorsWithFullUserInfoClicked() {
         _adapter.clear();
 

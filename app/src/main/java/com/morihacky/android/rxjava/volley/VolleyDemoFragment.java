@@ -9,14 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
-import com.morihacky.android.rxjava.R;
+import com.morihacky.android.rxjava.R; import com.morihacky.android.rxjava.R2;
 import com.morihacky.android.rxjava.fragments.BaseFragment;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 import io.reactivex.Flowable;
@@ -36,10 +37,11 @@ public class VolleyDemoFragment
 
     public static final String TAG = "VolleyDemoFragment";
 
-    @Bind(R.id.list_threading_log) ListView _logsList;
+    @BindView(R2.id.list_threading_log) ListView _logsList;
 
     private List<String> _logs;
     private LogAdapter _adapter;
+    private Unbinder _unbinder;
 
     private CompositeDisposable _disposables = new CompositeDisposable();
 
@@ -48,7 +50,7 @@ public class VolleyDemoFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_volley, container, false);
-        ButterKnife.bind(this, layout);
+        _unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 
@@ -67,7 +69,7 @@ public class VolleyDemoFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        _unbinder.unbind();
     }
 
     /**
@@ -87,7 +89,7 @@ public class VolleyDemoFragment
         });
     }
 
-    @OnClick(R.id.btn_start_operation)
+    @OnClick(R2.id.btn_start_operation)
     void startRequest() {
         startVolleyRequest();
     }

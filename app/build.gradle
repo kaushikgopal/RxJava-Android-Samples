@@ -7,7 +7,7 @@ buildscript {
         classpath 'me.tatarka:gradle-retrolambda:3.2.5'
         // can be removed with android-gradle plugin is upgraded to 2.2
         // https://twitter.com/JakeWharton/status/760836175586267136
-        classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
+//        classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
     }
 
     // Exclude the lombok version that the android plugin depends on.
@@ -16,6 +16,7 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.jakewharton.butterknife'
 
 ext {
     okhttpVersion = "3.0.1"
@@ -30,7 +31,8 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
 
     compile 'com.github.kaushikgopal:CoreTextUtils:c703fa12b6'
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.jakewharton.timber:timber:2.4.2'
     compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
@@ -63,7 +65,7 @@ dependencies {
 
 android {
     compileSdkVersion sdkVersion
-    buildToolsVersion '23.0.3'
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.morihacky.android.rxjava"
@@ -72,12 +74,25 @@ android {
         versionCode 2
         versionName "1.2"
     }
+
+    signingConfigs {
+        release {
+            storeFile file('../debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
-    }
+        debug {
+            signingConfig signingConfigs.release
+        }
+        }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
