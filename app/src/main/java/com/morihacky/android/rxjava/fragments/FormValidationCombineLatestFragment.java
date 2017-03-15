@@ -1,5 +1,8 @@
 package com.morihacky.android.rxjava.fragments;
 
+import static android.text.TextUtils.isEmpty;
+import static android.util.Patterns.EMAIL_ADDRESS;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,18 +12,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+import butterknife.Unbinder;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.morihacky.android.rxjava.R;
-
-import butterknife.Unbinder;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.subscribers.DisposableSubscriber;
 import timber.log.Timber;
-
-import static android.text.TextUtils.isEmpty;
-import static android.util.Patterns.EMAIL_ADDRESS;
 
 public class FormValidationCombineLatestFragment extends BaseFragment {
 
@@ -48,9 +46,12 @@ public class FormValidationCombineLatestFragment extends BaseFragment {
     View layout = inflater.inflate(R.layout.fragment_form_validation_comb_latest, container, false);
     unbinder = ButterKnife.bind(this, layout);
 
-    _emailChangeObservable = RxTextView.textChanges(_email).skip(1).toFlowable(BackpressureStrategy.LATEST);
-    _passwordChangeObservable = RxTextView.textChanges(_password).skip(1).toFlowable(BackpressureStrategy.LATEST);
-    _numberChangeObservable = RxTextView.textChanges(_number).skip(1).toFlowable(BackpressureStrategy.LATEST);
+    _emailChangeObservable =
+        RxTextView.textChanges(_email).skip(1).toFlowable(BackpressureStrategy.LATEST);
+    _passwordChangeObservable =
+        RxTextView.textChanges(_password).skip(1).toFlowable(BackpressureStrategy.LATEST);
+    _numberChangeObservable =
+        RxTextView.textChanges(_number).skip(1).toFlowable(BackpressureStrategy.LATEST);
 
     _combineLatestEvents();
 
