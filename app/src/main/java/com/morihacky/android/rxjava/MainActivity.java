@@ -8,54 +8,52 @@ import com.morihacky.android.rxjava.fragments.RotationPersist1WorkerFragment;
 import com.morihacky.android.rxjava.fragments.RotationPersist2WorkerFragment;
 import com.morihacky.android.rxjava.rxbus.RxBus;
 
-public class MainActivity
-      extends FragmentActivity {
+public class MainActivity extends FragmentActivity {
 
-    private RxBus _rxBus = null;
+  private RxBus _rxBus = null;
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        _removeWorkerFragments();
+  @Override
+  public void onBackPressed() {
+    super.onBackPressed();
+    _removeWorkerFragments();
+  }
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    if (savedInstanceState == null) {
+      getSupportFragmentManager()
+          .beginTransaction()
+          .replace(android.R.id.content, new MainFragment(), this.toString())
+          .commit();
+    }
+  }
+
+  // This is better done with a DI Library like Dagger
+  public RxBus getRxBusSingleton() {
+    if (_rxBus == null) {
+      _rxBus = new RxBus();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    return _rxBus;
+  }
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                                       .replace(android.R.id.content, new MainFragment(), this.toString())
-                                       .commit();
-        }
+  private void _removeWorkerFragments() {
+    Fragment frag =
+        getSupportFragmentManager()
+            .findFragmentByTag(RotationPersist1WorkerFragment.class.getName());
+
+    if (frag != null) {
+      getSupportFragmentManager().beginTransaction().remove(frag).commit();
     }
 
-    // This is better done with a DI Library like Dagger
-    public RxBus getRxBusSingleton() {
-        if (_rxBus == null) {
-            _rxBus = new RxBus();
-        }
+    frag =
+        getSupportFragmentManager()
+            .findFragmentByTag(RotationPersist2WorkerFragment.class.getName());
 
-        return _rxBus;
+    if (frag != null) {
+      getSupportFragmentManager().beginTransaction().remove(frag).commit();
     }
-
-    private void _removeWorkerFragments() {
-        Fragment frag = getSupportFragmentManager().findFragmentByTag(RotationPersist1WorkerFragment.class.getName());
-
-        if (frag != null) {
-            getSupportFragmentManager()
-                  .beginTransaction()
-                  .remove(frag)
-                  .commit();
-        }
-
-        frag = getSupportFragmentManager().findFragmentByTag(RotationPersist2WorkerFragment.class.getName());
-
-        if (frag != null) {
-            getSupportFragmentManager()
-                  .beginTransaction()
-                  .remove(frag)
-                  .commit();
-        }
-    }
+  }
 }
