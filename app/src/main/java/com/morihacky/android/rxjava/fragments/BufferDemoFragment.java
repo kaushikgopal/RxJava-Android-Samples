@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 
@@ -20,7 +20,6 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -91,7 +90,7 @@ public class BufferDemoFragment extends BaseFragment {
   // Main Rx entities
 
   private Disposable _getBufferedDisposable() {
-    return RxJavaInterop.toV2Observable(RxView.clickEvents(_tapBtn))
+    return RxView.clicks(_tapBtn)
         .map(
             onClickEvent -> {
               Timber.d("--------- GOT A TAP");
