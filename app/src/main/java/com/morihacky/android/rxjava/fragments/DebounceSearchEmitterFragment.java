@@ -20,10 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
@@ -35,19 +36,20 @@ import static java.lang.String.format;
 public class DebounceSearchEmitterFragment
       extends BaseFragment {
 
-    @Bind(R.id.list_threading_log) ListView _logsList;
-    @Bind(R.id.input_txt_debounce) EditText _inputSearchText;
+    @BindView(R.id.list_threading_log) ListView _logsList;
+    @BindView(R.id.input_txt_debounce) EditText _inputSearchText;
 
     private LogAdapter _adapter;
     private List<String> _logs;
 
     private Disposable _disposable;
+    private Unbinder unbinder;
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         _disposable.dispose();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
     @Override
@@ -55,7 +57,7 @@ public class DebounceSearchEmitterFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_debounce, container, false);
-        ButterKnife.bind(this, layout);
+        unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 

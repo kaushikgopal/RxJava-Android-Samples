@@ -18,9 +18,10 @@ import com.morihacky.android.rxjava.retrofit.User;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -30,11 +31,12 @@ import static java.lang.String.format;
 public class RetrofitAsyncTaskDeathFragment
       extends Fragment {
 
-    @Bind(R.id.btn_demo_retrofit_async_death_username) EditText _username;
-    @Bind(R.id.log_list) ListView _resultList;
+    @BindView(R.id.btn_demo_retrofit_async_death_username) EditText _username;
+    @BindView(R.id.log_list) ListView _resultList;
 
     private GithubApi _githubService;
     private ArrayAdapter<String> _adapter;
+    private Unbinder unbinder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class RetrofitAsyncTaskDeathFragment
         View layout = inflater.inflate(R.layout.fragment_retrofit_async_task_death,
               container,
               false);
-        ButterKnife.bind(this, layout);
+        unbinder = ButterKnife.bind(this, layout);
 
         _adapter = new ArrayAdapter<>(getActivity(),
               R.layout.item_log,
@@ -67,7 +69,7 @@ public class RetrofitAsyncTaskDeathFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
     @OnClick(R.id.btn_demo_retrofit_async_death)

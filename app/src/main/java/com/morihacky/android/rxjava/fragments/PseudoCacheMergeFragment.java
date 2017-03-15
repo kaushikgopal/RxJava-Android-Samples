@@ -18,9 +18,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
@@ -30,18 +31,19 @@ import timber.log.Timber;
 public class PseudoCacheMergeFragment
       extends BaseFragment {
 
-    @Bind(R.id.log_list) ListView _resultList;
+    @BindView(R.id.log_list) ListView _resultList;
 
     private ArrayAdapter<String> _adapter;
     private HashMap<String, Long> _contributionMap = null;
     private HashMap<Contributor, Long> _resultAgeMap = new HashMap<>();
+    private Unbinder unbinder;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_pseudo_cache_concat, container, false);
-        ButterKnife.bind(this, layout);
+        unbinder = ButterKnife.bind(this, layout);
         _initializeCache();
         return layout;
     }
@@ -49,7 +51,7 @@ public class PseudoCacheMergeFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
     @OnClick(R.id.btn_start_pseudo_cache)

@@ -15,9 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.morihacky.android.rxjava.R;
+
+import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.processors.PublishProcessor;
@@ -27,18 +29,19 @@ import java.util.List;
 public class NetworkDetectorFragment
       extends BaseFragment {
 
-    @Bind(R.id.list_threading_log) ListView logsList;
+    @BindView(R.id.list_threading_log) ListView logsList;
 
     private LogAdapter adapter;
     private BroadcastReceiver broadcastReceiver;
     private List<String> logs;
     private Disposable disposable;
     private PublishProcessor<Boolean> publishProcessor;
+    private Unbinder unbinder;
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
     @Override
@@ -46,7 +49,7 @@ public class NetworkDetectorFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_network_detector, container, false);
-        ButterKnife.bind(this, layout);
+        unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 

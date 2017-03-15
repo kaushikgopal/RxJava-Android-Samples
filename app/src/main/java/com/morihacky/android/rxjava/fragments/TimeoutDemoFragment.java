@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.morihacky.android.rxjava.R;
@@ -27,7 +27,7 @@ import timber.log.Timber;
 public class TimeoutDemoFragment
       extends BaseFragment {
 
-    @Bind(R.id.list_threading_log) ListView _logsList;
+    @BindView(R.id.list_threading_log) ListView _logsList;
 
     private LogAdapter _adapter;
     private DisposableObserver<String> _disposable;

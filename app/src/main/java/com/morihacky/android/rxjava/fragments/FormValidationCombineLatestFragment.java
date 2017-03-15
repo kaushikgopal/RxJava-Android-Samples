@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.morihacky.android.rxjava.R;
+
+import butterknife.Unbinder;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.reactivex.Flowable;
 import io.reactivex.subscribers.DisposableSubscriber;
@@ -23,32 +25,33 @@ import static android.util.Patterns.EMAIL_ADDRESS;
 public class FormValidationCombineLatestFragment
       extends BaseFragment {
 
-    @Bind(R.id.btn_demo_form_valid) TextView _btnValidIndicator;
-    @Bind(R.id.demo_combl_email) EditText _email;
-    @Bind(R.id.demo_combl_password) EditText _password;
-    @Bind(R.id.demo_combl_num) EditText _number;
+    @BindView(R.id.btn_demo_form_valid) TextView _btnValidIndicator;
+    @BindView(R.id.demo_combl_email) EditText _email;
+    @BindView(R.id.demo_combl_password) EditText _password;
+    @BindView(R.id.demo_combl_num) EditText _number;
 
     private DisposableSubscriber<Boolean> _disposableObserver = null;
     private Flowable<CharSequence> _emailChangeObservable;
     private Flowable<CharSequence> _numberChangeObservable;
     private Flowable<CharSequence> _passwordChangeObservable;
+    private Unbinder unbinder;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_form_validation_comb_latest, container, false);
-        ButterKnife.bind(this, layout);
+        unbinder = ButterKnife.bind(this, layout);
 
         _emailChangeObservable = RxJavaInterop.toV2Flowable(RxTextView
-                                                                  .textChanges(_email)
-                                                                  .skip(1));
+                .textChanges(_email)
+                .skip(1));
         _passwordChangeObservable = RxJavaInterop.toV2Flowable(RxTextView
-                                                                     .textChanges(_password)
-                                                                     .skip(1));
+                .textChanges(_password)
+                .skip(1));
         _numberChangeObservable = RxJavaInterop.toV2Flowable(RxTextView
-                                                                   .textChanges(_number)
-                                                                   .skip(1));
+                .textChanges(_number)
+                .skip(1));
 
         _combineLatestEvents();
 
@@ -58,7 +61,7 @@ public class FormValidationCombineLatestFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
         _disposableObserver.dispose();
     }
 

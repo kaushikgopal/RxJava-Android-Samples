@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
 import com.morihacky.android.rxjava.R;
+
+import butterknife.Unbinder;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.processors.PublishProcessor;
 
@@ -20,19 +22,20 @@ import static android.text.TextUtils.isEmpty;
 public class DoubleBindingTextViewFragment
       extends BaseFragment {
 
-    @Bind(R.id.double_binding_num1) EditText _number1;
-    @Bind(R.id.double_binding_num2) EditText _number2;
-    @Bind(R.id.double_binding_result) TextView _result;
+    @BindView(R.id.double_binding_num1) EditText _number1;
+    @BindView(R.id.double_binding_num2) EditText _number2;
+    @BindView(R.id.double_binding_result) TextView _result;
 
     Disposable _disposable;
     PublishProcessor<Float> _resultEmitterSubject;
+    private Unbinder unbinder;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_double_binding_textview, container, false);
-        ButterKnife.bind(this, layout);
+        unbinder = ButterKnife.bind(this, layout);
 
         _resultEmitterSubject = PublishProcessor.create();
 
@@ -66,6 +69,6 @@ public class DoubleBindingTextViewFragment
     public void onDestroyView() {
         super.onDestroyView();
         _disposable.dispose();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 }
