@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.morihacky.android.rxjava.R;
@@ -29,7 +29,7 @@ public class RotationPersist2Fragment
 
     public static final String FRAG_TAG = RotationPersist2WorkerFragment.class.getName();
 
-    @Bind(R.id.list_threading_log) ListView _logList;
+    @BindView(R.id.list_threading_log) ListView _logList;
 
     private LogAdapter _adapter;
     private List<String> _logs;

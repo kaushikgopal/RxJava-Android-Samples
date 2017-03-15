@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
+
+import butterknife.Unbinder;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.subscribers.DisposableSubscriber;
@@ -29,10 +31,11 @@ public class RotationPersist1Fragment
 
     public static final String FRAG_TAG = RotationPersist1WorkerFragment.class.getName();
 
-    @Bind(R.id.list_threading_log) ListView _logList;
+    @BindView(R.id.list_threading_log) ListView _logList;
 
     private LogAdapter _adapter;
     private List<String> _logs;
+    private Unbinder unbinder;
 
     private CompositeDisposable _disposables = new CompositeDisposable();
 
@@ -100,7 +103,7 @@ public class RotationPersist1Fragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_rotation_persist, container, false);
-        ButterKnife.bind(this, layout);
+        unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 
@@ -113,7 +116,7 @@ public class RotationPersist1Fragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
     private void _setupLogger() {

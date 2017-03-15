@@ -7,12 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
+
+import butterknife.Unbinder;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
@@ -30,17 +33,18 @@ import static android.os.Looper.getMainLooper;
 public class ExponentialBackoffFragment
       extends BaseFragment {
 
-    @Bind(R.id.list_threading_log) ListView _logList;
+    @BindView(R.id.list_threading_log) ListView _logList;
     private LogAdapter _adapter;
     private CompositeDisposable _disposables = new CompositeDisposable();
     private List<String> _logs;
+    Unbinder unbinder;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_exponential_backoff, container, false);
-        ButterKnife.bind(this, layout);
+        unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 
@@ -60,7 +64,7 @@ public class ExponentialBackoffFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
     // -----------------------------------------------------------------------------------

@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.R;
@@ -26,8 +26,8 @@ import java.util.concurrent.TimeUnit;
 public class PaginationAutoFragment
       extends BaseFragment {
 
-    @Bind(R.id.list_paging) RecyclerView _pagingList;
-    @Bind(R.id.progress_paging) ProgressBar _progressBar;
+    @BindView(R.id.list_paging) RecyclerView _pagingList;
+    @BindView(R.id.progress_paging) ProgressBar _progressBar;
 
     private PaginationAutoAdapter _adapter;
     private RxBus _bus;

@@ -18,9 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
@@ -43,13 +44,14 @@ import timber.log.Timber;
 public class BufferDemoFragment
       extends BaseFragment {
 
-    @Bind(R.id.list_threading_log) ListView _logsList;
-    @Bind(R.id.btn_start_operation) Button _tapBtn;
+    @BindView(R.id.list_threading_log) ListView _logsList;
+    @BindView(R.id.btn_start_operation) Button _tapBtn;
 
     private LogAdapter _adapter;
     private List<String> _logs;
 
     private Disposable _disposable;
+    private Unbinder unbinder;
 
     @Override
     public void onResume() {
@@ -74,13 +76,13 @@ public class BufferDemoFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_buffer, container, false);
-        ButterKnife.bind(this, layout);
+        unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 
     @Override public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
     // -----------------------------------------------------------------------------------

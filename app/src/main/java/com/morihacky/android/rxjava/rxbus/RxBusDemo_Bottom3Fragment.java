@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.R;
@@ -20,8 +20,8 @@ import java.util.concurrent.TimeUnit;
 public class RxBusDemo_Bottom3Fragment
       extends BaseFragment {
 
-    @Bind(R.id.demo_rxbus_tap_txt) TextView _tapEventTxtShow;
-    @Bind(R.id.demo_rxbus_tap_count) TextView _tapEventCountShow;
+    @BindView(R.id.demo_rxbus_tap_txt) TextView _tapEventTxtShow;
+    @BindView(R.id.demo_rxbus_tap_count) TextView _tapEventCountShow;
     private RxBus _rxBus;
     private CompositeDisposable _disposables;
 
