@@ -7,13 +7,14 @@ import com.morihacky.android.rxjava.MainActivity;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.flowables.ConnectableFlowable;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class RotationPersist1WorkerFragment
       extends Fragment {
 
-    private IAmYourMaster _masterFrag;
+  public static final String TAG = RotationPersist1WorkerFragment.class.toString();
+
+  private IAmYourMaster _masterFrag;
     private ConnectableFlowable<Integer> _storedIntsFlowable;
     private Disposable _storedIntsDisposable;
 
@@ -26,14 +27,9 @@ public class RotationPersist1WorkerFragment
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        List<Fragment> frags = ((MainActivity) context)
+      _masterFrag = (RotationPersist1Fragment) ((MainActivity) context)
               .getSupportFragmentManager()
-              .getFragments();
-        for (Fragment f : frags) {
-            if (f instanceof IAmYourMaster) {
-                _masterFrag = (IAmYourMaster) f;
-            }
-        }
+              .findFragmentByTag(RotationPersist1Fragment.TAG);
 
         if (_masterFrag == null) {
             throw new ClassCastException("We did not find a master who can understand us :(");

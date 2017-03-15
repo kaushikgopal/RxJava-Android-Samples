@@ -1,5 +1,7 @@
 package com.morihacky.android.rxjava.fragments;
 
+import static android.os.Looper.getMainLooper;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -20,14 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 import timber.log.Timber;
 
-
-import static android.os.Looper.getMainLooper;
-
 public class RotationPersist2Fragment
       extends BaseFragment
       implements RotationPersist2WorkerFragment.IAmYourMaster {
 
-    public static final String FRAG_TAG = RotationPersist2WorkerFragment.class.getName();
+    public static final String TAG = RotationPersist2Fragment.class.toString();
 
     @BindView(R.id.list_threading_log) ListView _logList;
 
@@ -44,13 +43,14 @@ public class RotationPersist2Fragment
         _adapter.clear();
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        RotationPersist2WorkerFragment frag = (RotationPersist2WorkerFragment) fm.findFragmentByTag(FRAG_TAG);
+        RotationPersist2WorkerFragment frag = (RotationPersist2WorkerFragment) fm.findFragmentByTag(
+            RotationPersist2WorkerFragment.TAG);
 
         if (frag == null) {
             frag = new RotationPersist2WorkerFragment();
             fm
                   .beginTransaction()
-                  .add(frag, FRAG_TAG)
+                  .add(frag, RotationPersist2WorkerFragment.TAG)
                   .commit();
         }
         else {

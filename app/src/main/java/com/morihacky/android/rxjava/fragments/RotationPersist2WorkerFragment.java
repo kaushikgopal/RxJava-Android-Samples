@@ -6,11 +6,12 @@ import android.support.v4.app.Fragment;
 import com.morihacky.android.rxjava.MainActivity;
 import io.reactivex.Flowable;
 import io.reactivex.processors.PublishProcessor;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class RotationPersist2WorkerFragment
       extends Fragment {
+
+    public static final String TAG = RotationPersist2WorkerFragment.class.toString();
 
     private PublishProcessor<Integer> _intStream;
     private PublishProcessor<Boolean> _lifeCycleStream;
@@ -27,14 +28,9 @@ public class RotationPersist2WorkerFragment
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        List<Fragment> frags = ((MainActivity) context)
-              .getSupportFragmentManager()
-              .getFragments();
-        for (Fragment f : frags) {
-            if (f instanceof IAmYourMaster) {
-                _masterFrag = (IAmYourMaster) f;
-            }
-        }
+        _masterFrag = (RotationPersist2Fragment) ((MainActivity) context)
+            .getSupportFragmentManager().findFragmentByTag(RotationPersist2Fragment.TAG);
+
 
         if (_masterFrag == null) {
             throw new ClassCastException("We did not find a master who can understand us :(");

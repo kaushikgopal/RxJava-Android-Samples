@@ -21,7 +21,7 @@ ext {
     okhttpVersion = "3.0.1"
     retrofitVersion = "2.0.0"
     sdkVersion = 24
-    supportLibVersion = "24.2.1"
+    supportLibVersion = "25.2.0"
     butterKnifeVersion = '8.5.1'
 }
 

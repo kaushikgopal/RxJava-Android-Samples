@@ -1,5 +1,7 @@
 package com.morihacky.android.rxjava.fragments;
 
+import static android.os.Looper.getMainLooper;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -11,10 +13,9 @@ import android.widget.ListView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
-
-import butterknife.Unbinder;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.subscribers.DisposableSubscriber;
@@ -22,14 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 import timber.log.Timber;
 
-
-import static android.os.Looper.getMainLooper;
-
 public class RotationPersist1Fragment
       extends BaseFragment
       implements RotationPersist1WorkerFragment.IAmYourMaster {
 
-    public static final String FRAG_TAG = RotationPersist1WorkerFragment.class.getName();
+    public static final String TAG = RotationPersist1Fragment.class.toString();
 
     @BindView(R.id.list_threading_log) ListView _logList;
 
@@ -48,11 +46,12 @@ public class RotationPersist1Fragment
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
         RotationPersist1WorkerFragment frag =
-              (RotationPersist1WorkerFragment) fm.findFragmentByTag(FRAG_TAG);
+              (RotationPersist1WorkerFragment) fm.findFragmentByTag(
+                  RotationPersist1WorkerFragment.TAG);
 
         if (frag == null) {
             frag = new RotationPersist1WorkerFragment();
-            fm.beginTransaction().add(frag, FRAG_TAG).commit();
+            fm.beginTransaction().add(frag, RotationPersist1WorkerFragment.TAG).commit();
         } else {
             Timber.d("Worker frag already spawned");
         }
