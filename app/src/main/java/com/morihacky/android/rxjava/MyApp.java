@@ -6,33 +6,32 @@ import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import timber.log.Timber;
 
-public class MyApp
-      extends Application {
+public class MyApp extends Application {
 
-    private static MyApp _instance;
-    private RefWatcher _refWatcher;
+  private static MyApp _instance;
+  private RefWatcher _refWatcher;
 
-    public static MyApp get() {
-        return _instance;
-    }
+  public static MyApp get() {
+    return _instance;
+  }
 
-    public static RefWatcher getRefWatcher() {
-        return MyApp.get()._refWatcher;
-    }
+  public static RefWatcher getRefWatcher() {
+    return MyApp.get()._refWatcher;
+  }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+  @Override
+  public void onCreate() {
+    super.onCreate();
 
-        _instance = (MyApp) getApplicationContext();
-        _refWatcher = LeakCanary.install(this);
+    _instance = (MyApp) getApplicationContext();
+    _refWatcher = LeakCanary.install(this);
 
-        // for better RxJava debugging
-        //RxJavaHooks.enableAssemblyTracking();
+    // for better RxJava debugging
+    //RxJavaHooks.enableAssemblyTracking();
 
-        // Initialize Volley
-        MyVolley.init(this);
+    // Initialize Volley
+    MyVolley.init(this);
 
-        Timber.plant(new Timber.DebugTree());
-    }
+    Timber.plant(new Timber.DebugTree());
+  }
 }
