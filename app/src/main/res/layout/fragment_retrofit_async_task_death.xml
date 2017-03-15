@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     android:orientation="vertical"
     android:layout_height="match_parent"
@@ -26,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:textSize="14sp"
-            android:text="Log User Info:"
+            android:text="@string/log_user_info"
             />
 
         <EditText
@@ -35,8 +34,8 @@
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:textSize="12sp"
-            android:text="kaushikgopal"
-            android:hint="owner"
+            android:text="@string/kaushikgopal"
+            android:hint="@string/owner"
             />
 
     </LinearLayout>

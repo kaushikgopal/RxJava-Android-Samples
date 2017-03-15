@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     android:id="@+id/demo_rxbus_frag_12"
     android:baselineAligned="false"

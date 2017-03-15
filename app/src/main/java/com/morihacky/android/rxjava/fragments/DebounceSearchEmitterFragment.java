@@ -12,8 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.jakewharton.rxbinding.widget.RxTextView;
-import com.jakewharton.rxbinding.widget.TextViewTextChangeEvent;
+import com.jakewharton.rxbinding2.widget.RxTextView;
+import com.jakewharton.rxbinding2.widget.TextViewTextChangeEvent;
 import com.morihacky.android.rxjava.R;
 
 import java.util.ArrayList;
@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -75,7 +74,7 @@ public class DebounceSearchEmitterFragment extends BaseFragment {
     _setupLogger();
 
     _disposable =
-        RxJavaInterop.toV2Observable(RxTextView.textChangeEvents(_inputSearchText))
+        RxTextView.textChangeEvents(_inputSearchText)
             .debounce(400, TimeUnit.MILLISECONDS) // default Scheduler is Computation
             .filter(changes -> isNotNullOrEmpty(changes.text().toString()))
             .observeOn(AndroidSchedulers.mainThread())

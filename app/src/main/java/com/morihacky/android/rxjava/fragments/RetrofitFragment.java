@@ -158,9 +158,9 @@ public class RetrofitFragment extends Fragment {
                   }
 
                   @Override
-                  public void onNext(Pair pair) {
-                    User user = ((Pair<User, Contributor>) pair).first;
-                    Contributor contributor = ((Pair<User, Contributor>) pair).second;
+                  public void onNext(Pair<User, Contributor> pair) {
+                    User user = pair.first;
+                    Contributor contributor = pair.second;
 
                     _adapter.add(
                         format(

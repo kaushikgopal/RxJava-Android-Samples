@@ -9,11 +9,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.jakewharton.rxbinding.widget.RxTextView;
+
+import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.morihacky.android.rxjava.R;
 
 import butterknife.Unbinder;
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.subscribers.DisposableSubscriber;
 import timber.log.Timber;
@@ -47,10 +48,9 @@ public class FormValidationCombineLatestFragment extends BaseFragment {
     View layout = inflater.inflate(R.layout.fragment_form_validation_comb_latest, container, false);
     unbinder = ButterKnife.bind(this, layout);
 
-    _emailChangeObservable = RxJavaInterop.toV2Flowable(RxTextView.textChanges(_email).skip(1));
-    _passwordChangeObservable =
-        RxJavaInterop.toV2Flowable(RxTextView.textChanges(_password).skip(1));
-    _numberChangeObservable = RxJavaInterop.toV2Flowable(RxTextView.textChanges(_number).skip(1));
+    _emailChangeObservable = RxTextView.textChanges(_email).skip(1).toFlowable(BackpressureStrategy.LATEST);
+    _passwordChangeObservable = RxTextView.textChanges(_password).skip(1).toFlowable(BackpressureStrategy.LATEST);
+    _numberChangeObservable = RxTextView.textChanges(_number).skip(1).toFlowable(BackpressureStrategy.LATEST);
 
     _combineLatestEvents();
 

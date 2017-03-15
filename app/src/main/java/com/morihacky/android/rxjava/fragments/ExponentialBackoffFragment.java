@@ -13,9 +13,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 
 import butterknife.Unbinder;
+import hu.akarnokd.rxjava2.math.MathFlowable;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.reactivestreams.Publisher;
-import rx.observables.MathObservable;
 import timber.log.Timber;
 
 import static android.os.Looper.getMainLooper;
@@ -131,8 +130,7 @@ public class ExponentialBackoffFragment extends BaseFragment {
         .delay(
             integer -> {
               // Rx-y way of doing the Fibonnaci :P
-              return RxJavaInterop.toV2Flowable(
-                      MathObservable.sumInteger(rx.Observable.range(1, integer)))
+              return MathFlowable.sumInt(Flowable.range(1, integer))
                   .flatMap(
                       targetSecondDelay ->
                           Flowable.just(integer).delay(targetSecondDelay, TimeUnit.SECONDS));

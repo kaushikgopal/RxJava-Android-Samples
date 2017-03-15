@@ -2,13 +2,13 @@ package com.morihacky.android.rxjava;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import com.morihacky.android.rxjava.fragments.MainFragment;
 import com.morihacky.android.rxjava.fragments.RotationPersist1WorkerFragment;
 import com.morihacky.android.rxjava.fragments.RotationPersist2WorkerFragment;
 import com.morihacky.android.rxjava.rxbus.RxBus;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
 
   private RxBus _rxBus = null;
 

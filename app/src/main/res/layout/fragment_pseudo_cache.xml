@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -23,7 +24,7 @@
             android:background="@color/colorPrimary"
             android:gravity="center"
             android:padding="@dimen/text_micro"
-            android:text="Info about the demo will show up here"
+            android:text="@string/info_about_the_demo_will_show_up_here"
             android:textColor="@color/white"
             />
 
@@ -42,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="concat"
+                android:text="@string/concat"
                 />
 
 
@@ -51,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="concat (eager)"
+                android:text="@string/concat_eager"
                 />
 
 
@@ -60,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="merge"
+                android:text="@string/merge"
                 />
 
 
@@ -69,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="merge\n(slower disk)"
+                android:text="@string/merge_n_slower_disk"
                 />
 
             <Button
@@ -77,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="merge\n(optimized)"
+                android:text="@string/merge_n_optimized"
                 />
 
             <Button
@@ -85,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="merge\n(optimized) slow disk"
+                android:text="@string/merge_n_optimized_slow_disk"
                 />
 
         </LinearLayout>

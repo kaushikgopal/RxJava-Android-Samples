@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     android:orientation="vertical"
     android:layout_height="match_parent"
@@ -27,7 +26,7 @@
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:textSize="16sp"
-            android:hint="Enter some search text"
+            android:hint="@string/enter_some_search_text"
             android:inputType="textNoSuggestions"
             />
 

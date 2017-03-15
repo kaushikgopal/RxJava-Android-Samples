@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     android:orientation="vertical"
     android:layout_height="match_parent"
@@ -19,7 +18,7 @@
         android:id="@+id/btn_rotate_persist"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:text="Start operation"
+        android:text="@string/start_operation"
         />
 
     <ListView
