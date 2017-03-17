@@ -100,6 +100,7 @@ We simulate this behaviour using RxJava with the [`retryWhen` operator](http://r
 
 * http://stackoverflow.com/a/25292833/159825
 * Another excellent implementation via @[sddamico](https://github.com/sddamico) : https://gist.github.com/sddamico/c45d7cdabc41e663bea1
+* This one includes support for jittering, by @[leandrofavarin](https://github.com/leandrofavarin) : http://leandrofavarin.com/exponential-backoff-rxjava-operator-with-jitter
 
 Also look at the [Polling example](https://github.com/kaushikgopal/RxJava-Android-Samples#polling-with-schedulers) where we use a very similar Exponential backoff mechanism.
 
