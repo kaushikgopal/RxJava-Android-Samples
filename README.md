@@ -25,7 +25,7 @@ I've also been giving talks about Learning Rx using many of the examples listed 
 13. [Networking with Volley](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#13-networking-with-volley)
 14. [Pagination with Rx (using Subjects)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#14-pagination-with-rx-using-subjects)
 15. [Orchestrating Observable: make parallel network calls, then combine the result into a single data point (using flatmap & zip)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#15-orchestrating-observable-make-parallel-network-calls-then-combine-the-result-into-a-single-data-point-using-flatmap--zip)
-16. [Simple Timeout example (using timeout)]()
+16. [Simple Timeout example (using timeout)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#16-simple-timeout-example-using-timeout)
 
 ## Description
 
