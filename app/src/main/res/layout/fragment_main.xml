@@ -1,131 +1,134 @@
-<?xml version="1.0" encoding="utf-8"?><ScrollView
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     >
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:paddingTop="@dimen/activity_vertical_margin"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+        android:paddingTop="@dimen/activity_vertical_margin"
         tools:context=".DemoActivity"
         >
 
         <Button
             android:id="@+id/btn_demo_schedulers"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/btn_demo_schedulers"
             />
 
         <Button
             android:id="@+id/btn_demo_buffer"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/btn_demo_buffer"
             />
 
         <Button
             android:id="@+id/btn_demo_debounce"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/btn_demo_debounce"
             />
 
         <Button
             android:id="@+id/btn_demo_retrofit"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/btn_demo_retrofit"
             />
 
         <Button
             android:id="@+id/btn_demo_double_binding_textview"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/btn_demo_double_binding_textview"
             />
 
         <Button
             android:id="@+id/btn_demo_polling"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="@string/btn_demo_polling" />
+            android:layout_height="wrap_content"
+            android:text="@string/btn_demo_polling"
+            />
 
         <Button
             android:id="@+id/btn_demo_rxbus"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/btn_demo_rxbus"
             />
 
         <Button
             android:id="@+id/btn_demo_form_validation_combinel"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/btn_demo_form_validation_combinel"
             />
 
         <Button
             android:id="@+id/btn_demo_pseudo_cache"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/btn_demo_pseudocache"
             />
 
         <Button
             android:id="@+id/btn_demo_timing"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/btn_demo_timing"
             />
 
         <Button
             android:id="@+id/btn_demo_timeout"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/btn_demo_timeout"
             />
 
         <Button
             android:id="@+id/btn_demo_exponential_backoff"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/btn_demo_exponential_backoff"
             />
 
         <Button
             android:id="@+id/btn_demo_rotation_persist"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/btn_demo_rotation_persist"
             />
 
         <Button
             android:id="@+id/btn_demo_volley"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/btn_demo_volley"
             />
 
         <Button
             android:id="@+id/btn_demo_pagination"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/btn_demo_pagination"
             />
 
         <Button
             android:id="@+id/btn_demo_networkDetector"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/btn_demo_networkDetector"
             />
+
     </LinearLayout>
 </ScrollView>
