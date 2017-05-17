@@ -84,10 +84,7 @@ public class TimeoutDemoFragment extends BaseFragment {
   // Main Rx entities
 
   private Observable<String> _getObservableTask_5sToComplete() {
-    return Observable.create(
-        new ObservableOnSubscribe<String>() {
-          @Override
-          public void subscribe(ObservableEmitter<String> subscriber) throws Exception {
+    return Observable.create(( subscriber) -> {
             _log(String.format("Starting a 5s task"));
             subscriber.onNext("5 s");
             try {
@@ -97,14 +94,11 @@ public class TimeoutDemoFragment extends BaseFragment {
             }
             subscriber.onComplete();
           }
-        });
+        );
   }
 
   private Observable<String> _getObservableTask_2sToComplete() {
-    return Observable.create(
-        new ObservableOnSubscribe<String>() {
-          @Override
-          public void subscribe(ObservableEmitter<String> subscriber) throws Exception {
+    return Observable.create((subscriber) -> {
             _log(String.format("Starting a 2s task"));
             subscriber.onNext("2 s");
             try {
@@ -114,19 +108,15 @@ public class TimeoutDemoFragment extends BaseFragment {
             }
             subscriber.onComplete();
           }
-        });
+        );
   }
 
   private Observable<? extends String> _onTimeoutObservable() {
-    return Observable.create(
-        new ObservableOnSubscribe<String>() {
-
-          @Override
-          public void subscribe(ObservableEmitter<String> subscriber) throws Exception {
+    return Observable.create((subscriber) -> {
             _log("Timing out this task ...");
             subscriber.onError(new Throwable("Timeout Error"));
           }
-        });
+        );
   }
 
   private DisposableObserver<String> _getEventCompletionObserver() {
