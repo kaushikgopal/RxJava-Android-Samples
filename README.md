@@ -1,6 +1,8 @@
 Learning RxJava for Android by example
 ==============
 
+中文版：[RxJava-Android-Samples](https://github.com/jokermonn/RxJava-Android-Samples)
+
 This is a repository with real-world useful examples of using RxJava with Android. [It usually will be in a constant state of "Work in Progress" (WIP)](http://blog.kaush.co/2014/09/15/learning-rxjava-with-android-by-example/).
 
 I've also been giving talks about Learning Rx using many of the examples listed in this repo.
