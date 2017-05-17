@@ -322,11 +322,11 @@ public class PseudoCacheFragment extends BaseFragment {
 
   private Map<String, Long> dummyDiskData() {
     Map<String, Long> map = new HashMap<>();
-    map.put("JakeWharton", 0L);
-    map.put("pforhan", 0L);
-    map.put("edenman", 0L);
-    map.put("swankjesse", 0L);
-    map.put("bruceLee", 0L);
+    map.put("JakeWharton (disk data)", 0L);
+    map.put("pforhan (disk data)", 0L);
+    map.put("edenman (disk data)", 0L);
+    map.put("swankjesse (disk data)", 0L);
+    map.put("bruceLee (disk data)", 0L);
     return map;
   }
 }
