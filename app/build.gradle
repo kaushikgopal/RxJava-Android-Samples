@@ -5,6 +5,7 @@ buildscript {
     }
     dependencies {
         classpath 'me.tatarka:gradle-retrolambda:3.6.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
     }
 
     // Exclude the lombok version that the android plugin depends on.
@@ -14,15 +15,7 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.f2prateek.javafmt'
-
-ext {
-    okhttpVersion = '3.6.0'
-    retrofitVersion = "2.2.0"
-    sdkVersion = 25
-    supportLibVersion = '25.3.0'
-    leakCanaryVersion = '1.5'
-    butterKnifeVersion = '8.5.1'
-}
+apply plugin: 'kotlin-android'
 
 dependencies {
     compile "com.android.support:support-v13:${supportLibVersion}"
@@ -30,14 +23,17 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
 
     compile 'com.github.kaushikgopal:CoreTextUtils:c703fa12b6'
-    compile "com.jakewharton:butterknife:$butterKnifeVersion"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+    compile "com.jakewharton:butterknife:${butterKnifeVersion}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     compile 'com.jakewharton.timber:timber:4.5.1'
     compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
     compile "com.squareup.okhttp3:okhttp:${okhttpVersion}"
     compile "com.squareup.okhttp3:okhttp-urlconnection:${okhttpVersion}"
     compile 'com.mcxiaoke.volley:library:1.0.19'
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
+    compile "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}"
 
     // ----------------------------------
     //  Rx dependencies
@@ -61,7 +57,7 @@ dependencies {
 
 android {
     compileSdkVersion sdkVersion
-    buildToolsVersion '25.0.2'
+    buildToolsVersion buildToolsVrs
 
     defaultConfig {
         applicationId "com.morihacky.android.rxjava"
@@ -76,11 +72,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     packagingOptions {
         pickFirst  'META-INF/rxjava.properties'
     }

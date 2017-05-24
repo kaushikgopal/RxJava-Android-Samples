@@ -6,12 +6,11 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.android.tools.build:gradle:2.3.2'
         classpath 'com.f2prateek.javafmt:javafmt:0.1.2'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-
     }
 }
 
@@ -21,5 +20,18 @@ allprojects {
         maven {
             url "https://jitpack.io"
         }
+    }
+
+    ext {
+        sdkVersion = 24
+        buildToolsVrs = "25.0.0"
+
+        kotlinVersion = "1.1.2-4"
+
+        butterKnifeVersion = '8.5.1'
+        mockitoKotlinVersion = "1.4.0"
+        okhttpVersion = "3.0.1"
+        retrofitVersion = "2.0.0"
+        supportLibVersion = "25.3.1"
     }
 }
