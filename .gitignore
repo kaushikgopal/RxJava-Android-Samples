@@ -22,6 +22,7 @@ buck-out/
 .buckd/
 
 # Intellij project files
+.idea/
 .idea/libraries
 .idea/.name
 .idea/compiler.xml

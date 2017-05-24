@@ -4,10 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
-        // can be removed with android-gradle plugin is upgraded to 2.2
-        // https://twitter.com/JakeWharton/status/760836175586267136
-        classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
+        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
     }
 
@@ -17,6 +14,7 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.f2prateek.javafmt'
 apply plugin: 'kotlin-android'
 
 dependencies {
@@ -25,8 +23,9 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
 
     compile 'com.github.kaushikgopal:CoreTextUtils:c703fa12b6'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.jakewharton.timber:timber:2.4.2'
+    compile "com.jakewharton:butterknife:${butterKnifeVersion}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
+    compile 'com.jakewharton.timber:timber:4.5.1'
     compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
     compile "com.squareup.okhttp3:okhttp:${okhttpVersion}"
@@ -39,18 +38,15 @@ dependencies {
     // ----------------------------------
     //  Rx dependencies
 
-    compile 'io.reactivex.rxjava2:rxjava:2.0.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.7'
 
     // Because RxAndroid releases are few and far between, it is recommended you also
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
-    // libs like rxbinding + rxjava-math haven't been ported to RxJava 2.x yet, so this helps
-    compile "com.github.akarnokd:rxjava2-interop:0.6.1"
-
-    compile 'io.reactivex:rxjava-math:1.0.0'
+    compile "com.github.akarnokd:rxjava2-extensions:0.16.0"
     compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
-    compile 'com.jakewharton.rxbinding:rxbinding:0.2.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
     compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
 
     // ----------------------------------
@@ -70,23 +66,19 @@ android {
         versionCode 2
         versionName "1.2"
     }
-
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     packagingOptions {
         pickFirst  'META-INF/rxjava.properties'
     }
