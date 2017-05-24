@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
-import butterknife.ButterKnife
 import com.morihacky.android.rxjava.R
 
 class PlaygroundFragment : BaseFragment() {
@@ -19,11 +18,6 @@ class PlaygroundFragment : BaseFragment() {
 
     private var _attempt = 0
     private var _logs: MutableList<String> = ArrayList()
-
-    override fun onDestroy() {
-        super.onDestroy()
-        ButterKnife.unbind(this)
-    }
 
     override fun onCreateView(inflater: LayoutInflater?,
                               container: ViewGroup?,
