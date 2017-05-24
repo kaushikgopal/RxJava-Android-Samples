@@ -20,4 +20,14 @@ allprojects {
             url "https://jitpack.io"
         }
     }
+
+    ext {
+        okhttpVersion = "3.0.1"
+        retrofitVersion = "2.0.0"
+        sdkVersion = 24
+        buildToolsVrs = "25.0.0"
+        supportLibVersion = "25.3.1"
+        kotlinVersion = "1.1.2-4"
+        mockitoKotlinVersion = "1.4.0"
+    }
 }

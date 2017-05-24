@@ -8,6 +8,7 @@ buildscript {
         // can be removed with android-gradle plugin is upgraded to 2.2
         // https://twitter.com/JakeWharton/status/760836175586267136
         classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
     }
 
     // Exclude the lombok version that the android plugin depends on.
@@ -16,13 +17,7 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
-
-ext {
-    okhttpVersion = "3.0.1"
-    retrofitVersion = "2.0.0"
-    sdkVersion = 24
-    supportLibVersion = "24.2.1"
-}
+apply plugin: 'kotlin-android'
 
 dependencies {
     compile "com.android.support:support-v13:${supportLibVersion}"
@@ -37,6 +32,9 @@ dependencies {
     compile "com.squareup.okhttp3:okhttp:${okhttpVersion}"
     compile "com.squareup.okhttp3:okhttp-urlconnection:${okhttpVersion}"
     compile 'com.mcxiaoke.volley:library:1.0.19'
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
+    compile "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}"
 
     // ----------------------------------
     //  Rx dependencies
@@ -63,7 +61,7 @@ dependencies {
 
 android {
     compileSdkVersion sdkVersion
-    buildToolsVersion '25.0.0'
+    buildToolsVersion buildToolsVrs
 
     defaultConfig {
         applicationId "com.morihacky.android.rxjava"
@@ -72,12 +70,18 @@ android {
         versionCode 2
         versionName "1.2"
     }
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
