@@ -16,25 +16,21 @@ class PlaygroundFragment : BaseFragment() {
     private var _logsList: ListView? = null
     private var _adapter: LogAdapter? = null
 
-    private var _attempt = 0
     private var _logs: MutableList<String> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater?,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_concurrency_schedulers, container, false)
-    }
+        val view = inflater?.inflate(R.layout.fragment_concurrency_schedulers, container, false)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+        _logsList = view?.findViewById(R.id.list_threading_log) as ListView
+        _setupLogger()
 
-        _logsList = activity.findViewById(R.id.list_threading_log) as ListView
-
-        activity.findViewById(R.id.btn_start_operation).setOnClickListener { _ ->
+        view.findViewById(R.id.btn_start_operation).setOnClickListener { _ ->
             _log("Button clicked")
         }
 
-        _setupLogger()
+        return view
     }
 
     // -----------------------------------------------------------------------------------
@@ -44,15 +40,15 @@ class PlaygroundFragment : BaseFragment() {
 
         if (_isCurrentlyOnMainThread()) {
             _logs.add(0, logMsg + " (main thread) ")
-            _adapter!!.clear()
-            _adapter!!.addAll(_logs)
+            _adapter?.clear()
+            _adapter?.addAll(_logs)
         } else {
             _logs.add(0, logMsg + " (NOT main thread) ")
 
             // You can only do below stuff on main thread.
             Handler(Looper.getMainLooper()).post {
-                _adapter!!.clear()
-                _adapter!!.addAll(_logs)
+                _adapter?.clear()
+                _adapter?.addAll(_logs)
             }
         }
     }
@@ -60,7 +56,7 @@ class PlaygroundFragment : BaseFragment() {
     private fun _setupLogger() {
         _logs = ArrayList<String>()
         _adapter = LogAdapter(activity, ArrayList<String>())
-        _logsList!!.adapter = _adapter
+        _logsList?.adapter = _adapter
     }
 
     private fun _isCurrentlyOnMainThread(): Boolean {
