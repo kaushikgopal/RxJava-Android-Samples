@@ -26,6 +26,7 @@ I've also been giving talks about Learning Rx using many of the examples listed 
 14. [Pagination with Rx (using Subjects)](#14-pagination-with-rx-using-subjects)
 15. [Orchestrating Observable: make parallel network calls, then combine the result into a single data point (using flatmap & zip)](#15-orchestrating-observable-make-parallel-network-calls-then-combine-the-result-into-a-single-data-point-using-flatmap--zip)
 16. [Simple Timeout example (using timeout)](#16-simple-timeout-example-using-timeout)
+17. [Setup and teardown resources (using `using`)](#17-setup-and-teardown-resources-using-using)
 
 ## Description
 
@@ -221,6 +222,12 @@ The code for this example has already been written by one Mr.skehlet in the inte
 This is a simple example demonstrating the use of the `.timeout` operator. Button 1 will complete the task before the timeout constraint, while Button 2 will force a timeout error.
 
 Notice how we can provide a custom Observable that indicates how to react under a timeout Exception.
+
+### 17. Setup and teardown resources (using `using`)
+
+The [operator `using`](http://reactivex.io/documentation/operators/using.html) is relatively less known and notoriously hard to Google. It's a beautiful API that helps to setup a (costly) resource, use it and then dispose off in a clean way.
+
+The nice thing about this operator is that it provides a mechansim to use potentially costly resources in a tightly scoped manner. using -> setup, use and dispose. Think DB connections (like Realm instances), socket connections, thread locks etc.  
 
 ## Rx 2.x
 
