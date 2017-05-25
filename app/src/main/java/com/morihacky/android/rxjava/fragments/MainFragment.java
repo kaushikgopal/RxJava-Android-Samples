@@ -116,6 +116,11 @@ public class MainFragment extends BaseFragment {
     clickedOn(new NetworkDetectorFragment());
   }
 
+  @OnClick(R.id.btn_demo_using)
+  void demoUsing() {
+    clickedOn(new UsingFragment());
+  }
+
   private void clickedOn(@NonNull Fragment fragment) {
     final String tag = fragment.getClass().toString();
     getActivity()
