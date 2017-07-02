@@ -18,6 +18,7 @@ apply plugin: 'com.f2prateek.javafmt'
 apply plugin: 'kotlin-android'
 
 dependencies {
+    compile 'com.android.support:multidex:1.0.1'
     compile "com.android.support:support-v13:${supportLibVersion}"
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
@@ -46,6 +47,7 @@ dependencies {
 
     compile "com.github.akarnokd:rxjava2-extensions:0.16.0"
     compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
+
     compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
     compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
 
@@ -65,6 +67,7 @@ android {
         targetSdkVersion sdkVersion
         versionCode 2
         versionName "1.2"
+        multiDexEnabled true
     }
     buildTypes {
         release {
