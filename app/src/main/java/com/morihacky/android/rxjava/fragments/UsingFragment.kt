@@ -12,7 +12,6 @@ import android.widget.ListView
 import android.widget.TextView
 import com.morihacky.android.rxjava.R
 import io.reactivex.Flowable
-import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
 import org.reactivestreams.Publisher
@@ -22,10 +21,9 @@ import java.util.concurrent.Callable
 
 class UsingFragment : BaseFragment() {
 
-    private var _logs: MutableList<String> = ArrayList()
-    private var _logsList: ListView? = null
-    private var _adapter: UsingFragment.LogAdapter? = null
-    private var disposable: Disposable? = null
+    private lateinit var _logs: MutableList<String>
+    private lateinit var _logsList: ListView
+    private lateinit var _adapter: UsingFragment.LogAdapter
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.fragment_buffer, container, false)
@@ -52,11 +50,10 @@ class UsingFragment : BaseFragment() {
             realm.clear()
         }
 
-        disposable =
-                Flowable.using(resourceSupplier, sourceSupplier, disposer)
-                        .subscribe({ i ->
-                            _log("got a value $i - (look at the logs)")
-                        })
+        Flowable.using(resourceSupplier, sourceSupplier, disposer)
+                .subscribe({ i ->
+                    _log("got a value $i - (look at the logs)")
+                })
     }
 
     inner class Realm {
@@ -82,15 +79,15 @@ class UsingFragment : BaseFragment() {
 
         // You can only do below stuff on main thread.
         Handler(Looper.getMainLooper()).post {
-            _adapter!!.clear()
-            _adapter!!.addAll(_logs)
+            _adapter.clear()
+            _adapter.addAll(_logs)
         }
     }
 
     private fun _setupLogger() {
         _logs = ArrayList<String>()
         _adapter = LogAdapter(activity, ArrayList<String>())
-        _logsList?.adapter = _adapter
+        _logsList.adapter = _adapter
     }
 
     private class LogAdapter(context: Context, logs: List<String>) : ArrayAdapter<String>(context, R.layout.item_log, R.id.item_log, logs)
