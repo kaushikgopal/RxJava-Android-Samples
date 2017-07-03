@@ -36,6 +36,10 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
     compile "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}"
 
+    compile "android.arch.lifecycle:runtime:${archComponentsVersion}"
+    compile "android.arch.lifecycle:extensions:${archComponentsVersion}"
+    kapt  "android.arch.lifecycle:compiler:${archComponentsVersion}"
+
     // ----------------------------------
     //  Rx dependencies
 

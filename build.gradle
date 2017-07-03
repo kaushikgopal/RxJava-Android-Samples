@@ -17,6 +17,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://maven.google.com' }
         maven {
             url "https://jitpack.io"
         }
@@ -28,6 +29,7 @@ allprojects {
 
         kotlinVersion = "1.1.2-4"
 
+        archComponentsVersion = "1.0.0-alpha3"
         butterKnifeVersion = '8.5.1'
         mockitoKotlinVersion = "1.4.0"
         okhttpVersion = "3.0.1"
