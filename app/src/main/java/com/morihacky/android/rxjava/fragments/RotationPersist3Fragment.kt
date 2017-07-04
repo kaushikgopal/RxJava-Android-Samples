@@ -98,7 +98,8 @@ class SharedViewModel : ViewModel() {
             Flowable.interval(1, TimeUnit.SECONDS)
                     .take(20)
                     .doOnNext { l -> Timber.tag("KG").d("onNext $l") }
-                    .publish()
+//                    .replayingShare()
+                    .replay(1)
                     .autoConnect(1) { t -> disposable = t }
 
     fun sourceStream(): Flowable<Long> {
