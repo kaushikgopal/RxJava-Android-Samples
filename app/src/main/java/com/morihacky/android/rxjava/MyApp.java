@@ -1,12 +1,13 @@
 package com.morihacky.android.rxjava;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
+
 import com.morihacky.android.rxjava.volley.MyVolley;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import timber.log.Timber;
 
-public class MyApp extends Application {
+public class MyApp extends MultiDexApplication {
 
   private static MyApp _instance;
   private RefWatcher _refWatcher;
