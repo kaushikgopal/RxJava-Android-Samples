@@ -27,7 +27,7 @@ I've also been giving talks about Learning Rx using many of the examples listed 
 15. [Orchestrating Observable: make parallel network calls, then combine the result into a single data point (using flatmap & zip)](#15-orchestrating-observable-make-parallel-network-calls-then-combine-the-result-into-a-single-data-point-using-flatmap--zip)
 16. [Simple Timeout example (using timeout)](#16-simple-timeout-example-using-timeout)
 17. [Setup and teardown resources (using `using`)](#17-setup-and-teardown-resources-using-using)
-18. [Multicast playground]()
+18. [Multicast playground](#18-multicast-playground)
 
 ## Description
 
