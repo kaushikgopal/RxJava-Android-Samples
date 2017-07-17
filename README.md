@@ -27,6 +27,7 @@ I've also been giving talks about Learning Rx using many of the examples listed 
 15. [Orchestrating Observable: make parallel network calls, then combine the result into a single data point (using flatmap & zip)](#15-orchestrating-observable-make-parallel-network-calls-then-combine-the-result-into-a-single-data-point-using-flatmap--zip)
 16. [Simple Timeout example (using timeout)](#16-simple-timeout-example-using-timeout)
 17. [Setup and teardown resources (using `using`)](#17-setup-and-teardown-resources-using-using)
+18. [Multicast playground]()
 
 ## Description
 
@@ -162,7 +163,7 @@ Cases demonstrated here:
 4. run a task constantly every 3s, but after running it 5 times, terminate automatically
 5. run a task A, pause for sometime, then execute Task B, then terminate
 
-### 11. RxBus : event bus using RxJava (using RxRelay (never terminating Subjects) and debouncedBuffer)  
+### 11. RxBus : event bus using RxJava (using RxRelay (never terminating Subjects) and debouncedBuffer)
 
 There are accompanying blog posts that do a much better job of explaining the details on this demo:
 
@@ -227,7 +228,15 @@ Notice how we can provide a custom Observable that indicates how to react under 
 
 The [operator `using`](http://reactivex.io/documentation/operators/using.html) is relatively less known and notoriously hard to Google. It's a beautiful API that helps to setup a (costly) resource, use it and then dispose off in a clean way.
 
-The nice thing about this operator is that it provides a mechansim to use potentially costly resources in a tightly scoped manner. using -> setup, use and dispose. Think DB connections (like Realm instances), socket connections, thread locks etc.  
+The nice thing about this operator is that it provides a mechansim to use potentially costly resources in a tightly scoped manner. using -> setup, use and dispose. Think DB connections (like Realm instances), socket connections, thread locks etc.
+
+### 18. Multicast Playground
+
+Multicasting in Rx is like a dark art. Not too many folks know how to pull it off without concern. This example condiers two subscribers (in the forms of buttons) and allows you to add/remove subscribers at different points of time and see how the different operators behave under those circumstances.
+
+The source observale is a timer (`interval`) observable and the reason this was chosen was to intentionally pick a non-terminating observable, so you can test/confirm if your multicast experiment will leak.
+
+_I also gave a talk about [Multicasting in detail at 360|Andev](https://speakerdeck.com/kaushikgopal/rx-by-example-volume-3-the-multicast-edition). If you have the inclination and time, I highly suggest watching that talk first (specifically the Multicast operator permutation segment) and then messing around with the example here._
 
 ## Rx 2.x
 
