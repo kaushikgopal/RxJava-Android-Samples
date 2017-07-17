@@ -15,7 +15,6 @@ import io.reactivex.Flowable
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
 import org.reactivestreams.Publisher
-import timber.log.Timber
 import java.util.*
 import java.util.concurrent.Callable
 
@@ -58,16 +57,16 @@ class UsingFragment : BaseFragment() {
 
     inner class Realm {
         init {
-            Timber.d("--- initializing Realm instance")
+            _log("initializing Realm instance")
         }
 
         fun doSomething() {
-            Timber.d("--- do something with Realm instance")
+            _log("do something with Realm instance")
         }
 
         fun clear() {
             // notice how this is called even before you manually "dispose"
-            Timber.d("--- cleaning up the resources (happens before a manual 'dispose'")
+            _log("cleaning up the resources (happens before a manual 'dispose'")
         }
     }
 
