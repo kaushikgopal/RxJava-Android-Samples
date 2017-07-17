@@ -23,6 +23,8 @@
     <string name="btn_demo_pagination">Paging example</string>
     <string name="btn_demo_pagination_more">MOAR</string>
     <string name="btn_demo_networkDetector">Network Detector (Subject)</string>
+    <string name="btn_demo_using">Setup &amp; teardown resources (using)</string>
+    <string name="btn_demo_multicastPlayground">MultiConnect operator playground</string>
 
     <string name="msg_demo_pagination">This is a demo of how you can do a list pagination with Rx. We page 10 items at a time and there are 55 items altogether</string>
     <string name="msg_demo_volley">This is a Volley request demo</string>
@@ -40,6 +42,12 @@
     <string name="msg_demo_timing">BTN 1: run single task once (after 2s complete)\nBTN 2: run task every 1s (start delay of 1s) toggle \nBTN 3: run task every 1s (start immediately) toggle \nBTN 4: run task 5 times every 3s (then complete) \nBTN 5: run task A, pause for sometime, then proceed with Task B</string>
     <string name="msg_demo_rotation_persist">This is an example of starting an Observable and using the result across rotations. There are many ways to do this, we use a retained fragment in this example</string>
     <string name="msg_demo_network_detector">This is a demo of how to use Subjects to detect Network connectivity\nToggle your Wifi/Network on or off and notice the logs</string>
+    <string name="msg_demo_using">This is a demo of the somewhat unknown operator "using".\n\nmsg_demo_usingYou typically use it for managing setup/teardown of resources. Classic cases are DB connections (like Realm), sockets, locks etc.\n\nTap the button and look at the logcat. Particularly notice how the Realm instance is self-contained. That is, it is auto-disposed right after use.</string>
+    <string name="msg_demo_multicast_publishRefCount">RefCount starts the upstream right away and gets disposed off, when all subscribers stop. Hit S1, Hit S2, Hit S1, Hit S2. Hit S1/S2 now and notice the stream starts all over.</string>
+    <string name="msg_demo_multicast_publishAutoConnect">AutoConnect(2) waits for a min. subscriber count, before starting the upstream. Hit S1 (notice events don\'t start), Hit S2 (notice events now start), Hit S1 (notice that unsubscribing doesn\'t affect upstream), Hit S2, wait for sometime and hit S1 again (notice source stream doesn\'t restart)</string>
+    <string name="msg_demo_multicast_replayAutoConnect">Replay caches the last item. Hit S1, Hit S2, event starts, Hit S2, wait a bit, Hit S2 again (notice it starts with the last item that S1 saw - courtesy Replay). Hit S2, Hit S1, wait a bit. Hit S1 again (notice event upstream continues and doesn\'t restart)</string>
+    <string name="msg_demo_multicast_replayRefCount">Replay caches the last item. Hit S1, wait a bit, then hit S2 (notice S2 starts immediately with last item that S1 saw), Hit S2, Hit S1. Hit S1/S2 again (notice the stream restarts all over. Interestingly cached last item also removed when both subscribers released)</string>
+    <string name="msg_demo_multicast_replayingShare">Courtesy: new #AndroidDev on the block - JakeWharton. exactly like replay(1).refCount(), but caches the last item even when upstream has been disposed off/released. Hit S1, Hit S2, Hit S1, Hit S2 (notice observable is disposed). Hit S1/S2 again (notice we start with last item emitted)</string>
 
     <string name="msg_pseudoCache_demoInfo_concat">Concat merges the results sequentially. But notice that the latter subscription starts only AFTER the first one completes. Some unnecessary waiting there.</string>
     <string name="msg_pseudoCache_demoInfo_concatEager">Concat eager is cooler. Both subscriptions start at the same time (parallely) but the order of emission is respected.</string>

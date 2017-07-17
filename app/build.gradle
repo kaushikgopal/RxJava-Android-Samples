@@ -25,7 +25,7 @@ dependencies {
 
     compile 'com.github.kaushikgopal:CoreTextUtils:c703fa12b6'
     compile "com.jakewharton:butterknife:${butterKnifeVersion}"
-    annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
+    kapt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     compile 'com.jakewharton.timber:timber:4.5.1'
     compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
@@ -45,6 +45,7 @@ dependencies {
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
+    compile 'com.jakewharton.rx:replaying-share-kotlin:2.0.0'
     compile "com.github.akarnokd:rxjava2-extensions:0.16.0"
     compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
     compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
@@ -66,7 +67,6 @@ android {
         targetSdkVersion sdkVersion
         versionCode 2
         versionName "1.2"
-
         multiDexEnabled true
     }
     buildTypes {

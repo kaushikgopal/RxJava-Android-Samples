@@ -1,7 +1,6 @@
 package com.morihacky.android.rxjava;
 
 import android.support.multidex.MultiDexApplication;
-
 import com.morihacky.android.rxjava.volley.MyVolley;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
