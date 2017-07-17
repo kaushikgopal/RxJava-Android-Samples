@@ -96,8 +96,9 @@ public class MainFragment extends BaseFragment {
 
   @OnClick(R.id.btn_demo_rotation_persist)
   void demoRotationPersist() {
-    clickedOn(new RotationPersist2Fragment());
-    //clickedOn(new RotationPersist1Fragment());
+    clickedOn(new RotationPersist3Fragment());
+    // clickedOn(new RotationPersist2Fragment());
+    // clickedOn(new RotationPersist1Fragment());
   }
 
   @OnClick(R.id.btn_demo_pagination)
