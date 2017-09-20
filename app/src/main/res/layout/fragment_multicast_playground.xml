@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+
+
+  <TableLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TableRow
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center">
+
+      <Spinner
+        android:id="@+id/dropdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_span="3"/>
+
+    </TableRow>
+
+    <TableRow
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <TextView
+        android:id="@+id/msg_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_span="3"
+        android:padding="@dimen/text_micro"
+        android:text="@string/msg_demo_multicast_publishRefCount"/>
+    </TableRow>
+
+    <TableRow
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <Button
+        android:id="@+id/btn_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Subscribe 1"/>
+
+      <Button
+        android:id="@+id/btn_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Subscribe 2"/>
+
+      <Button
+        android:id="@+id/btn_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Clear log"/>
+    </TableRow>
+
+  </TableLayout>
+
+
+  <ListView
+    android:id="@+id/list_threading_log"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+</LinearLayout>

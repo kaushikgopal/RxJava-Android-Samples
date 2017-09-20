@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -26,7 +25,7 @@
             android:id="@+id/btn_start_simple_polling"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Start simple polling"
+            android:text="@string/start_simple_polling"
             android:textSize="16sp"
             />
 
@@ -34,7 +33,7 @@
             android:id="@+id/btn_start_increasingly_delayed_polling"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Start increasingly delayed polling"
+            android:text="@string/start_increasingly_delayed_polling"
             android:textSize="16sp"
             />
     </LinearLayout>

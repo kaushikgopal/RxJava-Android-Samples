@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     android:orientation="vertical"
     android:layout_height="match_parent"
@@ -25,7 +24,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_width="0dip"
-            android:text="Button 1"
+            android:text="@string/button_1"
             />
 
         <Button
@@ -33,7 +32,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_width="0dip"
-            android:text="Button 2"
+            android:text="@string/button_2"
             />
 
     </LinearLayout>

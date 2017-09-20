@@ -23,6 +23,8 @@
     <string name="btn_demo_pagination">Paging example</string>
     <string name="btn_demo_pagination_more">MOAR</string>
     <string name="btn_demo_networkDetector">Network Detector (Subject)</string>
+    <string name="btn_demo_using">Setup &amp; teardown resources (using)</string>
+    <string name="btn_demo_multicastPlayground">MultiConnect operator playground</string>
 
     <string name="msg_demo_pagination">This is a demo of how you can do a list pagination with Rx. We page 10 items at a time and there are 55 items altogether</string>
     <string name="msg_demo_volley">This is a Volley request demo</string>
@@ -38,8 +40,14 @@
     <string name="msg_demo_rxbus_1">Tap on the below button and RxBus will listen to the events</string>
     <string name="msg_demo_form_comb_latest">Monitor the state of multiple observables with the combineLatest operator. Only after all the 3 inputs contain valid entries will the submit button light up</string>
     <string name="msg_demo_timing">BTN 1: run single task once (after 2s complete)\nBTN 2: run task every 1s (start delay of 1s) toggle \nBTN 3: run task every 1s (start immediately) toggle \nBTN 4: run task 5 times every 3s (then complete) \nBTN 5: run task A, pause for sometime, then proceed with Task B</string>
-    <string name="msg_demo_rotation_persist">This is an example of starting an Observable and using the result across rotations. There are many ways to do this, we use a retained fragment in this example</string>
+    <string name="msg_demo_rotation_persist">This is an example of starting an Observable and using the result across rotations. There are many ways to do this, we use ViewModels from architecture components</string>
     <string name="msg_demo_network_detector">This is a demo of how to use Subjects to detect Network connectivity\nToggle your Wifi/Network on or off and notice the logs</string>
+    <string name="msg_demo_using">This is a demo of the somewhat unknown operator "using".\n\nYou typically use it for managing setup/teardown of resources. Classic cases are DB connections (like Realm), sockets, locks etc.\n\nTap the button and look at the logcat. Particularly notice how the Realm instance is self-contained. That is, it is auto-disposed right after use.</string>
+    <string name="msg_demo_multicast_publishRefCount">RefCount starts the upstream right away and gets disposed off, when all subscribers stop. Hit S1, Hit S2, Hit S1, Hit S2. Hit S1/S2 now and notice the stream starts all over.</string>
+    <string name="msg_demo_multicast_publishAutoConnect">AutoConnect(2) waits for a min. subscriber count, before starting the upstream. Hit S1 (notice events don\'t start), Hit S2 (notice events now start), Hit S1 (notice that unsubscribing doesn\'t affect upstream), Hit S2, wait for sometime and hit S1 again (notice source stream doesn\'t restart)</string>
+    <string name="msg_demo_multicast_replayAutoConnect">Replay caches the last item. Hit S1, Hit S2, event starts, Hit S2, wait a bit, Hit S2 again (notice it starts with the last item that S1 saw - courtesy Replay). Hit S2, Hit S1, wait a bit. Hit S1 again (notice event upstream continues and doesn\'t restart)</string>
+    <string name="msg_demo_multicast_replayRefCount">Replay caches the last item. Hit S1, wait a bit, then hit S2 (notice S2 starts immediately with last item that S1 saw), Hit S2, Hit S1. Hit S1/S2 again (notice the stream restarts all over. Interestingly cached last item also removed when both subscribers released)</string>
+    <string name="msg_demo_multicast_replayingShare">Courtesy: new #AndroidDev on the block - JakeWharton. exactly like replay(1).refCount(), but caches the last item even when upstream has been disposed off/released. Hit S1, Hit S2, Hit S1, Hit S2 (notice observable is disposed). Hit S1/S2 again (notice we start with last item emitted)</string>
 
     <string name="msg_pseudoCache_demoInfo_concat">Concat merges the results sequentially. But notice that the latter subscription starts only AFTER the first one completes. Some unnecessary waiting there.</string>
     <string name="msg_pseudoCache_demoInfo_concatEager">Concat eager is cooler. Both subscriptions start at the same time (parallely) but the order of emission is respected.</string>
@@ -47,5 +55,49 @@
     <string name="msg_pseudoCache_demoInfo_mergeSlowDisk">Here\'s a fake example where the disk is made slower than the network call. You can see the results are whack.</string>
     <string name="msg_pseudoCache_demoInfo_mergeOptimized">This is an optimized merge and probably want to use. Notice subscriptions happen immediately and network results are respected regardless of when they come in. So if the disk is slower, it is discarded.</string>
     <string name="msg_pseudoCache_demoInfo_mergeOptimizedSlowDisk">Similar to optimized merge (same code). Notice though that if the disk is slower it\'s discarded in favor of the "fresh" network data which in this case happens to be faster.</string>
+    <string name="tap_me">tap me</string>
+    <string name="start_long_operation">Start long operation</string>
+    <string name="enter_some_search_text">Enter some search text</string>
+    <string name="btn_1">BTN 1</string>
+    <string name="btn_2">BTN 2</string>
+    <string name="btn_3">BTN 3</string>
+    <string name="btn_4">BTN 4</string>
+    <string name="btn_5">BTN 5</string>
+    <string name="clear_log">CLEAR LOG</string>
+    <string name="one_hundred">100</string>
+    <string name="plus">+</string>
+    <string name="eight">8</string>
+    <string name="zero">0</string>
+    <string name="retry">Retry</string>
+    <string name="delay">Delay</string>
+    <string name="enter_a_valid_email_below">Enter a valid email below:</string>
+    <string name="password_than_8_chrs"><![CDATA[password (> than 8 chrs):]]></string>
+    <string name="number_between_1_amp_100"><![CDATA[number (between 1 & 100):]]></string>
+    <string name="submit">Submit</string>
+    <string name="start_simple_polling">Start simple polling</string>
+    <string name="start_increasingly_delayed_polling">Start increasingly delayed polling</string>
+    <string name="info_about_the_demo_will_show_up_here">Info about the demo will show up here</string>
+    <string name="concat">concat</string>
+    <string name="concat_eager">concat (eager)</string>
+    <string name="merge">merge</string>
+    <string name="merge_n_slower_disk">merge (slower disk)</string>
+    <string name="merge_n_optimized">merge (optimized)</string>
+    <string name="merge_n_optimized_slow_disk">merge (optimized) slow disk</string>
+    <string name="start_disk_network_call"><![CDATA[Start disk > network call]]></string>
+    <string name="log_contributors_of">Log contributors of:</string>
+    <string name="square">square</string>
+    <string name="owner">owner</string>
+    <string name="retrofit">retrofit</string>
+    <string name="reponame">reponame</string>
+    <string name="log_with_full_user_info">Log with full User Info:</string>
+    <string name="log_user_info">Log User Info:</string>
+    <string name="kaushikgopal">kaushikgopal</string>
+    <string name="start_operation">Start operation</string>
+    <string name="one">1</string>
+    <string name="tap">tap!</string>
+    <string name="button_1">Button 1</string>
+    <string name="button_2">Button 2</string>
+    <string name="start">Start</string>
+    <string name="i_amz_btn">I AMZ BTN</string>
 
 </resources>

@@ -1,5 +1,7 @@
 package com.morihacky.android.rxjava.fragments;
 
+import static android.os.Looper.getMainLooper;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -8,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.morihacky.android.rxjava.R;
@@ -20,110 +22,103 @@ import java.util.ArrayList;
 import java.util.List;
 import timber.log.Timber;
 
+public class RotationPersist2Fragment extends BaseFragment
+    implements RotationPersist2WorkerFragment.IAmYourMaster {
 
-import static android.os.Looper.getMainLooper;
+  public static final String TAG = RotationPersist2Fragment.class.toString();
 
-public class RotationPersist2Fragment
-      extends BaseFragment
-      implements RotationPersist2WorkerFragment.IAmYourMaster {
+  @BindView(R.id.list_threading_log)
+  ListView _logList;
 
-    public static final String FRAG_TAG = RotationPersist2WorkerFragment.class.getName();
+  private LogAdapter _adapter;
+  private List<String> _logs;
 
-    @Bind(R.id.list_threading_log) ListView _logList;
+  private CompositeDisposable _disposables = new CompositeDisposable();
 
-    private LogAdapter _adapter;
-    private List<String> _logs;
+  // -----------------------------------------------------------------------------------
 
-    private CompositeDisposable _disposables = new CompositeDisposable();
+  @OnClick(R.id.btn_rotate_persist)
+  public void startOperationFromWorkerFrag() {
+    _logs = new ArrayList<>();
+    _adapter.clear();
 
-    // -----------------------------------------------------------------------------------
+    FragmentManager fm = getActivity().getSupportFragmentManager();
+    RotationPersist2WorkerFragment frag =
+        (RotationPersist2WorkerFragment) fm.findFragmentByTag(RotationPersist2WorkerFragment.TAG);
 
-    @OnClick(R.id.btn_rotate_persist)
-    public void startOperationFromWorkerFrag() {
-        _logs = new ArrayList<>();
-        _adapter.clear();
-
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        RotationPersist2WorkerFragment frag = (RotationPersist2WorkerFragment) fm.findFragmentByTag(FRAG_TAG);
-
-        if (frag == null) {
-            frag = new RotationPersist2WorkerFragment();
-            fm
-                  .beginTransaction()
-                  .add(frag, FRAG_TAG)
-                  .commit();
-        }
-        else {
-            Timber.d("Worker frag already spawned");
-        }
+    if (frag == null) {
+      frag = new RotationPersist2WorkerFragment();
+      fm.beginTransaction().add(frag, RotationPersist2WorkerFragment.TAG).commit();
+    } else {
+      Timber.d("Worker frag already spawned");
     }
+  }
 
-    @Override
-    public void setStream(Flowable<Integer> intStream) {
-        DisposableSubscriber<Integer> d = new DisposableSubscriber<Integer>() {
-            @Override
-            public void onNext(Integer integer) {
-                _log(String.format("Worker frag spits out - %d", integer));
-            }
+  @Override
+  public void setStream(Flowable<Integer> intStream) {
+    DisposableSubscriber<Integer> d =
+        new DisposableSubscriber<Integer>() {
+          @Override
+          public void onNext(Integer integer) {
+            _log(String.format("Worker frag spits out - %d", integer));
+          }
 
-            @Override
-            public void onError(Throwable e) {
-                Timber.e(e, "Error in worker demo frag observable");
-                _log("Dang! something went wrong.");
-            }
+          @Override
+          public void onError(Throwable e) {
+            Timber.e(e, "Error in worker demo frag observable");
+            _log("Dang! something went wrong.");
+          }
 
-            @Override
-            public void onComplete() {
-                _log("Observable is complete");
-            }
+          @Override
+          public void onComplete() {
+            _log("Observable is complete");
+          }
         };
 
-        intStream
-              .doOnSubscribe(subscription -> _log("Subscribing to intsObservable"))
-              .subscribe(d);
+    intStream.doOnSubscribe(subscription -> _log("Subscribing to intsObservable")).subscribe(d);
 
-        _disposables.add(d);
+    _disposables.add(d);
+  }
 
-    }
+  // -----------------------------------------------------------------------------------
+  // Boilerplate
+  // -----------------------------------------------------------------------------------
 
-// -----------------------------------------------------------------------------------
-    // Boilerplate
-    // -----------------------------------------------------------------------------------
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    _setupLogger();
+  }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        _setupLogger();
-    }
+  @Override
+  public View onCreateView(
+      LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    View layout = inflater.inflate(R.layout.fragment_rotation_persist, container, false);
+    ButterKnife.bind(this, layout);
+    return layout;
+  }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_rotation_persist, container, false);
-        ButterKnife.bind(this, layout);
-        return layout;
-    }
+  @Override
+  public void onPause() {
+    super.onPause();
+    _disposables.clear();
+  }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        _disposables.clear();
-    }
+  private void _setupLogger() {
+    _logs = new ArrayList<>();
+    _adapter = new LogAdapter(getActivity(), new ArrayList<>());
+    _logList.setAdapter(_adapter);
+  }
 
-    private void _setupLogger() {
-        _logs = new ArrayList<>();
-        _adapter = new LogAdapter(getActivity(), new ArrayList<>());
-        _logList.setAdapter(_adapter);
-    }
+  private void _log(String logMsg) {
+    _logs.add(0, logMsg);
 
-    private void _log(String logMsg) {
-        _logs.add(0, logMsg);
-
-        // You can only do below stuff on main thread.
-        new Handler(getMainLooper()).post(() -> {
-            _adapter.clear();
-            _adapter.addAll(_logs);
-        });
-    }
+    // You can only do below stuff on main thread.
+    new Handler(getMainLooper())
+        .post(
+            () -> {
+              _adapter.clear();
+              _adapter.addAll(_logs);
+            });
+  }
 }

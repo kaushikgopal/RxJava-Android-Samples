@@ -1,4 +1,4 @@
-<ScrollView
+<?xml version="1.0" encoding="utf-8"?><ScrollView
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -126,6 +126,20 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:text="@string/btn_demo_networkDetector"
+            />
+
+        <Button
+            android:id="@+id/btn_demo_using"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/btn_demo_using"
+            />
+
+        <Button
+            android:id="@+id/btn_demo_multicastPlayground"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/btn_demo_multicastPlayground"
             />
     </LinearLayout>
 </ScrollView>

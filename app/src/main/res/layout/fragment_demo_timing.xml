@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     android:orientation="vertical"
     android:layout_height="match_parent"
@@ -38,7 +37,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="BTN 1"
+                android:text="@string/btn_1"
                 />
 
             <Button
@@ -46,7 +45,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="BTN 2"
+                android:text="@string/btn_2"
                 />
         </TableRow>
 
@@ -60,7 +59,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="BTN 3"
+                android:text="@string/btn_3"
                 />
 
             <Button
@@ -68,7 +67,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="BTN 4"
+                android:text="@string/btn_4"
                 />
         </TableRow>
 
@@ -82,7 +81,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="BTN 5"
+                android:text="@string/btn_5"
                 />
 
             <Button
@@ -91,7 +90,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="CLEAR LOG"
+                android:text="@string/clear_log"
                 />
         </TableRow>
     </TableLayout>

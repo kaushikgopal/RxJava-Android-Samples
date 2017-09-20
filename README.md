@@ -10,22 +10,24 @@ I've also been giving talks about Learning Rx using many of the examples listed 
 
 ## Examples:
 
-1. [Background work & concurrency (using Schedulers)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#1-background-work--concurrency-using-schedulers)
-2. [Accumulate calls (using buffer)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#2-accumulate-calls-using-buffer)
-3. [Instant/Auto searching text listeners (using Subjects & debounce)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#3-instantauto-searching-text-listeners-using-subjects--debounce)
-4. [Networking with Retrofit & RxJava (using zip, flatmap)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#4-networking-with-retrofit--rxjava-using-zip-flatmap)
-5. [Two-way data binding for TextViews (using PublishSubject)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#5-two-way-data-binding-for-textviews-using-publishsubject)
-6. [Simple and Advanced polling (using interval and repeatWhen)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#6-simple-and-advanced-polling-using-interval-and-repeatwhen)
-7. [Simple and Advanced exponential backoff (using delay and retryWhen)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#7-simple-and-advanced-exponential-backoff-using-delay-and-retrywhen)
-8. [Form validation (using combineLatest)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#8-form-validation-using-combinelatest)
-9. [Pseudo caching : retrieve data first from a cache, then a network call (using concat, concatEager, merge or publish)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#9-pseudo-caching--retrieve-data-first-from-a-cache-then-a-network-call-using-concat-concateager-merge-or-publish)
-10. [Simple timing demos (using timer, interval or delay)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#10-simple-timing-demos-using-timer-interval-and-delay)
-11. [RxBus : event bus using RxJava (using RxRelay (never terminating Subjects) and debouncedBuffer)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#11-rxbus--event-bus-using-rxjava-using-rxrelay-never-terminating-subjects-and-debouncedbuffer)
-12. [Persist data on Activity rotations (using Subjects and retained Fragments)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#12-persist-data-on-activity-rotations-using-subjects-and-retained-fragments)
-13. [Networking with Volley](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#13-networking-with-volley)
-14. [Pagination with Rx (using Subjects)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#14-pagination-with-rx-using-subjects)
-15. [Orchestrating Observable: make parallel network calls, then combine the result into a single data point (using flatmap & zip)](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/README.md#15-orchestrating-observable-make-parallel-network-calls-then-combine-the-result-into-a-single-data-point-using-flatmap--zip)
-16. [Simple Timeout example (using timeout)]()
+1. [Background work & concurrency (using Schedulers)](#1-background-work--concurrency-using-schedulers)
+2. [Accumulate calls (using buffer)](#2-accumulate-calls-using-buffer)
+3. [Instant/Auto searching text listeners (using Subjects & debounce)](#3-instantauto-searching-text-listeners-using-subjects--debounce)
+4. [Networking with Retrofit & RxJava (using zip, flatmap)](#4-networking-with-retrofit--rxjava-using-zip-flatmap)
+5. [Two-way data binding for TextViews (using PublishSubject)](#5-two-way-data-binding-for-textviews-using-publishsubject)
+6. [Simple and Advanced polling (using interval and repeatWhen)](#6-simple-and-advanced-polling-using-interval-and-repeatwhen)
+7. [Simple and Advanced exponential backoff (using delay and retryWhen)](#7-simple-and-advanced-exponential-backoff-using-delay-and-retrywhen)
+8. [Form validation (using combineLatest)](#8-form-validation-using-combinelatest)
+9. [Pseudo caching : retrieve data first from a cache, then a network call (using concat, concatEager, merge or publish)](#9-pseudo-caching--retrieve-data-first-from-a-cache-then-a-network-call-using-concat-concateager-merge-or-publish)
+10. [Simple timing demos (using timer, interval or delay)](#10-simple-timing-demos-using-timer-interval-and-delay)
+11. [RxBus : event bus using RxJava (using RxRelay (never terminating Subjects) and debouncedBuffer)](#11-rxbus--event-bus-using-rxjava-using-rxrelay-never-terminating-subjects-and-debouncedbuffer)
+12. [Persist data on Activity rotations (using Subjects and retained Fragments)](#12-persist-data-on-activity-rotations-using-subjects-and-retained-fragments)
+13. [Networking with Volley](#13-networking-with-volley)
+14. [Pagination with Rx (using Subjects)](#14-pagination-with-rx-using-subjects)
+15. [Orchestrating Observable: make parallel network calls, then combine the result into a single data point (using flatmap & zip)](#15-orchestrating-observable-make-parallel-network-calls-then-combine-the-result-into-a-single-data-point-using-flatmap--zip)
+16. [Simple Timeout example (using timeout)](#16-simple-timeout-example-using-timeout)
+17. [Setup and teardown resources (using `using`)](#17-setup-and-teardown-resources-using-using)
+18. [Multicast playground](#18-multicast-playground)
 
 ## Description
 
@@ -100,6 +102,7 @@ We simulate this behaviour using RxJava with the [`retryWhen` operator](http://r
 
 * http://stackoverflow.com/a/25292833/159825
 * Another excellent implementation via @[sddamico](https://github.com/sddamico) : https://gist.github.com/sddamico/c45d7cdabc41e663bea1
+* This one includes support for jittering, by @[leandrofavarin](https://github.com/leandrofavarin) : http://leandrofavarin.com/exponential-backoff-rxjava-operator-with-jitter
 
 Also look at the [Polling example](https://github.com/kaushikgopal/RxJava-Android-Samples#polling-with-schedulers) where we use a very similar Exponential backoff mechanism.
 
@@ -160,7 +163,7 @@ Cases demonstrated here:
 4. run a task constantly every 3s, but after running it 5 times, terminate automatically
 5. run a task A, pause for sometime, then execute Task B, then terminate
 
-### 11. RxBus : event bus using RxJava (using RxRelay (never terminating Subjects) and debouncedBuffer)  
+### 11. RxBus : event bus using RxJava (using RxRelay (never terminating Subjects) and debouncedBuffer)
 
 There are accompanying blog posts that do a much better job of explaining the details on this demo:
 
@@ -220,6 +223,20 @@ The code for this example has already been written by one Mr.skehlet in the inte
 This is a simple example demonstrating the use of the `.timeout` operator. Button 1 will complete the task before the timeout constraint, while Button 2 will force a timeout error.
 
 Notice how we can provide a custom Observable that indicates how to react under a timeout Exception.
+
+### 17. Setup and teardown resources (using `using`)
+
+The [operator `using`](http://reactivex.io/documentation/operators/using.html) is relatively less known and notoriously hard to Google. It's a beautiful API that helps to setup a (costly) resource, use it and then dispose off in a clean way.
+
+The nice thing about this operator is that it provides a mechansim to use potentially costly resources in a tightly scoped manner. using -> setup, use and dispose. Think DB connections (like Realm instances), socket connections, thread locks etc.
+
+### 18. Multicast Playground
+
+Multicasting in Rx is like a dark art. Not too many folks know how to pull it off without concern. This example condiers two subscribers (in the forms of buttons) and allows you to add/remove subscribers at different points of time and see how the different operators behave under those circumstances.
+
+The source observale is a timer (`interval`) observable and the reason this was chosen was to intentionally pick a non-terminating observable, so you can test/confirm if your multicast experiment will leak.
+
+_I also gave a talk about [Multicasting in detail at 360|Andev](https://speakerdeck.com/kaushikgopal/rx-by-example-volume-3-the-multicast-edition). If you have the inclination and time, I highly suggest watching that talk first (specifically the Multicast operator permutation segment) and then messing around with the example here._
 
 ## Rx 2.x
 

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     android:baselineAligned="false"
     android:orientation="vertical"
@@ -11,7 +12,7 @@
         android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="Start disk > network call"
+        android:text="@string/start_disk_network_call"
         android:layout_margin="30dp"
         />
 

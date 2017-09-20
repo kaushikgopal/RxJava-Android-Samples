@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     android:orientation="vertical"
     android:layout_height="match_parent"
@@ -26,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:textSize="14sp"
-            android:text="Log contributors of:"
+            android:text="@string/log_contributors_of"
             />
 
         <EditText
@@ -35,8 +34,8 @@
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:textSize="12sp"
-            android:text="square"
-            android:hint="owner"
+            android:text="@string/square"
+            android:hint="@string/owner"
             />
 
         <EditText
@@ -45,8 +44,8 @@
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:textSize="12sp"
-            android:text="retrofit"
-            android:hint="reponame"
+            android:text="@string/retrofit"
+            android:hint="@string/reponame"
             />
     </LinearLayout>
 
@@ -61,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:textSize="14sp"
-            android:text="Log with full User Info:"
+            android:text="@string/log_with_full_user_info"
             />
 
         <EditText
@@ -70,8 +69,8 @@
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:textSize="12sp"
-            android:text="square"
-            android:hint="owner"
+            android:text="@string/square"
+            android:hint="@string/owner"
             />
 
         <EditText
@@ -80,8 +79,8 @@
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:textSize="12sp"
-            android:text="retrofit"
-            android:hint="reponame"
+            android:text="@string/retrofit"
+            android:hint="@string/reponame"
             />
     </LinearLayout>
 
