@@ -2,7 +2,6 @@ package com.morihacky.android.rxjava.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,17 +10,20 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+
+import com.morihacky.android.rxjava.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.morihacky.android.rxjava.R;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import java.util.ArrayList;
-import java.util.List;
 import timber.log.Timber;
 
 public class ConcurrencyWithSchedulersDemoFragment
@@ -132,11 +134,11 @@ public class ConcurrencyWithSchedulersDemoFragment
         } else {
             _logs.add(0, logMsg + " (NOT main thread) ");
 
-            // You can only do below stuff on main thread.
-            new Handler(Looper.getMainLooper()).post(() -> {
+            getActivity().runOnUiThread(() -> {
                 _adapter.clear();
                 _adapter.addAll(_logs);
             });
+
         }
     }
 
