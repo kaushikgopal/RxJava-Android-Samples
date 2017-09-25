@@ -17,6 +17,7 @@ import io.reactivex.functions.Function
 import org.reactivestreams.Publisher
 import java.util.*
 import java.util.concurrent.Callable
+import kotlinx.android.synthetic.main.fragment_buffer.*
 
 class UsingFragment : BaseFragment() {
 
@@ -25,14 +26,18 @@ class UsingFragment : BaseFragment() {
     private lateinit var _adapter: UsingFragment.LogAdapter
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(R.layout.fragment_buffer, container, false)
-        _logsList = view?.findViewById(R.id.list_threading_log) as ListView
+        return inflater?.inflate(R.layout.fragment_buffer, container, false)
+    }
 
-        (view.findViewById(R.id.text_description) as TextView).setText(R.string.msg_demo_using)
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        _logsList = list_threading_log as ListView
+
+        (text_description as TextView).setText(R.string.msg_demo_using)
 
         _setupLogger()
-        view.findViewById(R.id.btn_start_operation).setOnClickListener { executeUsingOperation() }
-        return view
+        btn_start_operation.setOnClickListener { executeUsingOperation() }
     }
 
     private fun executeUsingOperation() {

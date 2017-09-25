@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import com.morihacky.android.rxjava.R
+import kotlinx.android.synthetic.main.fragment_concurrency_schedulers.*
 
 class PlaygroundFragment : BaseFragment() {
 
@@ -21,16 +22,18 @@ class PlaygroundFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(R.layout.fragment_concurrency_schedulers, container, false)
+        return inflater?.inflate(R.layout.fragment_concurrency_schedulers, container, false)
+    }
 
-        _logsList = view?.findViewById(R.id.list_threading_log) as ListView
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        _logsList = list_threading_log as ListView
         _setupLogger()
 
-        view.findViewById(R.id.btn_start_operation).setOnClickListener { _ ->
+        btn_start_operation.setOnClickListener { _ ->
             _log("Button clicked")
         }
-
-        return view
     }
 
     // -----------------------------------------------------------------------------------

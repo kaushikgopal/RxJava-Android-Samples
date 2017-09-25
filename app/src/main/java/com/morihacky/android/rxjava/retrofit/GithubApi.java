@@ -5,6 +5,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface GithubApi {
 
@@ -23,4 +24,11 @@ public interface GithubApi {
   /** See https://developer.github.com/v3/users/ */
   @GET("/users/{user}")
   User getUser(@Path("user") String user);
+
+  @GET("search/repositories")
+  Observable<RepositoryResponseData> getGitHubRepositories(@Query("q") String query,
+                                                                     @Query("sort") String sort,
+                                                                     @Query("order") String order,
+                                                                     @Query("per_page") int perPage,
+                                                                     @Query("page") Integer page);
 }

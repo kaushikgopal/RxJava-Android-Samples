@@ -35,7 +35,6 @@
             android:layout_width="0dip"
             android:textSize="12sp"
             android:text="@string/kaushikgopal"
-            android:hint="@string/owner"
             />
 
     </LinearLayout>

@@ -63,7 +63,7 @@ This is the debounce/throttleWithTimeout method in RxJava.
 
 [Retrofit from Square](http://square.github.io/retrofit/) is an amazing library that helps with easy networking (even if you haven't made the jump to RxJava just yet, you really should check it out). It works even better with RxJava and these are examples hitting the GitHub API, taken straight up from the android demigod-developer Jake Wharton's talk at Netflix. You can [watch the talk](https://www.youtube.com/watch?v=aEuNBk1b5OE#t=2480) at this link. Incidentally, my motivation to use RxJava was from attending this talk at Netflix.
 
-(Note: you're most likely to hit the GitHub API quota pretty fast so send in an OAuth-token as a parameter if you want to keep running these examples often).
+(Note: you're most likely to hit the GitHub API quota pretty fast so send in [an OAuth-token](https://github.com/settings/tokens/new) by replacing `InsertYouroAuthTokenHere` in `strings.xml` if you want to keep running these examples often.)
 
 ### 5. Two-way data binding for TextViews (using PublishSubject)
 

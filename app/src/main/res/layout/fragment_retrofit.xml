@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:padding="10dp"
         android:gravity="center"
-        android:text="@string/msg_demo_retrofit"
+        android:text="@string/intro"
         />
 
     <LinearLayout
@@ -19,75 +19,70 @@
         android:layout_width="match_parent"
         >
 
+        <EditText
+            android:id="@+id/github_username1"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:textSize="12sp"
+            android:text="@string/dummy1"
+            android:hint="@string/github_username1"
+            />
+
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/vs"
+            />
+
+        <EditText
+            android:id="@+id/github_username2"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:textSize="12sp"
+            android:text="@string/dummy2"
+            android:hint="@string/github_username2"
+            />
+
         <Button
-            android:id="@+id/btn_demo_retrofit_contributors"
-            android:layout_weight="2"
+            android:id="@+id/compare_by_stars"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:textSize="14sp"
-            android:text="@string/log_contributors_of"
-            />
-
-        <EditText
-            android:id="@+id/demo_retrofit_contributors_username"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_width="0dip"
-            android:textSize="12sp"
-            android:text="@string/square"
-            android:hint="@string/owner"
-            />
-
-        <EditText
-            android:id="@+id/demo_retrofit_contributors_repository"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_width="0dip"
-            android:textSize="12sp"
-            android:text="@string/retrofit"
-            android:hint="@string/reponame"
+            android:text="@string/compare_by_stars"
             />
     </LinearLayout>
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/winner"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        >
+        android:padding="10dp"
+        android:gravity="center"
+        />
 
-        <Button
-            android:id="@+id/btn_demo_retrofit_contributors_with_user_info"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:layout_width="0dip"
-            android:textSize="14sp"
-            android:text="@string/log_with_full_user_info"
-            />
-
-        <EditText
-            android:id="@+id/demo_retrofit_contributors_with_user_info_username"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_width="0dip"
-            android:textSize="12sp"
-            android:text="@string/square"
-            android:hint="@string/owner"
-            />
-
-        <EditText
-            android:id="@+id/demo_retrofit_contributors_with_user_info_repository"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_width="0dip"
-            android:textSize="12sp"
-            android:text="@string/retrofit"
-            android:hint="@string/reponame"
-            />
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/log_list"
+    <LinearLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        ></ListView>
+        >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/log_list1"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dip"
+            />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/log_list2"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dip"
+            />
+    </LinearLayout>
 
 </LinearLayout>
