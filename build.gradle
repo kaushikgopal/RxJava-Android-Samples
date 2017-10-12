@@ -4,9 +4,10 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-beta6'
+        classpath 'com.android.tools.build:gradle:3.0.0-beta7'
         classpath 'com.f2prateek.javafmt:javafmt:0.1.2'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -21,16 +22,17 @@ allprojects {
         maven {
             url "https://jitpack.io"
         }
+        google()
     }
 
     ext {
         sdkVersion = 26
-        buildToolsVrs = "26.0.1"
+        buildToolsVrs = "26.0.2"
 
-        kotlinVersion = "1.1.4-3"
+        kotlinVersion = "1.1.51"
 
         archComponentsVersion = "1.0.0-alpha9-1"
-        butterKnifeVersion = '8.7.0'
+        butterKnifeVersion = '8.8.1'
         mockitoKotlinVersion = "1.4.0"
         okhttpVersion = "3.0.1"
         retrofitVersion = "2.0.0"
