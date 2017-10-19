@@ -8,20 +8,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.morihacky.android.rxjava.MainActivity;
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.fragments.BaseFragment;
 import com.morihacky.android.rxjava.rxbus.RxBus;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.processors.PublishProcessor;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class PaginationAutoFragment extends BaseFragment {
 
@@ -109,7 +112,7 @@ public class PaginationAutoFragment extends BaseFragment {
     _disposables.add(d1);
     _disposables.add(d2);
 
-    _paginator.onNext(0);
+    _paginator.onNext(_adapter.getItemCount());
   }
 
   @Override
