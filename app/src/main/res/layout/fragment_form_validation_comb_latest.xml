@@ -1,96 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     >
 
     <TextView
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:padding="10dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="10dp"
         android:text="@string/msg_demo_form_comb_latest"
         />
 
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        >
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:padding="10dp"
             android:text="@string/enter_a_valid_email_below"
             />
 
         <EditText
             android:id="@+id/demo_combl_email"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:inputType="textEmailAddress"
             />
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        >
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:padding="10dp"
             android:text="@string/password_than_8_chrs"
             />
 
         <EditText
             android:id="@+id/demo_combl_password"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             />
     </LinearLayout>
 
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        >
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:padding="10dp"
             android:text="@string/number_between_1_amp_100"
             />
 
         <EditText
             android:id="@+id/demo_combl_num"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:inputType="number"
             />
     </LinearLayout>
 
     <TextView
         android:id="@+id/btn_demo_form_valid"
-        android:background="@color/gray"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="10dp"
+        android:background="@color/gray"
         android:padding="10dp"
         android:text="@string/submit"
         />

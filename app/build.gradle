@@ -1,10 +1,10 @@
 buildscript {
     repositories {
-//        mavenCentral()
+        mavenCentral()
         jcenter()
     }
     dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
+        classpath 'me.tatarka:gradle-retrolambda:3.7.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
     }
 
@@ -38,7 +38,7 @@ dependencies {
 
     compile "android.arch.lifecycle:runtime:${archComponentsVersion}"
     compile "android.arch.lifecycle:extensions:${archComponentsVersion}"
-    kapt  "android.arch.lifecycle:compiler:${archComponentsVersion}"
+    kapt "android.arch.lifecycle:compiler:${archComponentsVersion}"
 
     // ----------------------------------
     //  Rx dependencies
@@ -90,4 +90,5 @@ android {
     packagingOptions {
         pickFirst  'META-INF/rxjava.properties'
     }
+    buildToolsVersion '26.0.2'
 }

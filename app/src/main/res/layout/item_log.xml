@@ -10,4 +10,4 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingStart="@dimen/activity_horizontal_margin"
     android:textSize="@dimen/text_medium"
-    tools:text="Item Log goes here"/>
+    tools:text="Item Log goes here" />

@@ -34,6 +34,7 @@ class RotationPersist3Fragment : BaseFragment() {
 
     // -----------------------------------------------------------------------------------
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedViewModel = ViewModelProviders.of(activity).get(SharedViewModel::class.java)

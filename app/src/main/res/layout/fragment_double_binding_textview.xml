@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     >
 
     <TextView
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:padding="10dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="10dp"
         android:text="@string/msg_demo_doublebinding"
         />
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         >
 
         <EditText
             android:id="@+id/double_binding_num1"
-            android:layout_weight="1"
-            android:layout_height="50dp"
             android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/one_hundred"
             android:inputType="numberDecimal"
+            android:text="@string/one_hundred"
             />
 
         <TextView
-            android:layout_weight="1"
-            android:layout_height="50dp"
             android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/plus"
             />
 
         <EditText
             android:id="@+id/double_binding_num2"
-            android:layout_weight="1"
-            android:layout_height="50dp"
             android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/eight"
             android:inputType="numberDecimal"
+            android:text="@string/eight"
             />
     </LinearLayout>
 
     <TextView
         android:id="@+id/double_binding_result"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:textSize="45sp"
         android:text="@string/zero"
+        android:textSize="45sp"
         />
 
 </LinearLayout>
