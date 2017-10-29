@@ -30,48 +30,48 @@ import static java.lang.String.format;
 
 public class RetrofitAsyncTaskDeathFragment extends Fragment {
 
-  @BindView(R.id.btn_demo_retrofit_async_death_username)
-  EditText _username;
+    @BindView(R.id.btn_demo_retrofit_async_death_username)
+    EditText _username;
 
-  @BindView(R.id.log_list)
-  ListView _resultList;
+    @BindView(R.id.log_list)
+    ListView _resultList;
 
-  private GithubApi _githubService;
-  private ArrayAdapter<String> _adapter;
-  private Unbinder unbinder;
+    private GithubApi _githubService;
+    private ArrayAdapter<String> _adapter;
+    private Unbinder unbinder;
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    String githubToken = getResources().getString(R.string.github_oauth_token);
-    _githubService = GithubService.createGithubService(githubToken);
-  }
+        String githubToken = getResources().getString(R.string.github_oauth_token);
+        _githubService = GithubService.createGithubService(githubToken);
+    }
 
-  @Override
-  public View onCreateView(
-      LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(
+            LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-    View layout = inflater.inflate(R.layout.fragment_retrofit_async_task_death, container, false);
-    unbinder = ButterKnife.bind(this, layout);
+        View layout = inflater.inflate(R.layout.fragment_retrofit_async_task_death, container, false);
+        unbinder = ButterKnife.bind(this, layout);
 
-    _adapter =
-        new ArrayAdapter<>(getActivity(), R.layout.item_log, R.id.item_log, new ArrayList<>());
-    //_adapter.setNotifyOnChange(true);
-    _resultList.setAdapter(_adapter);
+        _adapter =
+                new ArrayAdapter<>(getActivity(), R.layout.item_log, R.id.item_log, new ArrayList<>());
+        //_adapter.setNotifyOnChange(true);
+        _resultList.setAdapter(_adapter);
 
-    return layout;
-  }
+        return layout;
+    }
 
-  @Override
-  public void onDestroyView() {
-    super.onDestroyView();
-    unbinder.unbind();
-  }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 
-  @OnClick(R.id.btn_demo_retrofit_async_death)
-  public void onGetGithubUserClicked() {
-    _adapter.clear();
+    @OnClick(R.id.btn_demo_retrofit_async_death)
+    public void onGetGithubUserClicked() {
+        _adapter.clear();
 
     /*new AsyncTask<String, Void, User>() {
         @Override
@@ -85,37 +85,39 @@ public class RetrofitAsyncTaskDeathFragment extends Fragment {
         }
     }.execute(_username.getText().toString());*/
 
-    _githubService
-        .user(_username.getText().toString())
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(
-            new DisposableObserver<User>() {
-              @Override
-              public void onComplete() {}
+        _githubService
+                .user(_username.getText().toString())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        new DisposableObserver<User>() {
+                            @Override
+                            public void onComplete() {
+                            }
 
-              @Override
-              public void onError(Throwable e) {}
+                            @Override
+                            public void onError(Throwable e) {
+                            }
 
-              @Override
-              public void onNext(User user) {
-                _adapter.add(format("%s  = [%s: %s]", _username.getText(), user.name, user.email));
-              }
-            });
-  }
-
-  // -----------------------------------------------------------------------------------
-
-  private class GetGithubUser extends AsyncTask<String, Void, User> {
-
-    @Override
-    protected User doInBackground(String... params) {
-      return _githubService.getUser(params[0]);
+                            @Override
+                            public void onNext(User user) {
+                                _adapter.add(format("%s  = [%s: %s]", _username.getText(), user.name, user.email));
+                            }
+                        });
     }
 
-    @Override
-    protected void onPostExecute(User user) {
-      _adapter.add(format("%s  = [%s: %s]", _username.getText(), user.name, user.email));
+    // -----------------------------------------------------------------------------------
+
+    private class GetGithubUser extends AsyncTask<String, Void, User> {
+
+        @Override
+        protected User doInBackground(String... params) {
+            return _githubService.getUser(params[0]);
     }
-  }
+
+        @Override
+        protected void onPostExecute(User user) {
+            _adapter.add(format("%s  = [%s: %s]", _username.getText(), user.name, user.email));
+        }
+    }
 }

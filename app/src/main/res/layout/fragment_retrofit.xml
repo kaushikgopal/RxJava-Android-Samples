@@ -1,93 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     >
 
     <TextView
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:padding="10dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="10dp"
         android:text="@string/msg_demo_retrofit"
         />
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         >
 
         <Button
             android:id="@+id/btn_demo_retrofit_contributors"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
             android:layout_width="0dip"
-            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
             android:text="@string/log_contributors_of"
+            android:textSize="14sp"
             />
 
         <EditText
             android:id="@+id/demo_retrofit_contributors_username"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
             android:layout_width="0dip"
-            android:textSize="12sp"
-            android:text="@string/square"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:hint="@string/owner"
+            android:text="@string/square"
+            android:textSize="12sp"
             />
 
         <EditText
             android:id="@+id/demo_retrofit_contributors_repository"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
             android:layout_width="0dip"
-            android:textSize="12sp"
-            android:text="@string/retrofit"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:hint="@string/reponame"
+            android:text="@string/retrofit"
+            android:textSize="12sp"
             />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         >
 
         <Button
             android:id="@+id/btn_demo_retrofit_contributors_with_user_info"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
             android:layout_width="0dip"
-            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
             android:text="@string/log_with_full_user_info"
+            android:textSize="14sp"
             />
 
         <EditText
             android:id="@+id/demo_retrofit_contributors_with_user_info_username"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
             android:layout_width="0dip"
-            android:textSize="12sp"
-            android:text="@string/square"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:hint="@string/owner"
+            android:text="@string/square"
+            android:textSize="12sp"
             />
 
         <EditText
             android:id="@+id/demo_retrofit_contributors_with_user_info_repository"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
             android:layout_width="0dip"
-            android:textSize="12sp"
-            android:text="@string/retrofit"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:hint="@string/reponame"
+            android:text="@string/retrofit"
+            android:textSize="12sp"
             />
     </LinearLayout>
 
     <ListView
         android:id="@+id/log_list"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         ></ListView>
 
 </LinearLayout>

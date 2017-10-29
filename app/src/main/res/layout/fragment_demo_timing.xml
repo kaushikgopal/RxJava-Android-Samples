@@ -1,95 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     >
 
     <TableLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        >
+        android:layout_height="wrap_content">
 
         <TableRow
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            >
+            android:layout_height="wrap_content">
 
             <TextView
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:padding="@dimen/text_micro"
-                android:gravity="left"
-                android:text="@string/msg_demo_timing"
+                android:layout_height="wrap_content"
                 android:layout_span="2"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:padding="@dimen/text_micro"
+                android:text="@string/msg_demo_timing"
                 />
         </TableRow>
 
         <TableRow
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             >
 
             <Button
                 android:id="@+id/btn_demo_timing_1"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/btn_1"
                 />
 
             <Button
                 android:id="@+id/btn_demo_timing_2"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/btn_2"
                 />
         </TableRow>
 
         <TableRow
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             >
 
             <Button
                 android:id="@+id/btn_demo_timing_3"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/btn_3"
                 />
 
             <Button
                 android:id="@+id/btn_demo_timing_4"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/btn_4"
                 />
         </TableRow>
 
         <TableRow
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             >
 
             <Button
                 android:id="@+id/btn_demo_timing_5"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/btn_5"
                 />
 
             <Button
                 android:id="@+id/btn_clr"
-                android:src="@android:drawable/ic_menu_close_clear_cancel"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
                 android:text="@string/clear_log"
                 />
         </TableRow>
@@ -97,16 +95,16 @@
 
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
         >
 
         <ListView
             android:id="@+id/list_threading_log"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             />
     </LinearLayout>
 

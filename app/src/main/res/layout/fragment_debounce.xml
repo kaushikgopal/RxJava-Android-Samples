@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     >
 
     <TextView
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:padding="10dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="10dp"
         android:text="@string/msg_demo_debounce"
         />
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         >
 
         <EditText
             android:id="@+id/input_txt_debounce"
-            android:layout_weight="7"
-            android:layout_height="match_parent"
             android:layout_width="0dp"
-            android:textSize="16sp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
             android:hint="@string/enter_some_search_text"
             android:inputType="textNoSuggestions"
+            android:textSize="16sp"
             />
 
         <ImageButton
             android:id="@+id/clr_debounce"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
             />
 
     </LinearLayout>
 
     <ListView
         android:id="@+id/list_threading_log"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         />
 </LinearLayout>
