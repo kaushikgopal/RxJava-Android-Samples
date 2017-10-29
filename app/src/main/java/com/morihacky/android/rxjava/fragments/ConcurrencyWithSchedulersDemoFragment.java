@@ -58,7 +58,7 @@ public class ConcurrencyWithSchedulersDemoFragment extends BaseFragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_concurrency_schedulers, container, false);
-        ButterKnife.bind(this, layout);
+        unbinder = ButterKnife.bind(this, layout);
         return layout;
     }
 
