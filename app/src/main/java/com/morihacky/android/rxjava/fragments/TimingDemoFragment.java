@@ -173,7 +173,7 @@ public class TimingDemoFragment extends BaseFragment {
   }
 
   @OnClick(R.id.btn_demo_timing_5)
-  public void btn5_RunTask5Times_IntervalOf3s() {
+  public void btn5_RunTaskA_Pause_ThenRunTaskB() {
     _log(String.format("D5 [%s] --- BTN click", _getCurrentTimestamp()));
 
     Flowable.just("Do task A right away")
