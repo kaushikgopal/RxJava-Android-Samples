@@ -2,11 +2,11 @@ package com.morihacky.android.rxjava.rxbus;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
-import android.support.v4.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.core.view.ViewCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.morihacky.android.rxjava.MainActivity;
