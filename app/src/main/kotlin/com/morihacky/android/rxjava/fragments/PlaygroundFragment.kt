@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ListView
 import com.morihacky.android.rxjava.R
 
@@ -18,15 +19,13 @@ class PlaygroundFragment : BaseFragment() {
 
     private var _logs: MutableList<String> = ArrayList()
 
-    override fun onCreateView(inflater: LayoutInflater?,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.fragment_concurrency_schedulers, container, false)
 
         _logsList = view?.findViewById(R.id.list_threading_log) as ListView
         _setupLogger()
 
-        view.findViewById(R.id.btn_start_operation).setOnClickListener { _ ->
+        view.findViewById<Button>(R.id.btn_start_operation).setOnClickListener { _ ->
             _log("Button clicked")
         }
 
@@ -55,7 +54,7 @@ class PlaygroundFragment : BaseFragment() {
 
     private fun _setupLogger() {
         _logs = ArrayList<String>()
-        _adapter = LogAdapter(activity, ArrayList<String>())
+        _adapter = LogAdapter(activity!!, ArrayList<String>())
         _logsList?.adapter = _adapter
     }
 

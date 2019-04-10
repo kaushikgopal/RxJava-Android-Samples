@@ -1,7 +1,7 @@
 package com.morihacky.android.rxjava.pagination;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +43,7 @@ public class PaginationFragment extends BaseFragment {
     _bus = ((MainActivity) getActivity()).getRxBusSingleton();
 
     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-    layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+    layoutManager.setOrientation(RecyclerView.VERTICAL);
     _pagingList.setLayoutManager(layoutManager);
 
     _adapter = new PaginationAdapter(_bus);

@@ -53,8 +53,8 @@ dependencies {
     implementation deps.androidx.vector_drawable_animated
 
 
-    implementation "com.jakewharton:butterknife:8.5.1"
-    kapt "com.jakewharton:butterknife-compiler:8.5.1"
+    implementation "com.jakewharton:butterknife:10.1.0"
+    kapt "com.jakewharton:butterknife-compiler:10.1.0"
 
     implementation deps.timber
     implementation deps.retrofit.runtime
