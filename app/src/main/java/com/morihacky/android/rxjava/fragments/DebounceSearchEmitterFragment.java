@@ -29,7 +29,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import timber.log.Timber;
 
-import static co.kaush.core.util.CoreNullnessUtils.isNotNullOrEmpty;
 import static java.lang.String.format;
 
 public class DebounceSearchEmitterFragment extends BaseFragment {
