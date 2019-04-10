@@ -76,7 +76,7 @@ public class DebounceSearchEmitterFragment extends BaseFragment {
     _disposable =
         RxTextView.textChangeEvents(_inputSearchText)
             .debounce(400, TimeUnit.MILLISECONDS) // default Scheduler is Computation
-            .filter(changes -> isNotNullOrEmpty(changes.text().toString()))
+            .filter(changes -> changes != null && changes.text().length() > 0)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(_getSearchObserver());
   }
