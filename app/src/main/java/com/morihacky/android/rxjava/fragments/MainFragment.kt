@@ -36,6 +36,11 @@ class MainFragment : BaseFragment() {
         clickedOn(DemoSchedulersFragment())
     }
 
+    @OnClick(R.id.btn_demo_polling)
+    fun demoPolling() {
+        clickedOn(DemoPollingFragment())
+    }
+
     @OnClick(R.id.btn_demo_buffer)
     fun demoBuffer() {
         clickedOn(BufferDemoFragment())
@@ -49,11 +54,6 @@ class MainFragment : BaseFragment() {
     @OnClick(R.id.btn_demo_retrofit)
     fun demoRetrofitCalls() {
         clickedOn(RetrofitFragment())
-    }
-
-    @OnClick(R.id.btn_demo_polling)
-    fun demoPolling() {
-        clickedOn(PollingFragment())
     }
 
     @OnClick(R.id.btn_demo_double_binding_textview)
