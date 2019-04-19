@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_concurrency_schedulers.*
 import timber.log.Timber
 import java.util.ArrayList
 
-class ConcurrencyWithSchedulersDemoFragment : BaseFragment() {
+class DemoSchedulersFragment : BaseFragment() {
 
     private lateinit var adapter: LogAdapter
     private lateinit var logs: MutableList<String>

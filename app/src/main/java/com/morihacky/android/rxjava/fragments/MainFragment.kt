@@ -33,7 +33,7 @@ class MainFragment : BaseFragment() {
 
     @OnClick(R.id.btn_demo_schedulers)
     fun demoConcurrencyWithSchedulers() {
-        clickedOn(ConcurrencyWithSchedulersDemoFragment())
+        clickedOn(DemoSchedulersFragment())
     }
 
     @OnClick(R.id.btn_demo_buffer)
