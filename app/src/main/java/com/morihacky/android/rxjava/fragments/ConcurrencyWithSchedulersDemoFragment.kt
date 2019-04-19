@@ -26,25 +26,12 @@ class ConcurrencyWithSchedulersDemoFragment : BaseFragment() {
     private lateinit var adapter: LogAdapter
     private lateinit var logs: MutableList<String>
     private lateinit var unbinder: Unbinder
-    private val disposables = CompositeDisposable()
+    private val disposeBag = CompositeDisposable()
 
     override fun onDestroy() {
         super.onDestroy()
         unbinder.unbind()
-        disposables.clear()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setupLogger()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        val layout = inflater.inflate(R.layout.fragment_concurrency_schedulers, container, false)
-        unbinder = ButterKnife.bind(this, layout)
-        return layout
+        disposeBag.clear()
     }
 
     @OnClick(R.id.btn_start_operation)
@@ -53,12 +40,11 @@ class ConcurrencyWithSchedulersDemoFragment : BaseFragment() {
         log("Button Clicked")
 
         val disposable: Disposable =
-        // Observable
             Observable.just(true)
                 .doOnSubscribe { log("doOnSubscribe") }
                 .map {
                     log("before sleep")
-                    doSomeLongOperation_thatBlocksCurrentThread()
+                    someLongOperationThatBlocksCurrentThread()
                     it
                 }
                 .subscribeOn(Schedulers.io())
@@ -77,13 +63,26 @@ class ConcurrencyWithSchedulersDemoFragment : BaseFragment() {
                     }
                 )
 
-        disposables.add(disposable)
+        disposeBag.add(disposable)
     }
 
     // -----------------------------------------------------------------------------------
     // Method that help wiring up the example (irrelevant to RxJava)
 
-    private fun doSomeLongOperation_thatBlocksCurrentThread() {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setupLogger()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        val layout = inflater.inflate(R.layout.fragment_concurrency_schedulers, container, false)
+        unbinder = ButterKnife.bind(this, layout)
+        return layout
+    }
+
+    private fun someLongOperationThatBlocksCurrentThread() {
         log("performing long operation")
 
         try {
