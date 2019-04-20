@@ -74,7 +74,7 @@ class DemoPollingFragment : BaseFragment() {
         // 1. simple way (where you maintain state outside)
         var repeatCount: Int = 0
         val externalStateHandling = Observable.just(1)
-            .repeatWhen { o ->
+            .repeatWhen { o: Observable<Any> ->
                 o.flatMap {
                     repeatCount += 1
                     Observable.timer(repeatCount.toLong() * POLL_INTERVAL, TimeUnit.MILLISECONDS)
@@ -113,20 +113,19 @@ class DemoPollingFragment : BaseFragment() {
             // it is critical to use upstream observable in the chain for the result
             // ignoring it and doing your own thing will break the sequence
 
-            return upstream.flatMap(
-                Function<Any, ObservableSource<Long>> {
-                    if (repeatCount >= repeatLimit) {
-                        // terminate the sequence cause we reached the limit
-                        log("Completing sequence")
-                        return@Function Observable.empty()
-                    }
+            return upstream.flatMap {
+                if (repeatCount >= repeatLimit) {
+                    // terminate the sequence cause we reached the limit
+                    log("Completing sequence")
+                    return@flatMap Observable.empty<Long>()
+                }
 
-                    // since we don't get an input
-                    // we store state in this handler to tell us the point of time we're firing
-                    repeatCount += 1
+                // since we don't get an input
+                // we store state in this handler to tell us the point of time we're firing
+                repeatCount += 1
 
-                    Observable.timer((repeatCount * pollingInterval).toLong(), TimeUnit.MILLISECONDS)
-                })
+                Observable.timer((repeatCount * pollingInterval).toLong(), TimeUnit.MILLISECONDS)
+            }
         }
     }
 
