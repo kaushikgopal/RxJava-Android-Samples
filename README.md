@@ -243,6 +243,17 @@ All the examples here have been migrated to use RxJava 2.X.
 
 We use [David Karnok's Interop library](https://github.com/akarnokd/RxJava2Interop) in some cases as certain libraries like RxBindings, RxRelays, RxJava-Math etc. have not been ported yet to 2.x.
 
+## Sequence of learning these examples
+
+If you're looking for a sequence of examples to follow in increasing order of complexity, here's what i'd recommend:
+
+1. Background Schedulers
+2. Simple polling fragment
+3. Buffer demo
+4. Network request
+5. Debounce Search
+
+
 ## Contributing:
 
 I try to ensure the examples are not overly contrived but reflect a real-world usecase. If you have similar useful examples demonstrating the use of RxJava, feel free to send in a pull request.
