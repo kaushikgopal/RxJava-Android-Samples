@@ -88,4 +88,7 @@ class FormValidationCombineLatestFragment : BaseFragment() {
                 { Timber.e(it, "there was an error") }
             )
     }
+
+    // -----------------------------------------------------------------------------------
+    // Method that help wiring up the example (irrelevant to RxJava)
 }
