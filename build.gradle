@@ -38,8 +38,23 @@ tasks.register("hello") {
     description = "Hello World task - useful to solve build problems"
 }
 
+/**
+ * Next time you need to update Gradle itself, run
+ *   ./gradlew wrapper
+ * It uses the "version.gradleLatestVersion" from "gradle.properties"
+ ***/
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+    gradleVersion = findProperty("version.gradleLatestVersion")
+}
+
+/**
+ * The Gradle Build Scan, one of those simple super-useful things the Android team never bothered to document properly
+ * See https://guides.gradle.org/creating-build-scans/
+ * See https://guides.gradle.org/performance/
+ */
 buildScan {
     termsOfServiceUrl = 'https://gradle.com/terms-of-service'
     termsOfServiceAgree = 'yes'
-    publishAlways()
+    //publishAlways()
 }

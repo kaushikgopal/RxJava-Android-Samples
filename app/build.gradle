@@ -7,14 +7,14 @@ plugins {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion rootProject.findProperty("android.compileSdkVersion") as Integer
 
     defaultConfig {
-        targetSdkVersion 28
-        applicationId "com.morihacky.android.rxjava"
-        minSdkVersion 21
-        versionCode 2
-        versionName "1.2"
+        targetSdkVersion findProperty("android.targetSdkVersion") as Integer
+        minSdkVersion findProperty("android.minSdkVersion") as Integer
+        applicationId findProperty("android.applicationId")
+        versionCode findProperty("android.minSdkVersion") as Integer
+        versionName findProperty("android.versionName")
         multiDexEnabled true
     }
     buildTypes {
