@@ -1,16 +1,3 @@
-buildscript {
-    ext.kotlinVersion = "1.3.50"
-    repositories {
-        addRepos(repositories)
-    }
-    ////dependencies {
-    //    classpath 'me.tatarka:gradle-retrolambda:3.6.0'
-    //    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
-    //}
-//
-    //// Exclude the lombok version that the android plugin depends on.
-    //configurations.classpath.exclude group: 'com.android.tools.external.lombok'
-}
 plugins {
     id("com.android.application")
     id "org.jetbrains.kotlin.android"
@@ -20,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion build_versions.build_sdk
+    compileSdkVersion 28
 
     defaultConfig {
+        targetSdkVersion 28
         applicationId "com.morihacky.android.rxjava"
-        minSdkVersion build_versions.min_sdk
-        targetSdkVersion build_versions.target_sdk
+        minSdkVersion 21
         versionCode 2
         versionName "1.2"
         multiDexEnabled true

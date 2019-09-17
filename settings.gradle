@@ -1,1 +1,19 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+    }
+
+    // Use the versions from "gradle.properties" for the plugins { ... } block
+    def resolutionStrategyConfig = ext.find("resolutionStrategyConfig")
+    resolutionStrategy.eachPlugin {
+        def property = "plugin.${requested.id.id}".replaceAll("-", ".")
+        if (settings.ext.has(property) && resolutionStrategyConfig != "false") {
+            def version = settings.ext.get(property)
+            if (resolutionStrategyConfig == "verbose") print("ResolutionStrategy found version=$version from property=$property")
+            useVersion(version)
+        }
+    }
+}
+rootProject.name="RxJava-Android-Samples"
 include ':app'
