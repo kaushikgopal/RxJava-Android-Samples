@@ -229,8 +229,8 @@ deps.room = room
 def rx = [:]
 rx.java = "io.reactivex.rxjava2:rxjava:$versions.rx_java"
 rx.android = "io.reactivex.rxjava2:rxandroid:$versions.rx_android"
-rx.bindings = "com.jakewharton.rxbinding2:rxbinding:$versions.rx_bindings"
-rx.bindings_viewpager = "com.jakewharton.rxbinding3:rxbinding-viewpager:$versions.rx_bindings_viewpager"
+rx.bindings = 'com.jakewharton.rxbinding3:rxbinding:3.0.0'
+rx.bindings_viewpager = 'com.jakewharton.rxbinding3:rxbinding-viewpager:3.0.0'
 rx.idler = "com.squareup.rx.idler:rx2-idler:$versions.rx_idler"
 rx.preferences = "com.f2prateek.rx.preferences2:rx-preferences:$versions.rx_preferences"
 rx.replaying_share = "com.jakewharton.rx2:replaying-share-kotlin:$versions.rx_replaying_share"
@@ -344,6 +344,7 @@ ext.build_versions = build_versions
 
 static def addRepos(RepositoryHandler handler) {
     handler.google()
+    handler.mavenCentral()
     handler.maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     handler.mavenLocal()
     handler.maven { url 'https://mapbox.bintray.com/mapbox' }

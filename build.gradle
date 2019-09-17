@@ -17,6 +17,7 @@ buildscript {
 }
 plugins {
     id 'com.gradle.build-scan' version '2.1'
+    id 'de.fayard.buildSrcVersions' version '0.6.0'
 }
 
 allprojects {
