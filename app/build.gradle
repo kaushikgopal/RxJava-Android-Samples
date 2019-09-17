@@ -49,66 +49,63 @@ android {
     android {
         lintOptions {
             abortOnError false
+            disable 'GradleDependency' // Android Studio is wrong on the versions
         }
     }
 }
 
+/**
+* See https://github.com/jmfayard/buildSrcVersions/issues/77
+* The dependencies versions below are overwritten by the versions present in "gradle.properties"
+**/
 dependencies {
-    // --------------------
-    // ANDROID CORE
-    // --------------------
 
-    implementation deps.kotlin.stdlib
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.50"
 
-    implementation deps.androidx.app_compat
-    implementation deps.androidx.compat
-    implementation deps.androidx.design
-    implementation deps.androidx.multidex
-    implementation deps.androidx.recyclerview
-    implementation deps.androidx.vector_drawable
-    implementation deps.androidx.vector_drawable_animated
+    implementation "androidx.appcompat:appcompat:1.0.0"
+    implementation "androidx.core:core:1.0.0"
+    implementation "com.google.android.material:material:1.0.0"
+    implementation "androidx.multidex:multidex:2.0.0"
+    implementation "androidx.recyclerview:recyclerview:1.0.0"
+    implementation "androidx.vectordrawable:vectordrawable:1.0.0"
+    implementation "androidx.vectordrawable:vectordrawable-animated:1.0.0"
 
 
     implementation "com.jakewharton:butterknife:10.1.0"
     kapt "com.jakewharton:butterknife-compiler:10.1.0"
 
-    implementation deps.timber
-    implementation deps.retrofit.runtime
-    implementation deps.retrofit.gson
-    implementation deps.retrofit.adapter_rxjava
-    implementation deps.okhttp.core
-    implementation deps.okhttp.urlconnection
+    implementation "com.jakewharton.timber:timber:4.71"
+    implementation "com.squareup.retrofit2:retrofit:2.3.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.3.0"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.3.0"
+    implementation "com.squareup.okhttp3:okhttp:3.10.0"
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:3.10.0"
 
 
     implementation 'com.mcxiaoke.volley:library:1.0.19'
 
-    implementation deps.lifecycle.extensions
-    implementation deps.lifecycle.runtime
-    kapt deps.lifecycle.compiler
+    implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
+    implementation "androidx.lifecycle:lifecycle-runtime:2.0.0"
+    kapt "androidx.lifecycle:lifecycle-compiler:2.0.0"
 
     // ----------------------------------
     //  Rx dependencies
-
-    implementation deps.rx.android
-    implementation deps.rx.bindings
-    implementation deps.rx.bindings_viewpager
-    implementation deps.rx.java
-    implementation deps.rx.replaying_share
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+    implementation "io.reactivex.rxjava2:rxjava:2.2.12"
+    implementation "com.jakewharton.rx2:replaying-share-kotlin:2.2.0"
+    implementation "com.jakewharton.rxrelay2:rxrelay:2.1.1"
     implementation "com.github.akarnokd:rxjava2-extensions:0.16.0"
-    implementation deps.rx.relay
 
-    // ----------------------------------
-
-    debugImplementation deps.leakcanary.lib
-    releaseImplementation deps.leakcanary.no_op
 
     implementation 'com.jakewharton.rxbinding3:rxbinding-core:3.0.0'
     implementation 'com.jakewharton.rxbinding3:rxbinding-appcompat:3.0.0'
-    implementation 'com.jakewharton.rxbinding3:rxbinding-drawerlayout:3.0.0'
-    implementation 'com.jakewharton.rxbinding3:rxbinding-leanback:3.0.0'
-    implementation 'com.jakewharton.rxbinding3:rxbinding-recyclerview:3.0.0'
-    implementation 'com.jakewharton.rxbinding3:rxbinding-slidingpanelayout:3.0.0'
-    implementation 'com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:3.0.0'
     implementation 'com.jakewharton.rxbinding3:rxbinding-viewpager:3.0.0'
+
+    // ----------------------------------
+
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:1.6.3"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:1.6.3"
+
+
 }
 
