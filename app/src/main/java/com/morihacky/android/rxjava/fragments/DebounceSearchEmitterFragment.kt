@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter
 import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Unbinder
-import com.jakewharton.rxbinding2.widget.RxTextView
+import com.jakewharton.rxbinding3.widget.textChangeEvents
 import com.morihacky.android.rxjava.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -39,13 +39,13 @@ class DebounceSearchEmitterFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         setupLogger()
 
-        disposable = RxTextView.textChangeEvents(input_txt_debounce)
+        disposable = input_txt_debounce.textChangeEvents()
             .debounce(400, TimeUnit.MILLISECONDS) // default Scheduler is Computation
-            .filter { changes -> changes.text().isNotEmpty() }
+            .filter { changes -> changes.text.isNotEmpty() }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { textChangeEvent ->
-                    log(format("Searching for %s", textChangeEvent.text().toString()))
+                    log(format("Searching for %s", textChangeEvent.text.toString()))
                 },
                 { e ->
                     Timber.e(e, "--------- Woops on error!")

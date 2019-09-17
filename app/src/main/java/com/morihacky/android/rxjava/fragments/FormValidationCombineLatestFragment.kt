@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import butterknife.ButterKnife
 import butterknife.Unbinder
-import com.jakewharton.rxbinding2.widget.RxTextView
+import com.jakewharton.rxbinding3.widget.textChanges
 import com.morihacky.android.rxjava.R
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
@@ -42,10 +42,10 @@ class FormValidationCombineLatestFragment : BaseFragment() {
     }
 
     private fun setupFormValidationWithCombineLatest() {
-        val emailChanges: Observable<CharSequence> = RxTextView.textChanges(demo_combl_email)
+        val emailChanges: Observable<CharSequence> = demo_combl_email.textChanges()
             .skip(1)
-        val passwordChanges: Observable<CharSequence> = RxTextView.textChanges(demo_combl_password).skip(1)
-        val numberChanges: Observable<CharSequence> = RxTextView.textChanges(demo_combl_num).skip(1)
+        val passwordChanges: Observable<CharSequence> = demo_combl_password.textChanges().skip(1)
+        val numberChanges: Observable<CharSequence> = demo_combl_num.textChanges().skip(1)
 
         disposable = Observable.combineLatest<CharSequence, CharSequence, CharSequence, Boolean>(
             emailChanges,

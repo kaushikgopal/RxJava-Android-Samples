@@ -101,5 +101,14 @@ dependencies {
 
     debugImplementation deps.leakcanary.lib
     releaseImplementation deps.leakcanary.no_op
+
+    implementation 'com.jakewharton.rxbinding3:rxbinding-core:3.0.0'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-appcompat:3.0.0'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-drawerlayout:3.0.0'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-leanback:3.0.0'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-recyclerview:3.0.0'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-slidingpanelayout:3.0.0'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:3.0.0'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-viewpager:3.0.0'
 }
 

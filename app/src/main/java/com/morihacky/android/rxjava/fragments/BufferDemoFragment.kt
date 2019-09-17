@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import butterknife.ButterKnife
 import butterknife.Unbinder
-import com.jakewharton.rxbinding2.view.RxView
+import com.jakewharton.rxbinding3.view.clicks
 import com.morihacky.android.rxjava.R
 import com.morihacky.android.rxjava.wiring.LogAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -60,7 +60,7 @@ class BufferDemoFragment : BaseFragment() {
     // Main Rx entities
 
     private fun startBufferingTaps(): Disposable {
-        return RxView.clicks(btn_start_operation)
+        return btn_start_operation.clicks()
             .map { clickEvent ->
                 log("GOT A TAP")
                 1
