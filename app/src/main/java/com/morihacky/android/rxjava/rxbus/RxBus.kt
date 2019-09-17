@@ -1,6 +1,8 @@
 package com.morihacky.android.rxjava.rxbus
 
 import com.jakewharton.rxrelay2.PublishRelay
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
 import io.reactivex.Observable
 
 /** courtesy: https://gist.github.com/benjchristensen/04eef9ca0851f3a5d7bf  */
@@ -18,5 +20,9 @@ class RxBus {
 
     fun hasObservers(): Boolean {
         return bus.hasObservers()
+    }
+
+    fun asFlowable(): Flowable<Any> {
+        return bus.toFlowable(BackpressureStrategy.BUFFER)
     }
 }
