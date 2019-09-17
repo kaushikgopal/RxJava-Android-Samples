@@ -10,12 +10,13 @@ I've also been giving talks about Learning Rx using many of the examples listed 
 
 ## Examples:
 
-1. [Background work & concurrency (using Schedulers)](#1-background-work--concurrency-using-schedulers)
+1. [Background work & concurrency (using Schedulers)](#background-work--concurrency-using-schedulers)
+2. [Simple and Advanced polling (using interval and repeatWhen)](#simple-and-advanced-polling-using-interval-and-repeatwhen)
+
 2. [Accumulate calls (using buffer)](#2-accumulate-calls-using-buffer)
 3. [Instant/Auto searching text listeners (using Subjects & debounce)](#3-instantauto-searching-text-listeners-using-subjects--debounce)
 4. [Networking with Retrofit & RxJava (using zip, flatmap)](#4-networking-with-retrofit--rxjava-using-zip-flatmap)
 5. [Two-way data binding for TextViews (using PublishSubject)](#5-two-way-data-binding-for-textviews-using-publishsubject)
-6. [Simple and Advanced polling (using interval and repeatWhen)](#6-simple-and-advanced-polling-using-interval-and-repeatwhen)
 7. [Simple and Advanced exponential backoff (using delay and retryWhen)](#7-simple-and-advanced-exponential-backoff-using-delay-and-retrywhen)
 8. [Form validation (using combineLatest)](#8-form-validation-using-combinelatest)
 9. [Pseudo caching : retrieve data first from a cache, then a network call (using concat, concatEager, merge or publish)](#9-pseudo-caching--retrieve-data-first-from-a-cache-then-a-network-call-using-concat-concateager-merge-or-publish)
@@ -31,13 +32,22 @@ I've also been giving talks about Learning Rx using many of the examples listed 
 
 ## Description
 
-### 1. Background work & concurrency (using Schedulers)
+### Background work & concurrency (using Schedulers)
 
 A common requirement is to offload lengthy heavy I/O intensive operations to a background thread (non-UI thread) and feed the results back to the UI/main thread, on completion. This is a demo of how long-running operations can be offloaded to a background thread. After the operation is done, we resume back on the main thread. All using RxJava! Think of this as a replacement to AsyncTasks.
 
 The long operation is simulated by a blocking Thread.sleep call (since this is done in a background thread, our UI is never interrupted).
 
 To really see this example shine. Hit the button multiple times and see how the button click (which is a UI operation) is never blocked because the long operation only runs in the background.
+
+### Simple and Advanced polling (using interval and repeatWhen)
+
+This is an example of polling using RxJava Schedulers. This is useful in cases, where you want to constantly poll a server and possibly get new data. 
+
+There are two variants for this:
+
+1. Simple Polling: say when you want to execute a certain task every 5 seconds
+2. Increasing Delayed Polling: say when you want to execute a task first in 1 second, then in 2 seconds, then 3 and so on.
 
 ### 2. Accumulate calls (using buffer)
 
@@ -71,20 +81,6 @@ Auto-updating views are a pretty cool thing. If you've dealt with Angular JS bef
 
 While the example here is pretty rudimentary, the technique used to achieve the double binding using a `Publish Subject` is much more interesting.
 
-### 6. Simple and Advanced polling (using interval and repeatWhen)
-
-This is an example of polling using RxJava Schedulers. This is useful in cases, where you want to constantly poll a server and possibly get new data. The network call is "simulated" so it forces a delay before return a resultant string.
-
-There are two variants for this:
-
-1. Simple Polling: say when you want to execute a certain task every 5 seconds
-2. Increasing Delayed Polling: say when you want to execute a task first in 1 second, then in 2 seconds, then 3 and so on.
-
-The second example is basically a variant of [Exponential Backoff](https://github.com/kaushikgopal/RxJava-Android-Samples#exponential-backoff).
-
-Instead of using a RetryWithDelay, we use a RepeatWithDelay here. To understand the difference between Retry(When) and Repeat(When) I wouuld suggest Dan's [fantastic post on the subject](http://blog.danlew.net/2016/01/25/rxjavas-repeatwhen-and-retrywhen-explained/).
-
-An alternative approach to delayed polling without the use of `repeatWhen` would be using chained nested delay observables. See [startExecutingWithExponentialBackoffDelay in the ExponentialBackOffFragment example](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/app/src/main/java/com/morihacky/android/rxjava/fragments/ExponentialBackoffFragment.java#L111).
 
 ### 7. Simple and Advanced exponential backoff (using delay and retryWhen)
 
@@ -246,6 +242,17 @@ All the examples here have been migrated to use RxJava 2.X.
 * [What's different in Rx 2.x](https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0)
 
 We use [David Karnok's Interop library](https://github.com/akarnokd/RxJava2Interop) in some cases as certain libraries like RxBindings, RxRelays, RxJava-Math etc. have not been ported yet to 2.x.
+
+## Sequence of learning these examples
+
+If you're looking for a sequence of examples to follow in increasing order of complexity, here's what i'd recommend:
+
+1. Background Schedulers
+2. Simple polling fragment
+3. Buffer demo
+4. Network request
+5. Debounce Search
+
 
 ## Contributing:
 

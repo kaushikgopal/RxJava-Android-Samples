@@ -9,7 +9,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,14 +45,14 @@ public class NetworkDetectorFragment extends BaseFragment {
 
   @Override
   public View onCreateView(
-      LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+      LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View layout = inflater.inflate(R.layout.fragment_network_detector, container, false);
     unbinder = ButterKnife.bind(this, layout);
     return layout;
   }
 
   @Override
-  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+  public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
     setupLogger();
   }

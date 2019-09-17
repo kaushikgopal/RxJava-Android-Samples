@@ -1,9 +1,10 @@
 buildscript {
     repositories {
-        jcenter()
+        addRepos(repositories)
     }
     dependencies {
         classpath 'me.tatarka:gradle-retrolambda:3.6.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
     }
 
     // Exclude the lombok version that the android plugin depends on.
@@ -15,64 +16,18 @@ plugins {
     id "org.jetbrains.kotlin.kapt"
 }
 
-
-apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'com.f2prateek.javafmt'
-
-dependencies {
-    implementation 'com.android.support:multidex:1.0.1'
-    implementation "com.android.support:support-v13:${supportLibVersion}"
-    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
-    implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
-
-    implementation 'com.github.kaushikgopal:CoreTextUtils:c703fa12b6'
-    //implementation "com.jakewharton:butterknife:${butterKnifeVersion}"
-    //kapt "com.jakewharton:butterknife-implementationr:${butterKnifeVersion}"
-    implementation 'com.jakewharton.timber:timber:4.5.1'
-    implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
-    implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
-    implementation "com.squareup.okhttp3:okhttp:${okhttpVersion}"
-    implementation "com.squareup.okhttp3:okhttp-urlconnection:${okhttpVersion}"
-    implementation 'com.mcxiaoke.volley:library:1.0.19'
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
-    implementation "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}"
-
-    implementation "android.arch.lifecycle:runtime:${archComponentsVersion}"
-    implementation "android.arch.lifecycle:extensions:${archComponentsVersion}"
-    kapt "android.arch.lifecycle:lifecycle-compiler:${archComponentsVersion}"
-
-    kapt  "android.arch.lifecycle:implementationr:${archComponentsVersion}"
-
-    // ----------------------------------
-    //  Rx dependencies
-
-    implementation 'io.reactivex.rxjava2:rxjava:2.0.7'
-
-    // Because RxAndroid releases are few and far between, it is recommended you also
-    // explicitly depend on RxJava's latest version for bug fixes and new features.
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-
-    implementation 'com.jakewharton.rx:replaying-share-kotlin:2.0.0'
-    implementation "com.github.akarnokd:rxjava2-extensions:0.16.0"
-    implementation 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
-
-    implementation 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
-    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
-
-    // ----------------------------------
-
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.1'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-}
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion build_versions.build_sdk
 
     defaultConfig {
         applicationId "com.morihacky.android.rxjava"
-        minSdkVersion 15
-        targetSdkVersion sdkVersion
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
         versionCode 2
         versionName "1.2"
         multiDexEnabled true
@@ -94,3 +49,54 @@ android {
         pickFirst  'META-INF/rxjava.properties'
     }
 }
+
+dependencies {
+    // --------------------
+    // ANDROID CORE
+    // --------------------
+
+    implementation deps.kotlin.stdlib
+
+    implementation deps.androidx.app_compat
+    implementation deps.androidx.compat
+    implementation deps.androidx.design
+    implementation deps.androidx.multidex
+    implementation deps.androidx.recyclerview
+    implementation deps.androidx.vector_drawable
+    implementation deps.androidx.vector_drawable_animated
+
+
+    implementation "com.jakewharton:butterknife:10.1.0"
+    kapt "com.jakewharton:butterknife-compiler:10.1.0"
+
+    implementation deps.timber
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.gson
+    implementation deps.retrofit.adapter_rxjava
+    implementation deps.okhttp.core
+    implementation deps.okhttp.urlconnection
+
+
+    implementation 'com.mcxiaoke.volley:library:1.0.19'
+
+    implementation deps.lifecycle.extensions
+    implementation deps.lifecycle.runtime
+    kapt deps.lifecycle.compiler
+
+    // ----------------------------------
+    //  Rx dependencies
+
+    implementation deps.rx.android
+    implementation deps.rx.bindings
+    implementation deps.rx.bindings_viewpager
+    implementation deps.rx.java
+    implementation deps.rx.replaying_share
+    implementation "com.github.akarnokd:rxjava2-extensions:0.16.0"
+    implementation deps.rx.relay
+
+    // ----------------------------------
+
+    debugImplementation deps.leakcanary.lib
+    releaseImplementation deps.leakcanary.no_op
+}
+

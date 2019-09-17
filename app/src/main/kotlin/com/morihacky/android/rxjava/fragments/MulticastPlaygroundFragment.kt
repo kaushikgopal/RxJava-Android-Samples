@@ -30,9 +30,7 @@ class MulticastPlaygroundFragment : BaseFragment() {
     private var disposable1: Disposable? = null
     private var disposable2: Disposable? = null
 
-    override fun onCreateView(inflater: LayoutInflater?,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val layout = inflater!!.inflate(R.layout.fragment_multicast_playground, container, false)
         ButterKnife.bind(this, layout)
 
@@ -102,7 +100,7 @@ class MulticastPlaygroundFragment : BaseFragment() {
 
     private fun _setupLogger() {
         logs = ArrayList<String>()
-        adapter = LogAdapter(activity, ArrayList<String>())
+        adapter = LogAdapter(activity!!, ArrayList<String>())
         logList.adapter = adapter
     }
 
