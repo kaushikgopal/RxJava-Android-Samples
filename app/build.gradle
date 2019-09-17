@@ -1,70 +1,73 @@
 buildscript {
     repositories {
-//        mavenCentral()
         jcenter()
     }
     dependencies {
         classpath 'me.tatarka:gradle-retrolambda:3.6.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
     }
 
     // Exclude the lombok version that the android plugin depends on.
     configurations.classpath.exclude group: 'com.android.tools.external.lombok'
 }
+plugins {
+    id("com.android.application")
+    id "org.jetbrains.kotlin.android"
+    id "org.jetbrains.kotlin.kapt"
+}
 
-apply plugin: 'com.android.application'
+
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.f2prateek.javafmt'
-apply plugin: 'kotlin-android'
 
 dependencies {
-    compile 'com.android.support:multidex:1.0.1'
-    compile "com.android.support:support-v13:${supportLibVersion}"
-    compile "com.android.support:appcompat-v7:${supportLibVersion}"
-    compile "com.android.support:recyclerview-v7:${supportLibVersion}"
+    implementation 'com.android.support:multidex:1.0.1'
+    implementation "com.android.support:support-v13:${supportLibVersion}"
+    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
+    implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
 
-    compile 'com.github.kaushikgopal:CoreTextUtils:c703fa12b6'
-    compile "com.jakewharton:butterknife:${butterKnifeVersion}"
-    kapt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
-    compile 'com.jakewharton.timber:timber:4.5.1'
-    compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
-    compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
-    compile "com.squareup.okhttp3:okhttp:${okhttpVersion}"
-    compile "com.squareup.okhttp3:okhttp-urlconnection:${okhttpVersion}"
-    compile 'com.mcxiaoke.volley:library:1.0.19'
+    implementation 'com.github.kaushikgopal:CoreTextUtils:c703fa12b6'
+    //implementation "com.jakewharton:butterknife:${butterKnifeVersion}"
+    //kapt "com.jakewharton:butterknife-implementationr:${butterKnifeVersion}"
+    implementation 'com.jakewharton.timber:timber:4.5.1'
+    implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+    implementation "com.squareup.okhttp3:okhttp:${okhttpVersion}"
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:${okhttpVersion}"
+    implementation 'com.mcxiaoke.volley:library:1.0.19'
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
-    compile "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
+    implementation "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}"
 
-    compile "android.arch.lifecycle:runtime:${archComponentsVersion}"
-    compile "android.arch.lifecycle:extensions:${archComponentsVersion}"
-    kapt  "android.arch.lifecycle:compiler:${archComponentsVersion}"
+    implementation "android.arch.lifecycle:runtime:${archComponentsVersion}"
+    implementation "android.arch.lifecycle:extensions:${archComponentsVersion}"
+    kapt "android.arch.lifecycle:lifecycle-compiler:${archComponentsVersion}"
+
+    kapt  "android.arch.lifecycle:implementationr:${archComponentsVersion}"
 
     // ----------------------------------
     //  Rx dependencies
 
-    compile 'io.reactivex.rxjava2:rxjava:2.0.7'
+    implementation 'io.reactivex.rxjava2:rxjava:2.0.7'
 
     // Because RxAndroid releases are few and far between, it is recommended you also
     // explicitly depend on RxJava's latest version for bug fixes and new features.
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
-    compile 'com.jakewharton.rx:replaying-share-kotlin:2.0.0'
-    compile "com.github.akarnokd:rxjava2-extensions:0.16.0"
-    compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
+    implementation 'com.jakewharton.rx:replaying-share-kotlin:2.0.0'
+    implementation "com.github.akarnokd:rxjava2-extensions:0.16.0"
+    implementation 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
 
-    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
-    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
 
     // ----------------------------------
 
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 }
 
 android {
-    compileSdkVersion sdkVersion
-    buildToolsVersion buildToolsVrs
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "com.morihacky.android.rxjava"
