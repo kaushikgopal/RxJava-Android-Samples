@@ -8,6 +8,10 @@ I've also been giving talks about Learning Rx using many of the examples listed 
 * [Learning RxJava For Android by Example : Part 1](https://www.youtube.com/watch?v=k3D0cWyNno4) \[[slides](https://speakerdeck.com/kaushikgopal/learning-rxjava-for-android-by-example)\] (SF Android Meetup 2015)
 * [Learning Rx by Example : Part 2](https://vimeo.com/190922794) \[[slides](https://speakerdeck.com/kaushikgopal/learning-rx-by-example-2)\] (Øredev 2016)
 
+## Installation
+
+Install the app with  `$ ./gradlew install`
+
 ## Examples:
 
 1. [Background work & concurrency (using Schedulers)](#background-work--concurrency-using-schedulers)

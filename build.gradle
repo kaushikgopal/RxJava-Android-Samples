@@ -23,6 +23,12 @@ allprojects {
     addRepos(repositories)
 }
 
+tasks.register("install") {
+    group = "install"
+    dependsOn(":app:installDebug")
+    description = "Install app via :app:installDebug"
+}
+
 tasks.register("hello") {
     group = "custom"
     description = "Hello World task - useful to solve build problems"
