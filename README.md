@@ -1,7 +1,7 @@
 Learning RxJava for Android by example
 ==============
 
-This is a repository with real-world useful examples of using RxJava with Android. [It usually will be in a constant state of "Work in Progress" (WIP)](http://blog.kaush.co/2014/09/15/learning-rxjava-with-android-by-example/).
+This is a repository with real-world useful examples of using RxJava with Android. [It usually will be in a constant state of "Work in Progress" (WIP)](https://kau.sh/blog/learning-rxjava-with-android-by-example/).
 
 I've also been giving talks about Learning Rx using many of the examples listed in this repo.
 
@@ -49,7 +49,7 @@ If you hit the button once, you'll get a message saying the button was hit once.
 
 Note:
 
-If you're looking for a more foolproof solution that accumulates "continuous" taps vs just the number of taps within a time span, look at the [EventBus Demo](https://github.com/kaushikgopal/Android-RxJava/blob/master/app/src/main/java/com/morihacky/android/rxjava/rxbus/RxBusDemo_Bottom3Fragment.java) where a combo of the `publish` and `buffer` operators is used. For a more detailed explanation, you can also have a look at this [blog post](http://blog.kaush.co/2015/01/05/debouncedbuffer-with-rxjava/).
+If you're looking for a more foolproof solution that accumulates "continuous" taps vs just the number of taps within a time span, look at the [EventBus Demo](https://github.com/kaushikgopal/Android-RxJava/blob/master/app/src/main/java/com/morihacky/android/rxjava/rxbus/RxBusDemo_Bottom3Fragment.java) where a combo of the `publish` and `buffer` operators is used. For a more detailed explanation, you can also have a look at this [blog post](https://kau.sh/blog/debouncedbuffer-with-rxjava/).
 
 ### 3. Instant/Auto searching text listeners (using Subjects & debounce)
 
@@ -147,7 +147,7 @@ Sometimes though, you just want to start showing the results immediately. Assumi
 
 Similar to the `concat` operator, if your first Observable is always faster than the second Observable you won't run into any problems. However the problem with `merge` is: if for some strange reason an item is emitted by the cache or slower observable *after* the newer/fresher observable, it will overwrite the newer content. Click the "MERGE (SLOWER DISK)" button in the example to see this problem in action. @JakeWharton and @swankjesse contributions go to 0! In the real world this could be bad, as it would mean the fresh data would get overridden by stale disk data.
 
-To solve this problem you can use merge in combination with the super nifty `publish` operator which takes in a "selector". I wrote about this usage in a [blog post](http://blog.kaush.co/2015/01/21/rxjava-tip-for-the-day-share-publish-refcount-and-all-that-jazz/) but I have [Jedi JW](https://twitter.com/JakeWharton/status/786363146990649345) to thank for reminding of this technique. We `publish` the network observable and provide it a selector which starts emitting from the disk cache, up until the point that the network observable starts emitting. Once the network observable starts emitting, it ignores all results from the disk observable. This is perfect and handles any problems we might have.
+To solve this problem you can use merge in combination with the super nifty `publish` operator which takes in a "selector". I wrote about this usage in a [blog post](https://kau.sh/blog/rxjava-tip-for-the-day-share-publish-refcount-and-all-that-jazz/) but I have [Jedi JW](https://twitter.com/JakeWharton/status/786363146990649345) to thank for reminding of this technique. We `publish` the network observable and provide it a selector which starts emitting from the disk cache, up until the point that the network observable starts emitting. Once the network observable starts emitting, it ignores all results from the disk observable. This is perfect and handles any problems we might have.
 
 Previously, I was using the `merge` operator but overcoming the problem of results being overwritten by monitoring the "resultAge". See the old `PseudoCacheMergeFragment` example if you're curious to see this old implementation.
 
@@ -167,9 +167,9 @@ Cases demonstrated here:
 
 There are accompanying blog posts that do a much better job of explaining the details on this demo:
 
-1. [Implementing an event bus with RxJava](http://blog.kaush.co/2014/12/24/implementing-an-event-bus-with-rxjava-rxbus/)
-2. [DebouncedBuffer used for the fancier variant of the demo](http://blog.kaush.co/2015/01/05/debouncedbuffer-with-rxjava/)
-3. [share/publish/refcount](http://blog.kaush.co/2015/01/21/rxjava-tip-for-the-day-share-publish-refcount-and-all-that-jazz/)
+1. [Implementing an event bus with RxJava](https://kau.sh/blog/implementing-an-event-bus-with-rxjava-rxbus/)
+2. [DebouncedBuffer used for the fancier variant of the demo](https://kau.sh/blog/debouncedbuffer-with-rxjava/)
+3. [share/publish/refcount](https://kau.sh/blog/rxjava-tip-for-the-day-share-publish-refcount-and-all-that-jazz/)
 
 ### 12. Persist data on Activity rotations (using Subjects and retained Fragments)
 
@@ -179,7 +179,7 @@ This example shows you one strategy viz. using retained Fragments. I started usi
 
 Hit the start button and rotate the screen to your heart's content; you'll see the observable continue from where it left off.
 
-*There are certain quirks about the "hotness" of the source observable used in this example. Check [my blog post](http://blog.kaush.co/2015/07/11/a-note-about-the-warmth-share-operator/) out where I explain the specifics.*
+*There are certain quirks about the "hotness" of the source observable used in this example. Check [my blog post](https://kau.sh/blog/a-note-about-the-warmth-share-operator/) out where I explain the specifics.*
 
 I have since rewritten this example using an alternative approach. While the [`ConnectedObservable` approach worked](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/app/src/main/java/com/morihacky/android/rxjava/fragments/RotationPersist1WorkerFragment.java#L20) it enters the lands of "multicasting" which can be tricky (thread-safety, .refcount etc.). Subjects on the other hand are far more simple.  You can see it rewritten [using a `Subject` here](https://github.com/kaushikgopal/RxJava-Android-Samples/blob/master/app/src/main/java/com/morihacky/android/rxjava/fragments/RotationPersist2WorkerFragment.java#L22).
 
