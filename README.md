@@ -253,6 +253,18 @@ I try to ensure the examples are not overly contrived but reflect a real-world u
 
 I'm wrapping my head around RxJava too so if you feel there's a better way of doing one of the examples mentioned above, open up an issue explaining how. Even better, send a pull request.
 
+
+## Sponsorship (Memory Management/Profiling)
+
+Rx threading is messy business. To help, this project uses YourKit tools for analysis.
+
+![Yourkit](https://www.yourkit.com/images/yklogo.png)
+
+
+YourKit supports open source projects with innovative and intelligent tools
+for monitoring and profiling Java applications. YourKit is the creator of <a href="https://www.yourkit.com/java/profiler/">YourKit Java Profiler</a>.
+
+
 ## License
 
 Licensed under the Apache License, Version 2.0 (the "License").
