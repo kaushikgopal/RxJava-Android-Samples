@@ -9,9 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -20,17 +18,22 @@ import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.fragments.BaseFragment;
 import com.morihacky.android.rxjava.wiring.LogAdapter;
 
+import org.json.JSONObject;
+
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import org.json.JSONObject;
 import timber.log.Timber;
 
 public class VolleyDemoFragment extends BaseFragment {
@@ -108,10 +111,12 @@ public class VolleyDemoFragment extends BaseFragment {
           @Override
           public void onError(Throwable e) {
             VolleyError cause = (VolleyError) e.getCause();
-            String s = new String(cause.networkResponse.data, Charset.forName("UTF-8"));
-            Log.e(TAG, s);
             Log.e(TAG, cause.toString());
-            _log("onError " + s);
+            if (cause.networkResponse != null) {
+              String s = new String(cause.networkResponse.data, Charset.forName("UTF-8"));
+              Log.e(TAG, s);
+              _log("onError " + s);
+            }
           }
 
           @Override
