@@ -7,14 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 
 import com.morihacky.android.rxjava.R;
 import com.morihacky.android.rxjava.pagination.PaginationAutoFragment;
 import com.morihacky.android.rxjava.rxbus.RxBusDemoFragment;
 import com.morihacky.android.rxjava.volley.VolleyDemoFragment;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class MainFragment extends BaseFragment {
 
@@ -22,7 +23,7 @@ public class MainFragment extends BaseFragment {
 
   @Override
   public View onCreateView(
-      LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+          LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View layout = inflater.inflate(R.layout.fragment_main, container, false);
     unbinder = ButterKnife.bind(this, layout);
     return layout;
@@ -130,10 +131,10 @@ public class MainFragment extends BaseFragment {
   private void clickedOn(@NonNull Fragment fragment) {
     final String tag = fragment.getClass().toString();
     getActivity()
-        .getSupportFragmentManager()
-        .beginTransaction()
-        .addToBackStack(tag)
-        .replace(android.R.id.content, fragment, tag)
-        .commit();
+            .getSupportFragmentManager()
+            .beginTransaction()
+            .addToBackStack(tag)
+            .replace(android.R.id.content, fragment, tag)
+            .commit();
   }
 }

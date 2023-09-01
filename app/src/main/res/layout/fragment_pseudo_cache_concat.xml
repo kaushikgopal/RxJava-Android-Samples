@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:baselineAligned="false"
     android:orientation="vertical"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
     <Button
         android:id="@+id/btn_start_pseudo_cache"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="@string/start_disk_network_call"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_margin="30dp"
+        android:text="@string/start_disk_network_call"
         />
 
     <ListView
         android:id="@+id/log_list"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         />
 
 </LinearLayout>
